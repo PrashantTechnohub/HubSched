@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class emp_list extends AppCompatActivity {
@@ -45,15 +50,37 @@ public class emp_list extends AppCompatActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-        
-
-
 
         bind.empListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         adapter = new EmpListAdapter(this, list);
 
         bind.empListRecyclerView.setAdapter(adapter);
+
+
+        bind.searchEmp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bind.actionBarLayout.setVisibility(View.GONE);
+                bind.searchBarLayout.setVisibility(View.VISIBLE);
+                bind.searchBar.requestFocus();
+
+            }
+        });
+
+        bind.closeSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bind.actionBarLayout.setVisibility(View.VISIBLE);
+                bind.searchBarLayout.setVisibility(View.GONE);
+            }
+        });
+        bind.addEmp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(emp_list.this, AddEmployee.class));
+            }
+        });
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,14 +96,35 @@ public class emp_list extends AppCompatActivity {
             }
         });
 
-        bind.searchEmp.setOnClickListener(new View.OnClickListener() {
+        bind.searchBar.addTextChangedListener(new TextWatcher() {
+
             @Override
-            public void onClick(View v) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+            }
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text =  bind.searchBar.getText().toString().toLowerCase(Locale.getDefault());
+                list = adapter.filter(text);
+
+                if (!text.isEmpty()){
+                    adapter = new EmpListAdapter(getApplicationContext(), list);
+                    bind.empListRecyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                } else {
+                   getEmpList();
+                }
 
             }
         });
+
 
         getEmpList();
 
@@ -94,6 +142,8 @@ public class emp_list extends AppCompatActivity {
 
                     try {
                         JSONArray emp_details =response.getJSONArray("emp_details");
+                        list.clear();
+
 
                         for (int i=0;i<emp_details.length();i++){
                             JSONObject jobj=emp_details.getJSONObject(i);
@@ -103,6 +153,7 @@ public class emp_list extends AppCompatActivity {
 
 
                             EmpListModel model=new EmpListModel(id,name,position);
+
                             list.add(model);
 
 
@@ -116,6 +167,10 @@ public class emp_list extends AppCompatActivity {
 
                     adapter = new EmpListAdapter(getApplicationContext(), list);
                     bind.empListRecyclerView.setAdapter(adapter);
+                    bind.empListRecyclerView.invalidate();
+                    bind.empListRecyclerView.removeAllViews();
+
+
                 if (bind.refresh.isRefreshing()){
                     bind.refresh.setRefreshing(false);
                     Toast.makeText(emp_list.this, "Refreshed", Toast.LENGTH_SHORT).show();

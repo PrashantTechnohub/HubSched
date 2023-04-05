@@ -25,6 +25,7 @@
             android:text="Scheduled by  "/>
 
         <TextView
+            android:id="@+id/meet_orgName"
             android:fontFamily="@font/montserrat_semibold"
             android:layout_width="wrap_content"
             android:textColor="@color/purple_500"
@@ -53,6 +54,7 @@
                android:text="Subject  "/>
 
            <TextView
+               android:id="@+id/meet_subject"
                android:fontFamily="@font/montserrat_semibold"
                android:layout_width="wrap_content"
                android:textColor="#FF5722"
@@ -67,14 +69,16 @@
            android:layout_height="wrap_content"
            android:orientation="horizontal">
            <TextView
+
                android:layout_width="@dimen/_50sdp"
                android:textColor="@color/black"
                android:fontFamily="@font/montserrat_regular"
                android:layout_height="wrap_content"
                android:textSize="@dimen/_10sdp"
-               android:text="Date  "/>
+               android:text="Time  "/>
 
            <TextView
+               android:id="@+id/meet_time"
                android:fontFamily="@font/montserrat_semibold"
                android:layout_width="wrap_content"
                android:textColor="#FF5722"
@@ -97,6 +101,7 @@
                android:text="Location  "/>
 
            <TextView
+               android:id="@+id/meet_location"
                android:fontFamily="@font/montserrat_semibold"
                android:layout_width="wrap_content"
                android:textColor="#FF5722"
@@ -113,6 +118,7 @@
         android:orientation="horizontal">
         <com.google.android.material.button.MaterialButton
             android:layout_width="@dimen/_70sdp"
+            android:id="@+id/meet_accept_btn"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_height="@dimen/_25sdp"
             app:cornerRadius="@dimen/_14sdp"
@@ -121,6 +127,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="@dimen/_70sdp"
+            android:id="@+id/meet_deny_btn"
             android:layout_height="@dimen/_25sdp"
             app:cornerRadius="@dimen/_14sdp"
             android:textSize="@dimen/_7sdp"

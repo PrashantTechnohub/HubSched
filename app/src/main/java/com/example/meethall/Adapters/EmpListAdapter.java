@@ -1,27 +1,43 @@
 package com.example.meethall.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meethall.Models.EmpListModel;
 import com.example.meethall.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolder> {
 
     Context context;
-    ArrayList<EmpListModel> empList = new ArrayList<>();
+    ArrayList<EmpListModel> data= null;
+    ArrayList<EmpListModel> empList;
 
-    public EmpListAdapter(Context context, ArrayList<EmpListModel> empList) {
+
+
+
+
+    public EmpListAdapter(Context context, ArrayList<EmpListModel> empList1) {
         this.context = context;
-        this.empList = empList;
+        this.empList = empList1;
+
+        data= empList;
+        empList=new ArrayList<EmpListModel>();
+        empList.addAll(data);
     }
 
     @NonNull
@@ -32,31 +48,85 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EmpListAdapter.EmpHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EmpListAdapter.EmpHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(holder.blockBtn.getContext(), R.style.MaterialAlertDialog_Rounded);
+
+
+        LayoutInflater inflater1 = (LayoutInflater) holder.blockBtn.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        View team = inflater1.inflate(R.layout.alert_layout, null);
+
+        builder.setView(team);
+
+        builder.setCancelable(false);
+
+        final AlertDialog dialog = builder.create();
+
+
+
+        Button yes = team.findViewById(R.id.yes_btn);
+        Button no = team.findViewById(R.id.no_btn);
+        TextView text = team.findViewById(R.id.alert_text);
+
 
         holder.empId.setText(empList.get(position).getEmp_id());
         holder.empName.setText(empList.get(position).getEmp_name());
         holder.empPost.setText(empList.get(position).getEmp_post());
-//        holder.setMeeting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext(), R.style.MaterialAlertDialog_Rounded);
-//                LayoutInflater inflater1 = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                View team = inflater1.inflate(R.layout.logout_layout, null);
-//                builder.setView(team);
-//                builder.setCancelable(false);
-//
-//                Button logout = team.findViewById(R.id.logout_btn);
-//                Button no = team.findViewById(R.id.no_btn);
-//
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//
-//                logout.setOnClickListener(v1 -> checkUserDetailPreference.LogOutUser(v.getContext(), "out", dialog));
-//
-//                no.setOnClickListener(v12 -> dialog.cancel());
-//            }
-//        });
+
+        holder.blockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                text.setText("Are you sure to block "+empList.get(position).getEmp_name() + " !!");
+
+                dialog.show();
+
+                yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(), empList.get(position).getEmp_name() +" blocked !!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+
+                    }
+                });
+
+                no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                    }
+                });
+            }
+        });
+
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                text.setText("Are you sure to remove "+empList.get(position).getEmp_name() + " !!");
+
+                dialog.show();
+
+                yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(), empList.get(position).getEmp_name() +" Removed !!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
     }
 
     @Override
@@ -64,9 +134,32 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         return empList.size();
     }
 
-    public class EmpHolder extends RecyclerView.ViewHolder {
+    @SuppressLint("NotifyDataSetChanged")
+    public ArrayList<EmpListModel> filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        data.clear();
+        if (charText.length() == 0) {
+            data.addAll(empList);
+        }
+        else
+        {
+            for (EmpListModel emp : empList)
+            {
+                if (emp.getEmp_id().toLowerCase(Locale.getDefault()).contains(charText)  || emp.getEmp_name().toLowerCase(Locale.getDefault()).contains(charText))
+                {
+                    data.add(emp);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+        return data;
+    }
+
+    public static class EmpHolder extends RecyclerView.ViewHolder {
 
         TextView empId,empName,empPost;
+        MaterialButton blockBtn, removeBtn, editBtn;
 
 
         public EmpHolder(@NonNull View emp) {
@@ -75,6 +168,10 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             empId = emp.findViewById(R.id.emp_id);
             empName = emp.findViewById(R.id.emp_name);
             empPost = emp.findViewById(R.id.emp_post);
+
+            blockBtn = emp.findViewById(R.id.block_emp_btn);
+            removeBtn = emp.findViewById(R.id.remove_emp_btn);
+            editBtn = emp.findViewById(R.id.edit_emp_btn);
 
 
 

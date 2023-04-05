@@ -1,4 +1,4 @@
-package com.example.meethall.ui.Dashboard.fragment;
+package com.example.meethall.ui.Fragment;
 
 import android.os.Bundle;
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="grey">#E1E1E1</color>
+    <color name="textHint">#B1B1B1</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#0573CA</color>
     <color name="purple_700">#0573CA</color>

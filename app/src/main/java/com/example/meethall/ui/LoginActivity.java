@@ -27,7 +27,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding bind;
-    
+
     ProgressDialog loader;
 
     @Override
@@ -37,8 +37,11 @@ public class LoginActivity extends AppCompatActivity {
         View view = bind.getRoot();
         setContentView(view);
 
+
         loader = new ProgressDialog(LoginActivity.this);
         loader.setMessage("Please wait....");
+
+
         bind.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,9 +72,11 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(String email, String password) {
 
         JSONObject params = new JSONObject();
+
         try {
             params.put("email", email);
             params.put("password", password);
+
         } catch (JSONException e) {
             e.printStackTrace();
             loader.cancel();
@@ -84,21 +89,32 @@ public class LoginActivity extends AppCompatActivity {
                     String token = response.getString("token");
                     String type = response.getString("type");
 
+
+
                     if (type.equals("admin")) {
-                        Intent intent = new Intent(LoginActivity.this, Dashboard.class);
                         checkUserDetailPreference.checkTypeToken(LoginActivity.this,type, token);
+
+
+                        Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                        intent.putExtra("type", type);
                         startActivity(intent);
                         loader.cancel();
+
+
                         finish();
                     } else if (type.equals("employee")) {
                         checkUserDetailPreference.checkTypeToken(LoginActivity.this,type, token);
+
                         Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                        intent.putExtra("type", type);
                         startActivity(intent);
                         loader.cancel();
                         finish();
                     }else if (type.equals("organiser")) {
                         checkUserDetailPreference.checkTypeToken(LoginActivity.this,type, token);
+
                         Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                        intent.putExtra("type", type);
                         startActivity(intent);
                         loader.cancel();
                         finish();

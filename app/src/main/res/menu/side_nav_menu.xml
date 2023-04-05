@@ -20,6 +20,14 @@
         android:title="Organizer List">
     </item>
 
+    <item
+        android:id="@+id/editContent"
+        android:icon="@drawable/baseline_display_settings_24"
+        android:title="Edit Content">
+    </item>
+
+
+
 
     <item
         android:id="@+id/support"

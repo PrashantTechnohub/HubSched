@@ -1,10 +1,15 @@
 package com.example.meethall.Adapters;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,29 +52,44 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         holder.roomFloor.setText(roomList.get(position).getFloor_no());
         holder.roomFacilities.setText(roomList.get(position).getFacilities());
 
+        SharedPreferences sh = holder.roomFacilities.getContext().getSharedPreferences("userTypeToken",MODE_PRIVATE);
+        String type = sh.getString("type", "");
+
+        if (type.equals("organiser")){
+            holder.removeMeeting.setVisibility(View.GONE);
+
+        }
+
         holder.setMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext(), R.style.MaterialAlertDialog_Rounded);
-                LayoutInflater inflater1 = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View team = inflater1.inflate(R.layout.logout_layout, null);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(holder.roomFacilities.getContext(), R.style.MaterialAlertDialog_Rounded);
+                LayoutInflater inflater1 = (LayoutInflater) holder.roomFacilities.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View team = inflater1.inflate(R.layout.create_meeting_layout, null);
                 builder.setView(team);
                 builder.setCancelable(false);
-
-                Button logout = team.findViewById(R.id.logout_btn);
-                Button no = team.findViewById(R.id.no_btn);
-
-                AlertDialog dialog = builder.create();
+                final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                logout.setOnClickListener(v1 -> checkUserDetailPreference.LogOutUser(v.getContext(), "out", dialog));
+                ImageView close = team.findViewById(R.id.create_meet_close_dialog);
+                MaterialButton create = team.findViewById(R.id.create_meet_btn);
+                EditText roomNametxt = team.findViewById(R.id.create_meet_name);
+                EditText roomSubtxt = team.findViewById(R.id.create_meet_sub);
+                EditText roomTimetxt = team.findViewById(R.id.create_meet_time);
 
-                no.setOnClickListener(v12 -> dialog.cancel());
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
 
+
     }
+
 
     @Override
     public int getItemCount() {

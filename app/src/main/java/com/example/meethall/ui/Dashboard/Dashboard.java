@@ -15,10 +15,10 @@ import android.view.View;
 import com.example.meethall.R;
 
 import com.example.meethall.databinding.ActivityDashboardBinding;
-import com.example.meethall.ui.Dashboard.fragment.HomeFragment;
-import com.example.meethall.ui.Dashboard.fragment.MeetingFragment;
-import com.example.meethall.ui.Dashboard.fragment.ProfileFragment;
-import com.example.meethall.ui.Dashboard.fragment.SupportFragment;
+import com.example.meethall.ui.Fragment.HomeFragment;
+import com.example.meethall.ui.Fragment.MeetingFragment;
+import com.example.meethall.ui.Fragment.ProfileFragment;
+import com.example.meethall.ui.Fragment.SupportFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -32,8 +32,9 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bind = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
+
+
         setContentView(view);
-        String type = getIntent().getStringExtra("type");
 
 
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
@@ -80,7 +81,6 @@ public class Dashboard extends AppCompatActivity {
             }
             return true;
         });
-
 
     }
 

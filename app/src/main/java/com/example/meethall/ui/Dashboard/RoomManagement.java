@@ -67,7 +67,7 @@ public class RoomManagement extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(RoomManagement.this);
 
-        JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.POST, Constant.CREATE_ROOM.toString(),params, new Response.Listener<JSONObject>() {
+        JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.POST, Constant.CREATE_ROOM_URL,params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 pd.dismiss();
@@ -80,6 +80,8 @@ public class RoomManagement extends AppCompatActivity {
                 Log.e("CreateRoom", "onErrorResponse: ", error );
             }
         });
+
+
 
         queue.add(arrayRequest);
     }
