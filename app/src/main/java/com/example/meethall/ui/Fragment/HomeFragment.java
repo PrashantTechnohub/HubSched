@@ -1,5 +1,6 @@
 package com.example.meethall.ui.Fragment;
 
+import static android.content.Context.BIND_ABOVE_CLIENT;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,6 +89,8 @@ public class HomeFragment extends Fragment {
             organizerFunction();
         }
 
+
+
         bind.createMeetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +105,7 @@ public class HomeFragment extends Fragment {
                 bind.userViewLayout.setVisibility(View.VISIBLE);
             }
         });
+
         bind.showAdminViewMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,8 +113,6 @@ public class HomeFragment extends Fragment {
                 bind.userViewLayout.setVisibility(View.GONE);
             }
         });
-
-
 
 
 
@@ -189,11 +192,26 @@ public class HomeFragment extends Fragment {
     private void employeeFunction() {
         toolbar.setTitle("Employee Dashboard");
         toolbar.setNavigationIcon(null);
-        bind.createMeetingBtn.setVisibility(View.GONE);
         navigationView.setVisibility(View.GONE);
         bind.createMeetingBtn.setVisibility(View.GONE);
+
+
+        bind.scheduleMeetingRecyclerView.setVisibility(View.VISIBLE);
+        bind.userViewLayout.setVisibility(View.VISIBLE);
+
+
+        bind.showAdminViewMeeting.setVisibility(View.GONE);
         bind.scheduleMeetingRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         getScheduleMeetings();
+
+        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getScheduleMeetings();
+
+            }
+        });
+
     }
 
     private void getScheduleMeetings() {
@@ -211,26 +229,26 @@ public class HomeFragment extends Fragment {
                     for (int i=0;i<meeting.length();i++){
                         JSONObject object=meeting.getJSONObject(i);
 
-
                         String meetId=object.getString("meet_id");
                         String meetOrg=object.getString("meet_org");
                         String meetSub=object.getString("meet_subject");
                         String meetTime=object.getString("meet_time");
                         String meetLocation=object.getString("meet_location");
 
-
                         ScheduleMeetingModel model=new ScheduleMeetingModel(meetId,meetOrg, meetSub, meetTime, meetLocation, "nothing");
 
                         list.add(model);
 
+                    }
 
+                    if (bind.refresh.isRefreshing()){
+                        bind.refresh.setRefreshing(false);
                     }
 
                     adapter = new ScheduleMeetingAdapter(getActivity(), list);
                     bind.scheduleMeetingRecyclerView.setAdapter(adapter);
                     bind.scheduleMeetingRecyclerView.invalidate();
                     bind.scheduleMeetingRecyclerView.removeAllViews();
-
 
 
 
@@ -248,7 +266,6 @@ public class HomeFragment extends Fragment {
         });
 
         requestQueue.add(jsonObjectRequest);
-
 
     }
 

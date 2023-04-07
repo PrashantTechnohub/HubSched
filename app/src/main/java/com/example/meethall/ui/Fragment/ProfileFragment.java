@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.meethall.R;
-import com.example.meethall.UserChecker.checkUserDetailPreference;
+import com.example.meethall.UtilHelper.checkUserDetailPreference;
 import com.example.meethall.databinding.FragmentProfileBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

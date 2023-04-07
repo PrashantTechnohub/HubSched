@@ -18,7 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.meethall.Api.Constant;
 import com.example.meethall.databinding.ActivityLoginBinding;
 import com.example.meethall.ui.Dashboard.Dashboard;
-import com.example.meethall.UserChecker.checkUserDetailPreference;
+import com.example.meethall.UtilHelper.checkUserDetailPreference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,12 +30,14 @@ public class LoginActivity extends AppCompatActivity {
 
     ProgressDialog loader;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
+
 
 
         loader = new ProgressDialog(LoginActivity.this);

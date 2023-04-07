@@ -66,6 +66,9 @@ dependencies {
     //Time and Date Picker
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
+    //QR code
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+
 
 
 

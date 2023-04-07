@@ -7,14 +7,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.meethall.R;
 
+import com.example.meethall.UtilHelper.NetworkChangeReceiver;
 import com.example.meethall.databinding.ActivityDashboardBinding;
+import com.example.meethall.ui.EditContentActivity;
 import com.example.meethall.ui.Fragment.HomeFragment;
 import com.example.meethall.ui.Fragment.MeetingFragment;
 import com.example.meethall.ui.Fragment.ProfileFragment;
@@ -26,6 +31,8 @@ import com.google.android.material.navigation.NavigationView;
 public class Dashboard extends AppCompatActivity {
 
     private ActivityDashboardBinding bind;
+
+    BroadcastReceiver mNetworkReceiver = new NetworkChangeReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,10 @@ public class Dashboard extends AppCompatActivity {
                     startActivity(new Intent(Dashboard.this, org_list.class));
                     break;
 
+                case R.id.editContent:
+                    startActivity(new Intent(Dashboard.this, EditContentActivity.class));
+                    break;
+
 
                 default:
                     return true;
@@ -113,6 +124,24 @@ public class Dashboard extends AppCompatActivity {
             return true;
         }
     };
+
+    public static void dialog(boolean value){
+
+        if(value){
+
+
+            Handler handler = new Handler();
+            Runnable delayrunnable = new Runnable() {
+                @Override
+                public void run() {
+                }
+            };
+            handler.postDelayed(delayrunnable, 3000);
+
+        }else {
+
+        }
+    }
 
 
 }

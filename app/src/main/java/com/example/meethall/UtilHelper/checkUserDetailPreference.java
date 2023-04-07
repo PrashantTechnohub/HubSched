@@ -1,4 +1,4 @@
-package com.example.meethall.UserChecker;
+package com.example.meethall.UtilHelper;
 
 import android.app.Dialog;
 import android.content.Context;

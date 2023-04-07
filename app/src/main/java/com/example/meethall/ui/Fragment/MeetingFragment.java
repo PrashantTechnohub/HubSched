@@ -20,7 +20,7 @@ public class MeetingFragment extends Fragment {
                              Bundle savedInstanceState) {
         MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle("Meeting");
-        return inflater.inflate(R.layout.fragment_blank, container, false);
+        return inflater.inflate(R.layout.fragment_meeting, container, false);
 
 
     }
