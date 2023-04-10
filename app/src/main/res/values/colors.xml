@@ -3,11 +3,11 @@
     <color name="grey">#E1E1E1</color>
     <color name="textHint">#B1B1B1</color>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#0573CA</color>
-    <color name="purple_700">#0573CA</color>
+    <color name="purple_500">#2955D8</color>
+    <color name="purple_700">#2955D8 </color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background_page">#F3F8FB</color>
+    <color name="background_page">#F5F7F8</color>
 </resources>

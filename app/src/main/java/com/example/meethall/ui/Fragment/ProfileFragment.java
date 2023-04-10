@@ -1,11 +1,17 @@
 package com.example.meethall.ui.Fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +21,7 @@ import com.example.meethall.R;
 import com.example.meethall.UtilHelper.checkUserDetailPreference;
 import com.example.meethall.databinding.FragmentProfileBinding;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class ProfileFragment extends Fragment {
@@ -52,6 +59,75 @@ public class ProfileFragment extends Fragment {
 
         });
 
+        bind.editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_Rounded);
+                LayoutInflater inflater1 = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View team = inflater1.inflate(R.layout.edit_profile_layout, null);
+                builder.setView(team);
+                builder.setCancelable(true);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+
+        bind.userImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Choose Image for content view >>
+                Intent imageIntent = new Intent();
+                imageIntent.setType("image/*");
+                imageIntent.setAction(Intent.ACTION_PICK);
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent chooser = new Intent(Intent.ACTION_CHOOSER);
+                chooser.putExtra(Intent.EXTRA_INTENT, imageIntent);
+                chooser.putExtra(Intent.EXTRA_TITLE, "Select from:");
+                Intent[] intentArray = {cameraIntent};
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+                startActivityForResult(Intent.createChooser(imageIntent, "Select Profile"), 0);
+
+            }
+        });
+
+
         return bind.getRoot();
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode ==0  ) {
+
+                Uri selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
+
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_Rounded);
+                    LayoutInflater inflater1 = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater1.inflate(R.layout.profile_image_layout, null);
+                    builder.setView(view);
+                    builder.setCancelable(false);
+                    ImageView imageView = view.findViewById(R.id.pre_img);
+                    MaterialButton cancel = view.findViewById(R.id.pre_image_cancel_btn);
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    imageView.setImageURI(selectedImageUri);
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+
+                }
+            }
+        }
+    }
+
 }

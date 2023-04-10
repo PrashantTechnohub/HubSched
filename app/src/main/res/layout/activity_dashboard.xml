@@ -50,23 +50,39 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom_nav"
+            android:layout_above="@id/bottom_card_view"
             android:layout_below="@id/card_view" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
-            android:layout_width="match_parent"
-            android:backgroundTint="@color/white"
-            android:layout_height="@dimen/_50sdp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bottom_card_view"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="0dp"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/dashboard_menu"
-            app:itemIconSize="@dimen/_26sdp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_14sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_centerHorizontal="true"
+            app:cardElevation="@dimen/_1sdp">
 
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/white"
+                android:layout_height="@dimen/_50sdp"
+
+                android:layout_marginEnd="0dp"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/dashboard_menu"
+                app:itemIconSize="@dimen/_26sdp">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        </com.google.android.material.card.MaterialCardView>
+
 
 
     </RelativeLayout>

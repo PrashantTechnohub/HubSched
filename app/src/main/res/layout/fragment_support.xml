@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,279 +10,400 @@
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_7sdp"
-        android:layout_marginTop="@dimen/_7sdp"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:layout_marginBottom="@dimen/_7sdp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
-
-
-
-        <View
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:background="@color/grey"
-            android:minWidth="1dp" />
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_height="@dimen/_120sdp"
+            app:cardCornerRadius="@dimen/_11sdp">
 
-        <EditText
-            android:id="@+id/bug_edit_text"
+
+            <RelativeLayout
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    
+                    android:id="@+id/text1"
+                    android:layout_width="@dimen/_135sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:text="Get help with login, server, app crashes."/>
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_below="@id/text1"
+                    android:layout_width="@dimen/_135sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:text="If you face some issue then please contact us."/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_below="@id/text2"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content"
+                    android:text="Having Issue"
+                    android:textSize="@dimen/_8sdp"
+                    app:cornerRadius="@dimen/_14sdp"/>
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_height="@dimen/_120sdp"
+                    android:src="@drawable/support_board"/>
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="@dimen/_8sdp"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:gravity="start"
-            android:hint="Please write about the bug, we will try to fix it soon."
-            android:inputType="textCapSentences|textMultiLine"
-            android:maxLength="1000000000"
-            android:maxLines="10"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:layout_height="wrap_content">
 
-            android:textColorHint="#A8A8A8" />
+            <RelativeLayout
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="@dimen/_45sdp">
+
+                <ImageView
+                    android:id="@+id/icon_one"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:src="@drawable/baseline_chat_24"></ImageView>
+
+                <TextView
+
+                    android:id="@+id/oneView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/icon_one"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Professional Community Policies"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/oneView"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/icon_one"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Our policies ensure you have a safe and professional experience on app. "
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"></TextView>
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bug_send_btn"
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="@dimen/_45sdp">
+
+                <ImageView
+                    android:id="@+id/icon_two"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:src="@drawable/baseline_lock_24"></ImageView>
+
+                <TextView
+
+                    android:id="@+id/twoView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/icon_two"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Safety Center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/twoView"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/icon_two"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Your account security and online safety is our top priority."
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"></TextView>
+
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="@dimen/_45sdp">
+
+                <ImageView
+                    android:id="@+id/icon_three"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:src="@drawable/baseline_app_shortcut_24"></ImageView>
+
+                <TextView
+
+                    android:id="@+id/threeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/icon_three"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Beta Version 1.0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/threeView"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/icon_three"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Keep Applications Up-to-Date for better experience and features."
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"></TextView>
+
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:backgroundTint="@color/purple_500"
-            android:text="Send BUG REPORT"
-            app:cornerRadius="@dimen/_14sdp" />
+            android:layout_below="@+id/ll1"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/telegram_support"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/telegram" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="Telegram"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/web_support"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/web" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="Website"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/facebook_support"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/facebook_two" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="Facebook"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/whatsapp_support"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/whatsapp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="WhatsApp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_below="@+id/ll1"
-        android:layout_marginTop="@dimen/_50sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/_7sdp"
-        android:orientation="vertical"
-        android:gravity="center">
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:background="@color/grey"
-            android:minWidth="1dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/telegram_support"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_3sdp"
-                app:cardCornerRadius="@dimen/_8sdp"
-                app:cardElevation="@dimen/_2sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/telegram" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="Telegram"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/web_support"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_marginEnd="@dimen/_3sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
-                app:cardCornerRadius="@dimen/_8sdp"
-                app:cardElevation="@dimen/_2sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/web" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="Website"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/facebook_support"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_3sdp"
-                app:cardCornerRadius="@dimen/_8sdp"
-                app:cardElevation="@dimen/_2sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/facebook_two" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="Facebook"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/whatsapp_support"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_marginEnd="@dimen/_3sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
-                app:cardCornerRadius="@dimen/_8sdp"
-                app:cardElevation="@dimen/_2sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/whatsapp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="WhatsApp"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:background="@color/grey"
-            android:minWidth="1dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:text="Directly connect with us "
-                android:fontFamily="@font/montserrat_regular"/>
-            <TextView
-                android:id="@+id/mobile_support"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/purple_500"
-                android:text="9876543210"
-                android:textSize="@dimen/_10sdp"
-                android:fontFamily="@font/montserrat_semibold"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:background="@color/grey"
-            android:minWidth="1dp" />
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+</ScrollView>

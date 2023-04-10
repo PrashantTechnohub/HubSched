@@ -6,4 +6,5 @@ public class Constant {
     public static final String EMP_LIST_URL = "http://192.168.0.141:3000/meet/employee";
     public static final String CREATE_ROOM_URL = "http://192.168.0.141:3000/meet/create_room";
     public static final String SCHEDULED_MEETING_URL = "http://192.168.0.141:3000/meet/scheduled_meeting";
+    public static final String POST_CONTENT_VIEW_URL = "http://192.168.0.141:3000/meet/contentView";
 }

@@ -90,10 +90,11 @@
                                     android:layout_height="match_parent">
 
                                     <ImageView
-                                        android:layout_centerInParent="true"
+                                        android:id="@+id/sliderImgOne"
                                         android:layout_width="@dimen/_50sdp"
                                         android:layout_height="@dimen/_50sdp"
-                                        android:src="@drawable/image_gallery"/>
+                                        android:layout_centerInParent="true"
+                                        android:src="@drawable/image_gallery" />
 
                                 </RelativeLayout>
                             </com.google.android.material.card.MaterialCardView>
@@ -203,6 +204,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_one_url"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="URL"
@@ -212,6 +214,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <ImageView
+                                    android:id="@+id/content_one_img"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_centerVertical="true"
                                     android:layout_alignParentEnd="true"
@@ -230,6 +233,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_one_name"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="Name "
@@ -252,6 +256,7 @@
                         </LinearLayout>
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/content_one_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:cornerRadius="@dimen/_11sdp"
@@ -298,6 +303,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_two_url"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="URL"
@@ -307,6 +313,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <ImageView
+                                    android:id="@+id/content_two_img"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_centerVertical="true"
                                     android:layout_alignParentEnd="true"
@@ -325,6 +332,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_two_name"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="Name "
@@ -393,6 +401,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_three_url"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="URL"
@@ -402,6 +411,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <ImageView
+                                    android:id="@+id/content_three_img"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_centerVertical="true"
                                     android:layout_alignParentEnd="true"
@@ -420,6 +430,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_three_name"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="Name "
@@ -488,6 +499,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_four_url"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="URL"
@@ -497,6 +509,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <ImageView
+                                    android:id="@+id/content_four_img"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_centerVertical="true"
                                     android:layout_alignParentEnd="true"
@@ -515,6 +528,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/content_four_name"
                                 android:layout_width="@dimen/_210sdp"
                                 android:layout_height="wrap_content"
                                 android:hint="Name "

@@ -11,6 +11,7 @@ public class checkUserDetailPreference {
 
     static SharedPreferences sharedPref;
     static SharedPreferences.Editor editor;
+
     static String token;
     public static void checkTypeToken(Context context,String type, String token) {
 

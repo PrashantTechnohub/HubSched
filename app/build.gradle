@@ -70,6 +70,11 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 
 
+    //ImagePicker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+
+
 
 
 
