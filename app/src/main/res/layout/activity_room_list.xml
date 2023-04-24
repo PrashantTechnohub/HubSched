@@ -5,7 +5,7 @@
     android:background="@color/background_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Dashboard.room_list">
+    tools:context="com.NakshatraTechnoHub.HubSched.Ui.Dashboard.RoomListActivity">
 
 
     <LinearLayout

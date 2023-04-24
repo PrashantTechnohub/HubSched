@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:backgroundTint="@color/background_page"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/background_page"
+    tools:context="com.NakshatraTechnoHub.HubSched.Ui.Dashboard.EmployeeListActivity">
 
 
     <RelativeLayout
+        android:id="@+id/emp_action_bar"
+        android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,6 +22,7 @@
             android:src="@drawable/baseline_arrow_back_ios_new_24" />
 
         <RelativeLayout
+            android:id="@+id/actionBar_layout"
             android:visibility="visible"
             android:layout_toEndOf="@id/back"
             android:layout_marginStart="@dimen/_10sdp"
@@ -33,10 +39,11 @@
                 android:textSize="@dimen/_17sdp" />
 
             <ImageView
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_centerVertical="true"
                 android:id="@+id/search_emp"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_toStartOf="@id/add_emp"
                 android:src="@drawable/baseline_search_24" />
@@ -51,6 +58,7 @@
                 android:src="@drawable/baseline_add_circle_outline_24" />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/search_bar_layout"
             android:visibility="gone"
             android:layout_toEndOf="@id/back"
             android:layout_marginStart="@dimen/_10sdp"
@@ -62,7 +70,9 @@
                 android:layout_toStartOf="@id/close_search"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+            </EditText>
 
             <ImageView
                 android:layout_centerVertical="true"
@@ -80,6 +90,32 @@
 
     </RelativeLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/emp_action_bar"
+        android:layout_centerInParent="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/empList_recyclerView"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/no_result"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_250sdp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/no_result"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

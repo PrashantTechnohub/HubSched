@@ -6,7 +6,7 @@
     android:background="@color/background_page"
     android:id="@+id/drawer_layout"
     android:layout_height="match_parent"
-    tools:context=".ui.Dashboard.Dashboard">
+    tools:context="com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,7 +95,7 @@
         android:visibility="visible"
         app:drawerLayoutCornerSize="@dimen/_22sdp"
         app:itemIconSize="@dimen/_20sdp"
-        app:headerLayout="@layout/nav_header"
+        app:headerLayout="@layout/cl_nav_header"
         app:menu="@menu/side_nav_menu" />
 
 

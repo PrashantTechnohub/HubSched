@@ -5,7 +5,7 @@
     android:id="@+id/refresh"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.Fragment.HomeFragment">
+    tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment">
 
 
     <RelativeLayout
