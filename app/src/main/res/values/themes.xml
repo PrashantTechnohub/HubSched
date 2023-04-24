@@ -41,6 +41,6 @@
     </style>
 
     <style name="TextStyle">
-        <item name="android:textSize">@dimen/_10sdp</item></style>
+        <item name="android:textSize">@dimen/_13sdp</item></style>
 
 </resources>

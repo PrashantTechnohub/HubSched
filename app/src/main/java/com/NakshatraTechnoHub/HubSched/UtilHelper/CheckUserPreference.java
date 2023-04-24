@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 
-public class checkUserDetailPreference {
+public class CheckUserPreference {
 
     static SharedPreferences sharedPref;
     static SharedPreferences.Editor editor;

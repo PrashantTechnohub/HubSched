@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.checkUserDetailPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
             AlertDialog dialog = builder.create();
             dialog.show();
 
-            logout.setOnClickListener(v1 -> checkUserDetailPreference.LogOutUser(getActivity(), "out", dialog));
+            logout.setOnClickListener(v1 -> CheckUserPreference.LogOutUser(getActivity(), "out", dialog));
 
             no.setOnClickListener(v12 -> dialog.cancel());
 

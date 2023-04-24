@@ -40,18 +40,14 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_id"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/_5sdp"
                     android:inputType="textEmailAddress"
-                    android:textAppearance="@style/TextStyle"
-                    tools:ignore="TextSizeCheck" />
+                    android:textAppearance="@style/TextStyle"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,8 +62,6 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black"
                 app:passwordToggleEnabled="true">
 
@@ -75,7 +69,6 @@
                     android:id="@+id/password_id"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/_5sdp"
                     android:inputType="textPassword"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -202,7 +195,7 @@
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/_10sdp"
-                                android:src="@drawable/web" />
+                                android:src="@drawable/web2" />
 
                             <TextView
                                 android:id="@+id/web_txt"

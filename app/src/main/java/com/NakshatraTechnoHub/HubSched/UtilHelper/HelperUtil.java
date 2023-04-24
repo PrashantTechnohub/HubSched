@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class MyHelper {
+public class HelperUtil {
 
    static MaterialAlertDialogBuilder builder;
 

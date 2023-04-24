@@ -18,7 +18,7 @@ import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.MeetingFragment;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.ProfileFragment;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.SupportFragment;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.NetworkChangeReceiver;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.NetworkReceiver;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityDashboardBinding;
 
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment;
@@ -32,7 +32,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private ActivityDashboardBinding bind;
 
-    BroadcastReceiver mNetworkReceiver = new NetworkChangeReceiver();
+    BroadcastReceiver mNetworkReceiver = new NetworkReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

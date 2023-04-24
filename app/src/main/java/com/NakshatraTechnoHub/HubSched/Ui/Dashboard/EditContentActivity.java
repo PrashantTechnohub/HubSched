@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.MyHelper;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.HelperUtil;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEditContentBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -110,7 +110,7 @@ public class EditContentActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            MyHelper.ShowResponseDialog(error.getMessage(), EditContentActivity.this);
+                            HelperUtil.ShowResponseDialog(error.getMessage(), EditContentActivity.this);
                         }
                     });
                 }

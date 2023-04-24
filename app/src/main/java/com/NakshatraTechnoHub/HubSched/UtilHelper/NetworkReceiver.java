@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import static com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity.dialog;
 
-public class NetworkChangeReceiver extends BroadcastReceiver {
+public class NetworkReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {

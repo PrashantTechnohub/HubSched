@@ -18,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.checkUserDetailPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,36 +91,36 @@ public class LoginActivity extends AppCompatActivity {
                     String token = response.getString("token");
                     String type = response.getString("type");
 
+                        if (type.equals("admin")) {
+                            CheckUserPreference.checkTypeToken(LoginActivity.this,type, token);
 
 
-                    if (type.equals("admin")) {
-                        checkUserDetailPreference.checkTypeToken(LoginActivity.this,type, token);
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            loader.cancel();
 
 
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        loader.cancel();
+                            finish();
+                        } else if (type.equals("employee")) {
+                            CheckUserPreference.checkTypeToken(LoginActivity.this,type, token);
+
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            loader.cancel();
+                            finish();
+                        }else if (type.equals("organiser")) {
+                            CheckUserPreference.checkTypeToken(LoginActivity.this,type, token);
+
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            loader.cancel();
+                            finish();
+                        }
 
 
-                        finish();
-                    } else if (type.equals("employee")) {
-                        checkUserDetailPreference.checkTypeToken(LoginActivity.this,type, token);
-
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        loader.cancel();
-                        finish();
-                    }else if (type.equals("organiser")) {
-                        checkUserDetailPreference.checkTypeToken(LoginActivity.this,type, token);
-
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        loader.cancel();
-                        finish();
-                    }
                 } catch (JSONException e) {
                     loader.cancel();
                     throw new RuntimeException(e);
