@@ -1,6 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -11,9 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomManagementBinding;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,9 +21,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RoomManagementActivity extends AppCompatActivity {
 
@@ -72,7 +66,7 @@ public class RoomManagementActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(RoomManagementActivity.this);
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.CREATE_ROOM_URL,params, new Response.Listener<JSONObject>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_ROOM_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 pd.dismiss();

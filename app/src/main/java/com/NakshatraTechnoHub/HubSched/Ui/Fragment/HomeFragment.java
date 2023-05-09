@@ -1,9 +1,6 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,15 +9,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateMeetingActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -64,10 +62,7 @@ public class HomeFragment extends Fragment {
 
         toolbar = (MaterialToolbar) requireActivity().findViewById(R.id.topAppBar);
         navigationView = requireActivity().findViewById(R.id.navigation_view);
-
-        SharedPreferences sh = getActivity().getSharedPreferences("userTypeToken",MODE_PRIVATE);
-        String type = sh.getString("type", "");
-
+        String type =  LocalPreference.getType(requireContext());
         requestQueue = Volley.newRequestQueue(requireActivity());
 
         if (type.equals("admin")) {
@@ -77,6 +72,19 @@ public class HomeFragment extends Fragment {
         } else if (type.equals("organiser")) {
             organizerFunction();
         }
+
+        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (type.equals("admin")) {
+                    adminFunction();
+                } else if (type.equals("employee")) {
+                    employeeFunction();
+                } else if (type.equals("organiser")) {
+                    getRoomList();
+                }
+            }
+        });
 
 
 
@@ -114,14 +122,20 @@ public class HomeFragment extends Fragment {
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
 
 
+
         return bind.getRoot();
 
     }
+
 
     private void adminFunction() {
         toolbar.setTitle("Admin Dashboard");
         bind.userViewLayout.setVisibility(View.GONE);
         bind.adminViewLayout.setVisibility(View.VISIBLE);
+        if (bind.refresh.isRefreshing()){
+            bind.refresh.setRefreshing(false);
+            Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -129,18 +143,17 @@ public class HomeFragment extends Fragment {
 
         bind.imageSlider.setVisibility(View.GONE);
         toolbar.setTitle("Organizer Dashboard");
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.hallManagement).setVisible(false);
-        nav_Menu.findItem(R.id.editContent).setVisible(false);
-        nav_Menu.findItem(R.id.organizerList).setVisible(false);
+        toolbar.setNavigationIcon(null);
         bind.scheduleMeetingRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        bind.showAdminViewMeeting.setVisibility(View.GONE);
+
         getRoomList();
 
     }
 
     private void getRoomList() {
 
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.MEET_ROOMS_URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEET_ROOMS_URL, requireContext()), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 
@@ -157,6 +170,11 @@ public class HomeFragment extends Fragment {
                         RoomListModel model = new RoomListModel(roomNo, roomLocation, roomName, seatCapacity, roomFacilities);
 
                         roomList.add(model);
+
+                        if (bind.refresh.isRefreshing()){
+                            bind.refresh.setRefreshing(false);
+                            Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                        }
 
                     } catch (JSONException e) {
                         throw new RuntimeException(e);

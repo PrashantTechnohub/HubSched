@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -65,7 +64,7 @@ public class RoomListActivity extends AppCompatActivity {
     private void getRoomList() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.MEET_ROOMS_URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,RoomListActivity.this), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 

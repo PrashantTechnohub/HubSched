@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,7 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     String type = response.getString("type");
 
                         if (type.equals("admin")) {
-                            CheckUserPreference.checkTypeToken(LoginActivity.this,type, token);
+                            LocalPreference.checkTypeToken(LoginActivity.this,type, token);
 
 
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -105,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             finish();
                         } else if (type.equals("employee")) {
-                            CheckUserPreference.checkTypeToken(LoginActivity.this,type, token);
+                            LocalPreference.checkTypeToken(LoginActivity.this,type, token);
 
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
@@ -113,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                             loader.cancel();
                             finish();
                         }else if (type.equals("organiser")) {
-                            CheckUserPreference.checkTypeToken(LoginActivity.this,type, token);
+                            LocalPreference.checkTypeToken(LoginActivity.this,type, token);
 
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);

@@ -75,7 +75,6 @@
                                     android:layout_marginStart="@dimen/_10sdp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Prashant Deshmukh"
                                     android:fontFamily="@font/montserrat_semibold"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_10sdp"/>
@@ -100,15 +99,14 @@
 
                                 <TextView
                                     android:id="@+id/emp_id"
-                                    android:layout_toEndOf="@+id/id_view"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:layout_marginStart="@dimen/_10sdp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="MAK8889841"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_marginEnd="@dimen/_8sdp"
+                                    android:layout_toEndOf="@+id/id_view"
                                     android:fontFamily="@font/montserrat_semibold"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/_10sdp"/>
+                                    android:textSize="@dimen/_10sdp" />
 
                             </RelativeLayout>
                             <RelativeLayout
@@ -135,7 +133,6 @@
                                     android:layout_marginStart="@dimen/_10sdp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Android Developer"
                                     android:fontFamily="@font/montserrat_semibold"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_10sdp"/>
@@ -379,7 +376,6 @@
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_toEndOf="@+id/gender_icon"
                                 android:fontFamily="@font/montserrat_regular"
-                                android:text="Male"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold"></TextView>
 
@@ -432,7 +428,6 @@
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_toEndOf="@+id/call_icon"
                                 android:fontFamily="@font/montserrat_regular"
-                                android:text="8889818200"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold"></TextView>
 
@@ -483,7 +478,6 @@
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_toEndOf="@+id/email_icon"
                                 android:fontFamily="@font/montserrat_regular"
-                                android:text="sived.official@gmail.com"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold"></TextView>
 

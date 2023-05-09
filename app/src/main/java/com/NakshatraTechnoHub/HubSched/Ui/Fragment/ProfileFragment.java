@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ProfileFragment extends Fragment {
 
@@ -52,7 +65,7 @@ public class ProfileFragment extends Fragment {
             AlertDialog dialog = builder.create();
             dialog.show();
 
-            logout.setOnClickListener(v1 -> CheckUserPreference.LogOutUser(getActivity(), "out", dialog));
+            logout.setOnClickListener(v1 -> LocalPreference.LogOutUser(getActivity(), "out", dialog));
 
             no.setOnClickListener(v12 -> dialog.cancel());
 
@@ -91,9 +104,49 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        fetchProfile();
 
         return bind.getRoot();
     }
+    private void fetchProfile() {
+
+      RequestQueue  requestQueue = Volley.newRequestQueue(requireActivity());
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_PROFILE_URL, requireContext()), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String name = response.getString("name");
+                    String empId = response.getString("empId");
+                    String position = response.getString("position");
+                    String gender = response.getString("gender");
+                    String email = response.getString("email");
+                    String mobile = response.getString("mobile");
+
+                    bind.empName.setText(name);
+                    bind.empId.setText(empId);
+                    bind.empPost.setText(position);
+                    bind.empGender.setText(gender);
+                    bind.empMail.setText(email);
+                    bind.empMobile.setText(mobile);
+
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(objectRequest);
+
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

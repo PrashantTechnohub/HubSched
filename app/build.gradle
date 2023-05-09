@@ -68,7 +68,8 @@ dependencies {
     //Keyboard
     implementation 'com.github.Yumenokanata:KeyboardVisibilityEvent:1.1'
 
-
+    //GSON
+    implementation 'com.google.code.gson:gson:2.10.1'
 
 
 

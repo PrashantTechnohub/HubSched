@@ -13,9 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,15 +22,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.NakshatraTechnoHub.HubSched.Adapters.EmpListAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 public class EmployeeListActivity extends AppCompatActivity {
 
@@ -131,7 +128,7 @@ public class EmployeeListActivity extends AppCompatActivity {
     private void getEmpList() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.EMP_LIST_URL, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,EmployeeListActivity.this), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -145,16 +142,14 @@ public class EmployeeListActivity extends AppCompatActivity {
 
                         for (int i=0;i<emp_details.length();i++){
                             JSONObject jobj=emp_details.getJSONObject(i);
-                            String id=jobj.getString("empId");
-                            String name=jobj.getString("name");
-                            String position=jobj.getString("position");
-                            String status=jobj.getString("status");
 
 
-                            EmpListModel model=new EmpListModel(id,name,position, status);
+                            EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
+
+//                            EmpListModel model=new EmpListModel(id,name,position, status);
 
                             list.add(model);
-
+                            bind.refresh.setRefreshing(false);
 
                         }
 
@@ -189,12 +184,15 @@ public class EmployeeListActivity extends AppCompatActivity {
                 bind.empListRecyclerView.setVisibility(View.GONE);
             }
         }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String>header=new HashMap<>();
-                header.put("User-Agent","Mozilla/5.0");
-                return header;
-            }
+
+
+
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String,String>header=new HashMap<>();
+//                header.put("User-Agent","Mozilla/5.0");
+//                return header;
+//            }
         };
 
         queue.add(jsonObjectRequest);

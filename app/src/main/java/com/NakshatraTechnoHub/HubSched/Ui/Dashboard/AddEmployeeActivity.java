@@ -1,10 +1,8 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,9 +11,7 @@ import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityAddEmployeeBinding;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,12 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class AddEmployeeActivity extends AppCompatActivity {
@@ -114,7 +106,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(AddEmployeeActivity.this);
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.CREATE_EMP_URL,params, new Response.Listener<JSONObject>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_EMP_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -145,22 +137,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 }
 
             }
-        }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                String token = CheckUserPreference.getToken();
-                HashMap<String, String> params2 = new HashMap<String, String>();
-                params2.put("token", token);
-                Log.d("Token", "getParams: " +token);
-                return params2;
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-        };
+        });
 
 
 

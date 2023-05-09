@@ -2,22 +2,93 @@ package com.NakshatraTechnoHub.HubSched.Models;
 
 public class EmpListModel {
 
-    private String emp_id;
+    private int _id, company_id, userType, empId;
 
-    private String emp_name;
+    private String name, email, mobile, gender, position, password, status;
 
-    private String emp_post;
-
-    private String status;
 
     public EmpListModel() {
     }
 
-    public EmpListModel(String emp_id, String emp_name, String emp_post,String status) {
-        this.emp_id = emp_id;
-        this.emp_name = emp_name;
-        this.emp_post = emp_post;
-        this.status = status;
+
+    public int getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(int empId) {
+        this.empId = empId;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public int getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(int company_id) {
+        this.company_id = company_id;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getStatus() {
@@ -27,28 +98,5 @@ public class EmpListModel {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getEmp_id() {
-        return emp_id;
-    }
-
-    public void setEmp_id(String emp_id) {
-        this.emp_id = emp_id;
-    }
-
-    public String getEmp_name() {
-        return emp_name;
-    }
-
-    public void setEmp_name(String emp_name) {
-        this.emp_name = emp_name;
-    }
-
-    public String getEmp_post() {
-        return emp_post;
-    }
-
-    public void setEmp_post(String emp_post) {
-        this.emp_post = emp_post;
-    }
 }
+

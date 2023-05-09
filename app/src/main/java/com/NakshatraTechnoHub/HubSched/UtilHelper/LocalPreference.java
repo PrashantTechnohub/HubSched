@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 
-public class CheckUserPreference {
+public class LocalPreference {
 
     static SharedPreferences sharedPref;
     static SharedPreferences.Editor editor;
@@ -17,10 +17,14 @@ public class CheckUserPreference {
 
         sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
         editor = sharedPref.edit();
-
         editor.putString("type", type);
         editor.putString("token", token);
         editor.commit();
+
+    }
+
+
+    public static void setOverView(Context context,String totalEmp, String totalMeetings, String totalScheduleMeeting, String totalRooms) {
 
     }
 
@@ -38,10 +42,16 @@ public class CheckUserPreference {
         }
     }
 
-    public static String getToken(){
-
+    public static String getToken(Context context){
+        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
         String getToken = sharedPref.getString("token", "");
         return getToken;
+    }
+
+    public static String getType(Context context){
+        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        String getType = sharedPref.getString("type", "");
+        return getType;
     }
 
 
