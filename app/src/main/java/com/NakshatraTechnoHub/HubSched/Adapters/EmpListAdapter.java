@@ -2,24 +2,46 @@ package com.NakshatraTechnoHub.HubSched.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolder> {
 
@@ -28,6 +50,24 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     ArrayList<EmpListModel> empList;
 
 
+
+
+    public void registerListner(SwitchCompat switchCompat , EmpListModel model){
+        CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+
+                    EmpStatusChanger("active", compoundButton.getContext(), (SwitchCompat) compoundButton, model);
+                }else {
+
+                    EmpStatusChanger("blocked", compoundButton.getContext(), (SwitchCompat) compoundButton, model);
+                }
+            }
+        };
+
+        switchCompat.setOnCheckedChangeListener(checkedChangeListener);
+    }
 
 
 
@@ -75,32 +115,23 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         holder.empName.setText(empList.get(position).getEmp_name());
         holder.empPost.setText(empList.get(position).getEmp_post());
 
-        holder.blockBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        String status =    empList.get(position).getStatus();
+        holder.blockBtn.setSelected(true);
 
-                text.setText("Are you sure to block "+empList.get(position).getEmp_name() + " !!");
 
-                dialog.show();
+        if (status.equals("active")){
+            holder.blockBtn.setText("Active");
+            holder.blockBtn.setChecked(true);
+            holder.blockBtn.setTextColor(Color.parseColor("#149519"));
+        }else{
 
-                yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(), empList.get(position).getEmp_name() +" blocked !!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+            holder.blockBtn.setText("Blocked");
+            holder.blockBtn.setChecked(false);
+            holder.blockBtn.setTextColor(Color.parseColor("#BF3D33"));
+        }
 
-                    }
-                });
 
-                no.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-
-                    }
-                });
-            }
-        });
+        registerListner(holder.blockBtn,empList.get(position));
 
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +159,90 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             }
         });
     }
+//
+//    public void updateData(List<String> newItems) {
+//        items.clear();
+//        items.addAll(newItems);
+//        notifyDataSetChanged();
+//    }
+
+    private void EmpStatusChanger(String active, Context context, SwitchCompat switchCompat, EmpListModel model) {
+        JSONObject params = new JSONObject();
+
+        if (active.equals("active")){
+            try {
+                params.put("status", true);
+                params.put("empId", model.getEmp_id());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                params.put("status", false);
+                params.put("empId", model.getEmp_id());
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.EMP_STATUS_URL,params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status=    response.getString("status");
+                    Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
+                    Log.d("aa", "onResponse: " +status);
+
+                    EmpListAdapter adapter = new EmpListAdapter(context,empList);
+
+                    model.setStatus(status);
+                    notifyDataSetChanged();
+//                    if (status.equals("active")){
+//                       switchCompat.setText("Active");
+//                        switchCompat.setChecked(true);
+//                        switchCompat.setTextColor(Color.parseColor("#149519"));
+//                    }else{
+//
+//                        switchCompat.setText("Blocked");
+//                        switchCompat.setChecked(false);
+//                        switchCompat.setTextColor(Color.parseColor("#BF3D33"));
+//                    }
+
+
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                notifyDataSetChanged();
+                try {
+                    if(error.networkResponse.statusCode == 500){
+                        String errorString = new String(error.networkResponse.data);
+                        Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e){
+
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        queue.add(objectRequest);
+    }
 
     @Override
     public int getItemCount() {
@@ -140,9 +255,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         data.clear();
         if (charText.length() == 0) {
             data.addAll(empList);
-        }
-        else
-        {
+        } else {
             for (EmpListModel emp : empList)
             {
                 if (emp.getEmp_id().toLowerCase(Locale.getDefault()).contains(charText)  || emp.getEmp_name().toLowerCase(Locale.getDefault()).contains(charText))
@@ -159,8 +272,9 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     public static class EmpHolder extends RecyclerView.ViewHolder {
 
         TextView empId,empName,empPost;
-        MaterialButton blockBtn, removeBtn, editBtn;
+        MaterialButton  removeBtn, editBtn;
 
+        SwitchCompat blockBtn;
 
         public EmpHolder(@NonNull View emp) {
             super(emp);
@@ -172,7 +286,6 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             blockBtn = emp.findViewById(R.id.block_emp_btn);
             removeBtn = emp.findViewById(R.id.remove_emp_btn);
             editBtn = emp.findViewById(R.id.edit_emp_btn);
-
 
 
         }

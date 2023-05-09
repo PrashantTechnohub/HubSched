@@ -52,15 +52,15 @@
                 android:layout_marginStart="@dimen/_23sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
-                android:hint="Room ID"
+                android:hint="Room No"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
+
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_room_id"
+                    android:id="@+id/create_room_no"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
@@ -79,7 +79,6 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -102,7 +101,6 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -125,7 +123,6 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText

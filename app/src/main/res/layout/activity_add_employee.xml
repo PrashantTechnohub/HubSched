@@ -65,13 +65,12 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    
+                    android:id="@+id/add_emp_id"
                     android:inputType="text"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -88,13 +87,13 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    
+                    android:id="@+id/add_emp_name"
+
                     android:inputType="textPersonName"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -111,13 +110,13 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    
+                    android:id="@+id/add_emp_email"
+
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -134,13 +133,13 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    
+                    android:id="@+id/add_emp_mobile"
+
                     android:inputType="phone"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -156,13 +155,13 @@
                 android:layout_marginEnd="@dimen/_23sdp"
                 app:boxBackgroundColor="@android:color/transparent"
                 android:layout_height="@dimen/_45sdp"
-                android:textAppearance="@style/TextStyle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 app:hintTextColor="@color/black"
                 android:hint="Gender">
 
                 <AutoCompleteTextView
-                    android:id="@+id/emp_gender"
+                    android:textAppearance="@style/TextStyle"
+                    android:id="@+id/add_emp_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -179,7 +178,6 @@
                 android:layout_marginEnd="@dimen/_23sdp"
                 app:boxBackgroundColor="@android:color/transparent"
                 android:layout_height="@dimen/_45sdp"
-                android:textAppearance="@style/TextStyle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 app:hintTextColor="@color/black"
                 android:hint="Position">
@@ -188,8 +186,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:id="@+id/emp_position"
+                    android:id="@+id/add_emp_position"
                     android:textSize="@dimen/_10sdp"
+                    android:textAppearance="@style/TextStyle"
                     android:inputType="none"
                     tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -206,11 +205,11 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
+                    android:id="@+id/add_emp_password"
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
                     android:textAppearance="@style/TextStyle"
@@ -229,12 +228,12 @@
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                app:hintTextAppearance="@style/TextStyle"
                 app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:id="@+id/add_emp_c_password"
                     android:inputType="textPassword"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -245,11 +244,10 @@
 
             <com.google.android.material.button.MaterialButton
 
-                android:id="@+id/login_btn"
+                android:id="@+id/add_emp_btn"
                 android:layout_width="@dimen/_270sdp"
                 app:cornerRadius="@dimen/_11sdp"
                 android:layout_height="@dimen/_42sdp"
-
                 android:text="Add Employee"
                 android:layout_marginTop="@dimen/_20sdp"/>
 

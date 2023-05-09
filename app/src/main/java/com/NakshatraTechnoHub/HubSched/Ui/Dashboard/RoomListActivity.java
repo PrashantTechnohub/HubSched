@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -74,10 +75,7 @@ public class RoomListActivity extends AppCompatActivity {
                     for (int i = 0; i<response.length(); i++){
                         try {
                             JSONObject object = response.getJSONObject(i);
-
-
-                            RoomListModel model = new RoomListModel(object.getInt("room_id"),object.getString("room_name"), object.getString("seat_cap"), object.getString("floor_no"),object.getString("facilities")  );
-
+                            RoomListModel model = new RoomListModel(object.getInt("room_no"), object.getString("room_name"), object.getString("seat_cap"), object.getInt("floor_no"),object.getString("facilities")  );
                             list.add(model);
 
                         } catch (JSONException e) {

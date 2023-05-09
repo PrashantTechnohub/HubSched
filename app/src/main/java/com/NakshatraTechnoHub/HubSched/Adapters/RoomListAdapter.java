@@ -38,11 +38,11 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     @Override
     public void onBindViewHolder(@NonNull RoomListAdapter.RoomHolder holder, int position) {
 
-        String id = String.valueOf(roomList.get(position).getRoom_id());
+        String id = String.valueOf(roomList.get(position).getRoom_no());
 
         holder.roomId.setText(id);
         holder.roomName.setText(roomList.get(position).getRoom_name());
-        holder.roomSeats.setText(roomList.get(position).getSeat_cap());
+        holder.roomSeats.setText(roomList.get(position).getSeat_cap()+"");
         holder.roomFloor.setText(roomList.get(position).getFloor_no());
         holder.roomFacilities.setText(roomList.get(position).getFacilities());
 

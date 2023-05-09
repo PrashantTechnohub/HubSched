@@ -3,17 +3,18 @@ package com.NakshatraTechnoHub.HubSched.Models;
 public class RoomListModel {
     private Integer room_id;
 
+    private Integer room_no;
+
     private String floor_no;
 
     private String room_name;
 
-    private String seat_cap;
+    private Integer seat_cap;
 
     private String facilities;
 
-
-    public RoomListModel(Integer room_id, String floor_no, String room_name, String seat_cap, String facilities) {
-        this.room_id = room_id;
+    public RoomListModel( Integer room_no, String floor_no, String room_name, Integer seat_cap, String facilities) {
+        this.room_no = room_no;
         this.floor_no = floor_no;
         this.room_name = room_name;
         this.seat_cap = seat_cap;
@@ -26,6 +27,14 @@ public class RoomListModel {
 
     public void setRoom_id(Integer room_id) {
         this.room_id = room_id;
+    }
+
+    public Integer getRoom_no() {
+        return room_no;
+    }
+
+    public void setRoom_no(Integer room_no) {
+        this.room_no = room_no;
     }
 
     public String getFloor_no() {
@@ -44,11 +53,11 @@ public class RoomListModel {
         this.room_name = room_name;
     }
 
-    public String getSeat_cap() {
+    public Integer getSeat_cap() {
         return seat_cap;
     }
 
-    public void setSeat_cap(String seat_cap) {
+    public void setSeat_cap(Integer seat_cap) {
         this.seat_cap = seat_cap;
     }
 

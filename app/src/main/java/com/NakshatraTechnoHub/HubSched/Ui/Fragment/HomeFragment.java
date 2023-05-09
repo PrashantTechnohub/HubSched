@@ -148,13 +148,13 @@ public class HomeFragment extends Fragment {
                     try {
                         JSONObject object = response.getJSONObject(i);
 
-                        int roomId = object.getInt("room_id");
+                        int roomNo = object.getInt("room_no");
                         String roomName = object.getString("room_name");
-                        String seatCapacity = object.getString("seat_cap");
+                        int seatCapacity = object.getInt("seat_cap");
                         String roomLocation = object.getString("floor_no");
                         String roomFacilities = object.getString("facilities");
 
-                        RoomListModel model = new RoomListModel(roomId, roomLocation, roomName, seatCapacity, roomFacilities);
+                        RoomListModel model = new RoomListModel(roomNo, roomLocation, roomName, seatCapacity, roomFacilities);
 
                         roomList.add(model);
 

@@ -8,13 +8,24 @@ public class EmpListModel {
 
     private String emp_post;
 
+    private String status;
+
     public EmpListModel() {
     }
 
-    public EmpListModel(String emp_id, String emp_name, String emp_post) {
+    public EmpListModel(String emp_id, String emp_name, String emp_post,String status) {
         this.emp_id = emp_id;
         this.emp_name = emp_name;
         this.emp_post = emp_post;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getEmp_id() {

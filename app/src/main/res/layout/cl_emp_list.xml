@@ -8,129 +8,152 @@
     android:layout_marginEnd="@dimen/_10sdp"
     app:cardCornerRadius="@dimen/_14sdp">
 
-    <LinearLayout
-        android:layout_margin="@dimen/_10sdp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="@dimen/_60sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
-                android:text="Emp ID  "/>
-
-            <TextView
-                android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
-                android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
-                android:id="@+id/emp_id"
-                android:text="MAK889845"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/_7sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="@dimen/_60sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
-                android:text="Name  "/>
-
-            <TextView
-                android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
-                android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
-                android:id="@+id/emp_name"
-                android:text="Prashant Deshmukh"/>
-
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="@dimen/_7sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="@dimen/_60sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
-                android:text="Post  "/>
-
-            <TextView
-                android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
-                android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
-                android:id="@+id/emp_post"
-                android:text="Android Developer"/>
-
-
-
-        </LinearLayout>
-        <View
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="#DFDFDF" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/block_emp_btn"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_height="@dimen/_25sdp"
-                app:cornerRadius="@dimen/_14sdp"
-                android:backgroundTint="#F44336"
-                android:textSize="@dimen/_7sdp"
-                android:text="BLOCK"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_emp_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                app:cornerRadius="@dimen/_14sdp"
-                android:textSize="@dimen/_7sdp"
-                android:text="Edit Profile"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/remove_emp_btn"
-                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_height="@dimen/_25sdp"
-                app:cornerRadius="@dimen/_14sdp"
-                android:textSize="@dimen/_7sdp"
-                android:backgroundTint="#F44336"
-                android:text="Remove"/>
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Emp ID  "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/emp_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="MAK889845"
+                        android:textColor="@color/purple_500"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Name  "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/emp_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="Prashant Deshmukh"
+                        android:textColor="@color/purple_500"
+                        android:textSize="@dimen/_12sdp" />
 
 
-        </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Post  "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/emp_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="Android Developer"
+                        android:textColor="@color/purple_500"
+                        android:textSize="@dimen/_12sdp" />
 
 
-    </LinearLayout>
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="@dimen/_270sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="#DFDFDF" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/block_emp_btn"
+                        android:layout_width="@dimen/_100sdp"
+                        android:textStyle="bold"
+                        android:paddingEnd="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:text="BLOCK"
+                        android:textSize="@dimen/_10sdp"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/edit_emp_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_25sdp"
+                        android:text="Edit Profile"
+                        android:textSize="@dimen/_7sdp"
+                        app:cornerRadius="@dimen/_14sdp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remove_emp_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:backgroundTint="#F44336"
+                        android:text="Remove"
+                        android:textSize="@dimen/_7sdp"
+                        app:cornerRadius="@dimen/_14sdp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
 
 
 </com.google.android.material.card.MaterialCardView>

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CheckUserPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -144,12 +145,13 @@ public class EmployeeListActivity extends AppCompatActivity {
 
                         for (int i=0;i<emp_details.length();i++){
                             JSONObject jobj=emp_details.getJSONObject(i);
-                            String id=jobj.getString("id");
+                            String id=jobj.getString("empId");
                             String name=jobj.getString("name");
                             String position=jobj.getString("position");
+                            String status=jobj.getString("status");
 
 
-                            EmpListModel model=new EmpListModel(id,name,position);
+                            EmpListModel model=new EmpListModel(id,name,position, status);
 
                             list.add(model);
 

@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -132,8 +134,17 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Login Error", "onErrorResponse: " + error.getMessage());
                 loader.cancel();
+
+                try {
+                    if(error.networkResponse.statusCode == 500){
+                        String errorString = new String(error.networkResponse.data);
+                        Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Log.e("CreateEMP", "onErrorResponse: ", e );
+                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

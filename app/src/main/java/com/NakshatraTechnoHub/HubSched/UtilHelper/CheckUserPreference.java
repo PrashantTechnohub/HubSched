@@ -38,5 +38,11 @@ public class CheckUserPreference {
         }
     }
 
+    public static String getToken(){
+
+        String getToken = sharedPref.getString("token", "");
+        return getToken;
+    }
+
 
 }
