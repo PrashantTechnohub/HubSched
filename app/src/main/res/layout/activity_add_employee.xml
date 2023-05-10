@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/action_bar"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,7 +117,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/add_emp_email"
-
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -137,9 +137,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    android:maxLength="10"
+                    android:layout_height="wrap_content"
                     android:id="@+id/add_emp_mobile"
-
                     android:inputType="phone"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -160,8 +161,32 @@
                 android:hint="Gender">
 
                 <AutoCompleteTextView
-                    android:textAppearance="@style/TextStyle"
                     android:id="@+id/add_emp_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextStyle"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="@dimen/_266sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_11sdp"
+                android:id="@+id/userTypeLayout"
+                android:visibility="gone"
+                app:boxCornerRadiusTopStart="@dimen/_11sdp"
+                android:layout_marginStart="@dimen/_23sdp"
+                android:layout_marginEnd="@dimen/_23sdp"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_height="@dimen/_45sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                app:hintTextColor="@color/black"
+                android:hint="User Type">
+
+                <AutoCompleteTextView
+                    android:textAppearance="@style/TextStyle"
+                    android:id="@+id/update_user_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -169,6 +194,7 @@
                     android:inputType="none"
                     tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="@dimen/_266sdp"
                 android:layout_marginTop="@dimen/_20sdp"
@@ -187,7 +213,6 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:id="@+id/add_emp_position"
-                    android:textSize="@dimen/_10sdp"
                     android:textAppearance="@style/TextStyle"
                     android:inputType="none"
                     tools:ignore="LabelFor" />
@@ -204,6 +229,7 @@
                 android:hint="New password"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
+                app:passwordToggleEnabled="true"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
                 app:hintTextColor="@color/black">
 
@@ -221,6 +247,7 @@
                 android:layout_width="@dimen/_270sdp"
                 android:layout_height="@dimen/_42sdp"
                 android:layout_marginStart="@dimen/_23sdp"
+                android:id="@+id/pwdLayout"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
                 android:hint="Confirm password"

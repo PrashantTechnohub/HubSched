@@ -2,6 +2,7 @@ package com.NakshatraTechnoHub.HubSched.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -88,16 +90,26 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         LayoutInflater inflater1 = (LayoutInflater) holder.blockBtn.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View team = inflater1.inflate(R.layout.cl_alert, null);
+
         View editProfileLayout = inflater1.inflate(R.layout.cl_edit_profile, null);
-        AlertDialog dialog;
-
-
-
-        dialog= builder.create();
-
-
         EditText userType = editProfileLayout.findViewById(R.id.userType_ed);
+        EditText userName = editProfileLayout.findViewById(R.id.user_name);
+        EditText userEmpId = editProfileLayout.findViewById(R.id.user_EmpId);
+        EditText userEmail = editProfileLayout.findViewById(R.id.user_email);
+        EditText userMobile = editProfileLayout.findViewById(R.id.user_mobile);
+        EditText userGender = editProfileLayout.findViewById(R.id.user_gender);
+        EditText userPosition = editProfileLayout.findViewById(R.id.user_position);
+        EditText userPassword = editProfileLayout.findViewById(R.id.user_password);
         Button updateProfileBtn = editProfileLayout.findViewById(R.id.update_profile_ed);
+
+        userType.setText(String.valueOf(empList.get(position).getUserType()));
+        userName.setText(empList.get(position).getName());
+        userEmpId.setText(String.valueOf(empList.get(position).getEmpId()));
+        userEmail.setText(empList.get(position).getEmail());
+        userMobile.setText(empList.get(position).getMobile());
+        userGender.setText(empList.get(position).getGender());
+        userPosition.setText(empList.get(position).getPosition());
+        userPassword.setText(empList.get(position).getPassword());
 
         Button yes = team.findViewById(R.id.yes_btn);
         Button no = team.findViewById(R.id.no_btn);
@@ -141,9 +153,6 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
                 text.setText("Are you sure to remove "+empList.get(position).getName() + " !!");
 
-
-
-
                 yes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -165,11 +174,20 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                builder.setView(editProfileLayout);
-                builder.setCancelable(true);
+                Intent intent = new Intent(context, AddEmployeeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+                intent.putExtra("userType", userType.getText().toString());
+                intent.putExtra("action", "true");
+                intent.putExtra("_id",empList.get(position).get_id());
+                intent.putExtra("empId",userEmpId.getText().toString());
+                intent.putExtra("name",userName.getText().toString());
+                intent.putExtra("gender",userGender.getText().toString());
+                intent.putExtra("mobile",userMobile.getText().toString());
+                intent.putExtra("email",userEmail.getText().toString());
+                intent.putExtra("position",userPosition.getText().toString());
+                intent.putExtra("password",userPassword.getText().toString());
+                context.startActivity(intent);
             }
         });
 
@@ -177,48 +195,6 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             @Override
             public void onClick(View view) {
 
-                String value = userType.getText().toString();
-                JSONObject params = new JSONObject();
-                try {
-                    params.put("userType", value);
-                    params.put("_id",empList.get(position).get_id());
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                RequestQueue queue = Volley.newRequestQueue(view.getContext());
-                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CHANGE_EMP_TYPE_URL,view.getContext()),params, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String msg=    response.getString("message");
-                            Toast.makeText(view.getContext(),msg, Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        try {
-                            if(error.networkResponse.statusCode == 500){
-                                String errorString = new String(error.networkResponse.data);
-                                Toast.makeText(view.getContext(), errorString, Toast.LENGTH_SHORT).show();
-                            }
-
-                        }catch (Exception e){
-                            Log.e("CreateEMP", "onErrorResponse: ", e );
-
-                            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-
-                queue.add(objectRequest);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,13 +27,20 @@ import org.json.JSONObject;
 public class AddEmployeeActivity extends AppCompatActivity {
 
     ProgressDialog pd;
+
     ArrayAdapter<String> positionAdapter;
     String []positionItem = {"Organizer", "HR", "Manager", "Designer", "Tester", "Sales Manager", "Software Engineer", "Android Developer", "Web Developer", "Accountant", "Digital Marketer"};
 
     ArrayAdapter<String> genderAdapter;
     String []genderItem = {"Male", "Female"};
 
+
+    ArrayAdapter<String> updateUserType;
+    String []userTypeList = {"Employee", "Organizer"};
+
     ActivityAddEmployeeBinding bind;
+
+    String _id,userType, action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +50,57 @@ public class AddEmployeeActivity extends AppCompatActivity {
         setContentView(view);
 
 
+        Intent intent = getIntent();
+        action = intent.getStringExtra("action");
+
+
+
+        if (action!=null && action.equals("true")){
+            bind.pwdLayout.setVisibility(View.GONE);
+            bind.userTypeLayout.setVisibility(View.VISIBLE);
+            bind.actionBar.setText("Update Profile");
+            bind.addEmpBtn.setText("Update Now");
+
+            userType = intent.getStringExtra("userType");
+            _id = intent.getStringExtra("_id");
+            String empId = intent.getStringExtra("empId");
+            String name = intent.getStringExtra("name");
+            String gender = intent.getStringExtra("gender");
+            String email = intent.getStringExtra("email");
+            String mobile = intent.getStringExtra("mobile");
+            String userPosition = intent.getStringExtra("position");
+            String password = intent.getStringExtra("password");
+
+            bind.addEmpName.setText(name);
+            bind.addEmpId.setText(_id);
+            bind.addEmpId.setText(empId);
+            bind.addEmpGender.setText(gender);
+            bind.addEmpEmail.setText(email);
+            bind.addEmpMobile.setText(mobile);
+            bind.addEmpPosition.setText(userPosition);
+            bind.addEmpPassword.setText(password);
+
+
+            if (userType.equals("0")){
+                bind.updateUserType.setText("Employee");
+
+            }
+            if (userType.equals("1")){
+                bind.updateUserType.setText("Organizer");
+
+            }
+
+
+
+        }
+
+
+
         pd = new ProgressDialog(this);
         pd.setMessage("Please wait...");
+
+        updateUserType= new ArrayAdapter<>(AddEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
+        bind.updateUserType.setAdapter(updateUserType);
 
 
         genderAdapter= new ArrayAdapter<>(this, R.layout.cl_list_item, genderItem);
@@ -52,15 +109,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
         bind.addEmpGender.setAdapter(genderAdapter);
         bind.addEmpPosition.setAdapter(positionAdapter);
 
-        bind.addEmpGender.setOnItemClickListener((parent, view1, position, id) -> {
-            if(position==0){
-            }
-        });
 
-        bind.addEmpPosition.setOnItemClickListener((parent, view12, position, id) -> {
-            if(position==0){
-            }
-        });
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,12 +130,112 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 String password = bind.addEmpPassword.getText().toString();
                 String confirmPassword = bind.addEmpCPassword.getText().toString();
 
-                addEmployee(empId, name, email, mobile, gender, position, password, confirmPassword);
+                if (empId.isEmpty()){
+                    bind.addEmpId.requestFocus();
+                    bind.addEmpId.setError("Empty !");
+                } else if (name.isEmpty()) {
+                    bind.addEmpName.requestFocus();
+                    bind.addEmpName.setError("Empty !");
+                }else if (email.isEmpty()) {
+                    bind.addEmpEmail.requestFocus();
+                    bind.addEmpEmail.setError("Empty !");
+                }else if (mobile.isEmpty()) {
+                    bind.addEmpMobile.requestFocus();
+                    bind.addEmpMobile.setError("Empty !");
+                }else if (gender.isEmpty()) {
+                    Toast.makeText(AddEmployeeActivity.this, "Please select Gender", Toast.LENGTH_SHORT).show();
 
+                }else if (position.isEmpty()) {
+                    Toast.makeText(AddEmployeeActivity.this, "Please select Position", Toast.LENGTH_SHORT).show();
+                }else if (password.isEmpty()) {
+                    bind.addEmpPassword.requestFocus();
+                    bind.addEmpPassword.setError("Empty !");
+                }else if (confirmPassword.isEmpty()) {
+                    bind.addEmpCPassword.requestFocus();
+                    bind.addEmpCPassword.setError("Empty !");
+                }else if (!confirmPassword.equals(password)) {
+                    Toast.makeText(AddEmployeeActivity.this, "Password not match !!", Toast.LENGTH_SHORT).show();
+                }else{
+                    if (action.equals("true")){
+                        String user_type = bind.updateUserType.getText().toString();
+
+                        if (user_type.isEmpty()) {
+                            Toast.makeText(AddEmployeeActivity.this, "Please Select User Type", Toast.LENGTH_SHORT).show();
+                        }else{
+                            if (user_type.equals("Employee")){
+                                user_type= "0";
+                            }
+                            if (user_type.equals("Organizer")){
+                                user_type= "1";
+                            }
+                            updateEmployee(user_type,_id, empId, name, email, mobile, gender, position, password);
+                        }
+                    }else{
+                        addEmployee(empId, name, email, mobile, gender, position, password, confirmPassword);
+                    }
+
+                }
             }
         });
     }
-    
+
+    private void updateEmployee(String userType ,String id, String empId, String name, String email, String mobile, String gender, String position, String password) {
+        pd.show();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("userType", userType);
+            params.put("_id",id);
+            params.put("empId",empId);
+            params.put("name",name);
+            params.put("gender",gender);
+            params.put("mobile",mobile);
+            params.put("email",email);
+            params.put("position",position);
+            params.put("password",password);
+
+        } catch (JSONException e) {
+            pd.dismiss();
+            e.printStackTrace();
+        }
+
+        RequestQueue queue = Volley.newRequestQueue(AddEmployeeActivity.this);
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.EMPLOYEE_UPDATE_URL,AddEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String msg=    response.getString("message");
+                    pd.dismiss();
+                    Toast.makeText(AddEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    pd.dismiss();
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    if(error.networkResponse.statusCode == 500){
+                        String errorString = new String(error.networkResponse.data);
+                        pd.dismiss();
+                        Toast.makeText(AddEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e){
+                    pd.dismiss();
+                    Log.e("CreateEMP", "onErrorResponse: ", e );
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        queue.add(objectRequest);
+
+    }
+
+
     private void addEmployee(String empId, String name, String email, String mobile, String gender, String position, String password, String confirmPassword) {
 
         pd.show();

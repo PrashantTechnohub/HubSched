@@ -6,12 +6,15 @@ import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 
 public class Constant {
 
-    
     public static final String BASE_URL = "http://192.168.0.182:5000/meet";
     public static final String LOGIN_URL = BASE_URL+"/login";
     public static final String MEET_ROOMS_URL = BASE_URL+"/rooms" ;
     public static final String EMP_LIST_URL = BASE_URL+"/employees";
     public static final String CHANGE_EMP_TYPE_URL = BASE_URL+"/employee_type";
+
+    public static final String EMPLOYEE_UPDATE_URL = BASE_URL+"/update_employee";
+
+    public static final String PROFILE_UPDATE_URL = BASE_URL+"/employee_profile";
 
     public static final String EMP_PROFILE_URL = BASE_URL+"/profile";
 

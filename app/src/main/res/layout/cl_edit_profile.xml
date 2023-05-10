@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:gravity="center"
             android:hint="User type"
             android:inputType="number"
             android:id="@+id/userType_ed"
@@ -19,14 +20,65 @@
             android:layout_height="match_parent"/>
 
         <EditText
+            android:gravity="center"
+            android:hint="Employee Id"
+            android:inputType="number"
+            android:id="@+id/user_EmpId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <EditText
+            android:id="@+id/user_name"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
         <EditText
+            android:id="@+id/user_email"
+            android:gravity="center"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <EditText
+            android:id="@+id/user_mobile"
+            android:gravity="center"
+            android:hint="Mobile"
+            android:inputType="phone"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <EditText
+            android:id="@+id/user_gender"
+            android:gravity="center"
+            android:hint="Gender"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <EditText
+            android:id="@+id/user_position"
+            android:gravity="center"
+            android:hint="Position"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <EditText
+            android:id="@+id/user_password"
+            android:gravity="center"
+            android:hint="Password"
+            android:inputType="text"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/update_profile_ed"

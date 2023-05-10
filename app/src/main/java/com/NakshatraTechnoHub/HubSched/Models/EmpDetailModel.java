@@ -1,12 +1,12 @@
 package com.NakshatraTechnoHub.HubSched.Models;
 
-public class CreateEmpModel {
+public class EmpDetailModel {
     String _id ,empId, name, email, mobile, gender, position,password;
 
-    public CreateEmpModel() {
+    public EmpDetailModel() {
     }
 
-    public CreateEmpModel(String empId, String name, String email, String mobile, String gender, String position, String password) {
+    public EmpDetailModel(String empId, String name, String email, String mobile, String gender, String position, String password) {
         this.empId = empId;
         this.name = name;
         this.email = email;
