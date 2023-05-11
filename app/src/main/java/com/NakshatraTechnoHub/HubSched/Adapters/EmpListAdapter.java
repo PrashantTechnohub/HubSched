@@ -174,12 +174,13 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String id = String.valueOf(empList.get(position).get_id());
+                Toast.makeText(view.getContext(), id, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, AddEmployeeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                 intent.putExtra("userType", userType.getText().toString());
-                intent.putExtra("action", "true");
-                intent.putExtra("_id",empList.get(position).get_id());
+                intent.putExtra("actionType","update");
+                intent.putExtra("id",id);
                 intent.putExtra("empId",userEmpId.getText().toString());
                 intent.putExtra("name",userName.getText().toString());
                 intent.putExtra("gender",userGender.getText().toString());

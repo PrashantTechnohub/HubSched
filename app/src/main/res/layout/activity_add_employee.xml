@@ -94,7 +94,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/add_emp_name"
-
                     android:inputType="textPersonName"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
@@ -174,7 +173,6 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 android:id="@+id/userTypeLayout"
-                android:visibility="gone"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
                 android:layout_marginStart="@dimen/_23sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
@@ -185,12 +183,11 @@
                 android:hint="User Type">
 
                 <AutoCompleteTextView
-                    android:textAppearance="@style/TextStyle"
                     android:id="@+id/update_user_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textSize="@dimen/_10sdp"
+                    android:textAppearance="@style/TextStyle"
                     android:inputType="none"
                     tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -226,10 +223,9 @@
                 android:layout_marginStart="@dimen/_23sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
-                android:hint="New password"
+                android:hint="New Password"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
-                app:passwordToggleEnabled="true"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
                 app:hintTextColor="@color/black">
 
@@ -238,8 +234,7 @@
                     android:id="@+id/add_emp_password"
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
-                    android:textAppearance="@style/TextStyle"
-                    tools:ignore="TextSizeCheck" />
+                    android:textAppearance="@style/TextStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout

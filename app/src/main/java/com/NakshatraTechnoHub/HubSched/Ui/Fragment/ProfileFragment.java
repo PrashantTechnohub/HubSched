@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.android.volley.Request;
@@ -39,6 +40,8 @@ import org.json.JSONObject;
 public class ProfileFragment extends Fragment {
 
     FragmentProfileBinding bind;
+
+    String _id, name,empId,position,gender,email,mobile, password, userType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,13 +77,29 @@ public class ProfileFragment extends Fragment {
         bind.editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_Rounded);
-                LayoutInflater inflater1 = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View team = inflater1.inflate(R.layout.cl_edit_profile, null);
-                builder.setView(team);
-                builder.setCancelable(true);
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+                String[]profileDetail = fetchProfile();
+                _id = profileDetail[0];
+                empId = profileDetail[1];
+                name = profileDetail[2];
+                gender = profileDetail[3];
+                position = profileDetail[4];
+                email = profileDetail[5];
+                mobile = profileDetail[6];
+                password = profileDetail[7];
+                userType = profileDetail[8];
+
+                Intent intent = new Intent(requireContext(), AddEmployeeActivity.class);
+                intent.putExtra("actionType","selfAdmin");
+                intent.putExtra("id",_id);
+                intent.putExtra("empId",empId);
+                intent.putExtra("name",name);
+                intent.putExtra("gender",gender);
+                intent.putExtra("mobile",mobile);
+                intent.putExtra("email",email);
+                intent.putExtra("position",position);
+                intent.putExtra("password",password);
+                intent.putExtra("userType",userType);
+                startActivity(intent);
 
             }
         });
@@ -108,20 +127,22 @@ public class ProfileFragment extends Fragment {
 
         return bind.getRoot();
     }
-    private void fetchProfile() {
+    private String[] fetchProfile() {
 
       RequestQueue  requestQueue = Volley.newRequestQueue(requireActivity());
-
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_PROFILE_URL, requireContext()), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    String name = response.getString("name");
-                    String empId = response.getString("empId");
-                    String position = response.getString("position");
-                    String gender = response.getString("gender");
-                    String email = response.getString("email");
-                    String mobile = response.getString("mobile");
+                     _id = response.getString("_id");
+                     name = response.getString("name");
+                     empId = response.getString("empId");
+                     position = response.getString("position");
+                     gender = response.getString("gender");
+                     email = response.getString("email");
+                     mobile = response.getString("mobile");
+                     password = response.getString("password");
+                     userType = response.getString("userType");
 
                     bind.empName.setText(name);
                     bind.empId.setText(empId);
@@ -144,6 +165,21 @@ public class ProfileFragment extends Fragment {
         });
 
         requestQueue.add(objectRequest);
+
+
+
+        String[]profileDetail = new String[9];
+        profileDetail[0] =_id;
+        profileDetail[1] =empId;
+        profileDetail[2] =name;
+        profileDetail[3] =gender;
+        profileDetail[4] =position;
+        profileDetail[5] =email;
+        profileDetail[6] =mobile;
+        profileDetail[7] =password;
+        profileDetail[8] =userType;
+
+        return profileDetail;
 
     }
 
@@ -187,5 +223,16 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        fetchProfile();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchProfile();
+
+    }
 }

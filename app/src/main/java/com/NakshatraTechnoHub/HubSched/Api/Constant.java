@@ -13,6 +13,7 @@ public class Constant {
     public static final String CHANGE_EMP_TYPE_URL = BASE_URL+"/employee_type";
 
     public static final String EMPLOYEE_UPDATE_URL = BASE_URL+"/update_employee";
+    public static final String UPDATE_PROFILE_URL = BASE_URL+"/update_profile";
 
     public static final String PROFILE_UPDATE_URL = BASE_URL+"/employee_profile";
 

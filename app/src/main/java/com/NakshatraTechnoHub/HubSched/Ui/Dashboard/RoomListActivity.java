@@ -2,11 +2,13 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
@@ -51,6 +53,14 @@ public class RoomListActivity extends AppCompatActivity {
             }
         });
 
+
+        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRoomList();
+            }
+        });
+
         bind.roomListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         adapter = new RoomListAdapter(this, list);
@@ -64,7 +74,7 @@ public class RoomListActivity extends AppCompatActivity {
     private void getRoomList() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,RoomListActivity.this), null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEET_ROOMS_URL,RoomListActivity.this), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 
@@ -76,6 +86,11 @@ public class RoomListActivity extends AppCompatActivity {
                             JSONObject object = response.getJSONObject(i);
                             RoomListModel model = new RoomListModel(object.getInt("room_no"), object.getString("room_name"), object.getString("seat_cap"), object.getInt("floor_no"),object.getString("facilities")  );
                             list.add(model);
+
+                            if (bind.refresh.isRefreshing()){
+                                bind.refresh.setRefreshing(false);
+                                Toast.makeText(RoomListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                            }
 
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
