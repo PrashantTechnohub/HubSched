@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -177,7 +177,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             public void onClick(View view) {
                 String id = String.valueOf(empList.get(position).get_id());
                 Toast.makeText(view.getContext(), id, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, AddEmployeeActivity.class);
+                Intent intent = new Intent(context, CreateEmployeeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("userType", userType.getText().toString());
                 intent.putExtra("actionType","update");

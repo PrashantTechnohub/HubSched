@@ -1,6 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
-import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -74,7 +72,7 @@ public class EmployeeListActivity extends BaseActivity {
         bind.addEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EmployeeListActivity.this, AddEmployeeActivity.class));
+                startActivity(new Intent(EmployeeListActivity.this, CreateEmployeeActivity.class));
             }
         });
 

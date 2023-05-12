@@ -1,6 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -10,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
-import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,7 +41,7 @@ public class RoomListActivity extends BaseActivity {
         bind.addRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RoomListActivity.this, RoomManagementActivity.class));
+                startActivity(new Intent(RoomListActivity.this, CreateRoomActivity.class));
             }
         });
 

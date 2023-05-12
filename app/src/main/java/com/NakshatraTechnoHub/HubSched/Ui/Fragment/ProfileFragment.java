@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,18 @@ import androidx.fragment.app.Fragment;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.AddEmployeeActivity;
-import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,7 +84,7 @@ public class ProfileFragment extends Fragment {
                 password = profileDetail[7];
                 userType = profileDetail[8];
 
-                Intent intent = new Intent(requireContext(), AddEmployeeActivity.class);
+                Intent intent = new Intent(requireContext(), CreateEmployeeActivity.class);
                 intent.putExtra("actionType","selfAdmin");
                 intent.putExtra("id",_id);
                 intent.putExtra("empId",empId);

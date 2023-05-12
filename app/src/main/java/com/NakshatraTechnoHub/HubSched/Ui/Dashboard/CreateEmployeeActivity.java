@@ -1,9 +1,6 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +9,8 @@ import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.databinding.ActivityAddEmployeeBinding;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateEmployeeBinding;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class AddEmployeeActivity extends BaseActivity {
+public class CreateEmployeeActivity extends BaseActivity {
 
     ProgressDialog pd;
 
@@ -38,19 +36,19 @@ public class AddEmployeeActivity extends BaseActivity {
     ArrayAdapter<String> updateUserType;
     String []userTypeList = {"Employee", "Organizer", "Admin"};
 
-    ActivityAddEmployeeBinding bind;
+    ActivityCreateEmployeeBinding bind;
 
     String _id,userType, action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bind = ActivityAddEmployeeBinding.inflate(getLayoutInflater());
+        bind = ActivityCreateEmployeeBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
 
 
-        updateUserType= new ArrayAdapter<>(AddEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
+        updateUserType= new ArrayAdapter<>(CreateEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
         bind.userType.setAdapter(updateUserType);
 
 
@@ -132,7 +130,7 @@ public class AddEmployeeActivity extends BaseActivity {
                 String position = bind.addEmpPosition.getText().toString();
                 String password = bind.addEmpPassword.getText().toString();
                 String confirmPassword = bind.addEmpCPassword.getText().toString();
-                Toast.makeText(AddEmployeeActivity.this, ""+name , Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateEmployeeActivity.this, ""+name , Toast.LENGTH_SHORT).show();
                 if (empId.isEmpty()){
                     bind.addEmpId.requestFocus();
                     bind.addEmpId.setError("Empty !");
@@ -146,10 +144,10 @@ public class AddEmployeeActivity extends BaseActivity {
                     bind.addEmpMobile.requestFocus();
                     bind.addEmpMobile.setError("Empty !");
                 }else if (gender.isEmpty()) {
-                    Toast.makeText(AddEmployeeActivity.this, "Please select Gender", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateEmployeeActivity.this, "Please select Gender", Toast.LENGTH_SHORT).show();
 
                 }else if (position.isEmpty()) {
-                    Toast.makeText(AddEmployeeActivity.this, "Please select Position", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateEmployeeActivity.this, "Please select Position", Toast.LENGTH_SHORT).show();
                 }else if (password.isEmpty()) {
                     bind.addEmpPassword.requestFocus();
                     bind.addEmpPassword.setError("Empty !");
@@ -157,14 +155,14 @@ public class AddEmployeeActivity extends BaseActivity {
                     bind.addEmpCPassword.requestFocus();
                     bind.addEmpCPassword.setError("Empty !");
                 }else if (!confirmPassword.equals(password)) {
-                    Toast.makeText(AddEmployeeActivity.this, "Password not match !!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateEmployeeActivity.this, "Password not match !!", Toast.LENGTH_SHORT).show();
                 }else{
                     if (action!=null){
                         if (action.equals("update")){
                             String user_type = bind.userType.getText().toString();
 
                             if (user_type.isEmpty()) {
-                                Toast.makeText(AddEmployeeActivity.this, "Please Select User Type", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateEmployeeActivity.this, "Please Select User Type", Toast.LENGTH_SHORT).show();
                             }else{
                                 if (user_type.equals("Employee")){
                                     user_type= "0";
@@ -222,14 +220,14 @@ public class AddEmployeeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(AddEmployeeActivity.this);
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.UPDATE_PROFILE_URL,AddEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
+        RequestQueue queue = Volley.newRequestQueue(CreateEmployeeActivity.this);
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.UPDATE_PROFILE_URL, CreateEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     String msg=    response.getString("message");
                     pd.dismiss();
-                    Toast.makeText(AddEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (JSONException e) {
                     pd.dismiss();
@@ -244,7 +242,7 @@ public class AddEmployeeActivity extends BaseActivity {
                     if(error.networkResponse.statusCode == 500){
                         String errorString = new String(error.networkResponse.data);
                         pd.dismiss();
-                        Toast.makeText(AddEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
                     }
 
                 }catch (Exception e){
@@ -278,8 +276,8 @@ public class AddEmployeeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(AddEmployeeActivity.this);
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.EMPLOYEE_UPDATE_URL,AddEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
+        RequestQueue queue = Volley.newRequestQueue(CreateEmployeeActivity.this);
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.EMPLOYEE_UPDATE_URL, CreateEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -299,7 +297,7 @@ public class AddEmployeeActivity extends BaseActivity {
                     if(error.networkResponse.statusCode == 500){
                         String errorString = new String(error.networkResponse.data);
                         pd.dismiss();
-                        Toast.makeText(AddEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
                     }
 
                 }catch (Exception e){
@@ -334,7 +332,7 @@ public class AddEmployeeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(AddEmployeeActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(CreateEmployeeActivity.this);
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_EMP_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
@@ -342,7 +340,7 @@ public class AddEmployeeActivity extends BaseActivity {
                 try {
                     String msg=    response.getString("message");
                     pd.dismiss();
-                    Toast.makeText(AddEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -356,14 +354,14 @@ public class AddEmployeeActivity extends BaseActivity {
                 try {
                     if(error.networkResponse.statusCode == 500){
                         String errorString = new String(error.networkResponse.data);
-                        Toast.makeText(AddEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
                     }
 
                     Log.e("CreateEMP", "onErrorResponse: ", error );
                 }catch (Exception e){
                     Log.e("CreateEMP", "onErrorResponse: ", e );
 
-                    Toast.makeText(AddEmployeeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateEmployeeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }

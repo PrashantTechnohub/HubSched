@@ -2,7 +2,6 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -10,19 +9,14 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomManagementBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,12 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,16 +34,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
-public class RoomManagementActivity extends BaseActivity {
+public class CreateRoomActivity extends BaseActivity {
 
     ProgressDialog pd ;
     ActivityRoomManagementBinding bind;
@@ -113,7 +98,7 @@ public class RoomManagementActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 // Initialize alert dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(RoomManagementActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateRoomActivity.this);
 
                 // set title
                 builder.setTitle("Select Facilities");
@@ -215,7 +200,7 @@ public class RoomManagementActivity extends BaseActivity {
                             Uri downloadUri = uri;
                             saveRoomDetail(String.valueOf(downloadUri));
                             bind.imge.setImageURI(downloadUri);
-                            Toast.makeText(RoomManagementActivity.this, String.valueOf(downloadUri), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreateRoomActivity.this, String.valueOf(downloadUri), Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -227,7 +212,7 @@ public class RoomManagementActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     pd.dismiss();
-                    Toast.makeText(RoomManagementActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateRoomActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }else {
@@ -251,12 +236,12 @@ public class RoomManagementActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(RoomManagementActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(CreateRoomActivity.this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_ROOM_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 pd.dismiss();
-                Toast.makeText(RoomManagementActivity.this, "Done!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateRoomActivity.this, "Done!!", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -264,7 +249,7 @@ public class RoomManagementActivity extends BaseActivity {
                 pd.dismiss();
                 if(error.networkResponse.statusCode == 500){
                     String errorString = new String(error.networkResponse.data);
-                    Toast.makeText(RoomManagementActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateRoomActivity.this, errorString, Toast.LENGTH_SHORT).show();
                 }
 
                 if(error.networkResponse.statusCode == 200){

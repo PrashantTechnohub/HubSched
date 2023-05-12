@@ -34,7 +34,7 @@
             android:name=".Ui.Dashboard.RoomListActivity"
             android:exported="false" />
         <activity
-            android:name=".Ui.Dashboard.RoomManagementActivity"
+            android:name=".Ui.Dashboard.CreateRoomActivity"
             android:exported="false"
             android:label="@string/title_activity_hall_management" />
         <activity
@@ -48,7 +48,7 @@
             android:name=".Ui.Dashboard.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".Ui.Dashboard.AddEmployeeActivity"
+            android:name=".Ui.Dashboard.CreateEmployeeActivity"
             android:exported="false" />
         <activity
             android:name=".Ui.StartActivity.RegistrationActivity"

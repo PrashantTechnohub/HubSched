@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "614066476945",
+    "project_id": "hubschedtest",
+    "storage_bucket": "hubschedtest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614066476945:android:62909b185b82fd2027ac30",
+        "android_client_info": {
+          "package_name": "com.NakshatraTechnoHub.HubSched"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614066476945-bdu1goef9ahmmtd2nmr35gidh8rtpq81.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_hDXsQAs9_uSy7zFMmQQTch0k_6vip_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614066476945-bdu1goef9ahmmtd2nmr35gidh8rtpq81.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
