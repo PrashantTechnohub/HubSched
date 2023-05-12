@@ -63,7 +63,7 @@
                     android:id="@+id/create_room_no"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
 
@@ -107,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/create_room_seat"
-                    android:inputType="textEmailAddress"
+                    android:inputType="number"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
 
@@ -129,37 +129,58 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/create_room_floor"
-                    android:inputType="phone"
+                    android:inputType="number"
+                    android:textAppearance="@style/TextStyle"
+                    tools:ignore="TextSizeCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="@dimen/_270sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_23sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_23sdp"
+                android:hint="Room Facilities"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxCornerRadiusTopEnd="@dimen/_11sdp"
+                app:boxCornerRadiusTopStart="@dimen/_11sdp"
+                app:hintTextColor="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/create_room_facilities"
+                    android:inputType="none"
+                    android:editable="false"
                     android:textAppearance="@style/TextStyle"
                     tools:ignore="TextSizeCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="@dimen/_266sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:boxCornerRadiusTopEnd="@dimen/_11sdp"
-                app:boxCornerRadiusTopStart="@dimen/_11sdp"
-                android:layout_marginStart="@dimen/_23sdp"
-                android:layout_marginEnd="@dimen/_23sdp"
-                app:boxBackgroundColor="@android:color/transparent"
-                android:layout_height="@dimen/_45sdp"
-                android:textAppearance="@style/TextStyle"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                app:hintTextColor="@color/black"
-                android:hint="Room Facilities">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/_7sdp"
 
-                <AutoCompleteTextView
-                    android:id="@+id/create_room_facilities"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_11sdp">
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:textSize="@dimen/_10sdp"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:id="@+id/imge"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/image_gallery" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/selectImages"
                 android:layout_width="@dimen/_266sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_20sdp"

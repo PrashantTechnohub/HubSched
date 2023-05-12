@@ -1,6 +1,7 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -8,7 +9,11 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -28,11 +33,10 @@ import com.google.android.material.navigation.NavigationView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity {
 
     private ActivityDashboardBinding bind;
 
-    BroadcastReceiver mNetworkReceiver = new NetworkReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,24 +138,6 @@ public class DashboardActivity extends AppCompatActivity {
             return true;
         }
     };
-
-    public static void dialog(boolean value){
-
-        if(value){
-
-
-            Handler handler = new Handler();
-            Runnable delayrunnable = new Runnable() {
-                @Override
-                public void run() {
-                }
-            };
-            handler.postDelayed(delayrunnable, 3000);
-
-        }else {
-
-        }
-    }
 
 
 }

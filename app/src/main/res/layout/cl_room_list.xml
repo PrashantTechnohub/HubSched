@@ -134,13 +134,28 @@
 
             <TextView
                 android:id="@+id/room_facilities"
+                android:singleLine="true"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_150sdp"
                 android:textColor="@color/purple_500"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_11sdp"
                 android:text="Android Developer"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/view"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="More"/>
+            </RelativeLayout>
 
 
 
@@ -214,7 +229,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/remove_meeting_btn"
+                android:id="@+id/remove_room_btn"
                 android:layout_width="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_height="@dimen/_25sdp"

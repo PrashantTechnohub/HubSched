@@ -24,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class AddEmployeeActivity extends AppCompatActivity {
+public class AddEmployeeActivity extends BaseActivity {
 
     ProgressDialog pd;
 
@@ -51,7 +51,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
 
         updateUserType= new ArrayAdapter<>(AddEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
-        bind.updateUserType.setAdapter(updateUserType);
+        bind.userType.setAdapter(updateUserType);
 
 
         genderAdapter= new ArrayAdapter<>(this, R.layout.cl_list_item, genderItem);
@@ -66,7 +66,6 @@ public class AddEmployeeActivity extends AppCompatActivity {
         _id =  String.valueOf(getIntent().getStringExtra("id"));
 
         if (action!=null){
-            bind.userTypeLayout.setVisibility(View.VISIBLE);
             bind.actionBar.setText("Update Profile");
             bind.addEmpBtn.setText("Update Now");
 
@@ -91,16 +90,13 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 bind.addEmpCPassword.setText(password);
 
                 if (userType.equals("0")){
-                    bind.updateUserType.setText("Employee");
+                    bind.userType.setText("Employee");
                 }
                 if (userType.equals("1")){
-                    bind.updateUserType.setText("Organizer");
+                    bind.userType.setText("Organizer");
                 }
                 if (userType.equals("2")){
-                    bind.updateUserType.setText("Admin");
-                    String []userTypeList = {"Admin"};
-                    updateUserType= new ArrayAdapter<>(AddEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
-                    bind.updateUserType.setAdapter(updateUserType);
+                    bind.userType.setText("Admin");
 
                 }
 
@@ -165,7 +161,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 }else{
                     if (action!=null){
                         if (action.equals("update")){
-                            String user_type = bind.updateUserType.getText().toString();
+                            String user_type = bind.userType.getText().toString();
 
                             if (user_type.isEmpty()) {
                                 Toast.makeText(AddEmployeeActivity.this, "Please Select User Type", Toast.LENGTH_SHORT).show();
@@ -186,7 +182,20 @@ public class AddEmployeeActivity extends AppCompatActivity {
                         }
 
                     }else{
-                        addEmployee(empId, name, email, mobile, gender, position, password);
+                        String user_type = bind.userType.getText().toString();
+
+                        if (user_type.equals("Employee")){
+                            user_type = "0";
+                        }
+                        if (user_type.equals("Organizer")){
+                            user_type = "1";
+                        }
+                        if (user_type.equals("Admin")){
+                            user_type = "2";
+
+                        }
+
+                        addEmployee(empId, name, email, mobile, gender, position, password, user_type);
                     }
 
                 }
@@ -307,11 +316,12 @@ public class AddEmployeeActivity extends AppCompatActivity {
     }
 
 
-    private void addEmployee(String empId, String name, String email, String mobile, String gender, String position, String password) {
+    private void addEmployee(String empId, String name, String email, String mobile, String gender, String position, String password, String userType) {
 
         pd.show();
         JSONObject params = new JSONObject();
         try {
+            params.put("userType", userType);
             params.put("empId", empId);
             params.put("name", name);
             params.put("email", email);

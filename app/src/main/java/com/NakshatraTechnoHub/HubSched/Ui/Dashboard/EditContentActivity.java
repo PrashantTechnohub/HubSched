@@ -23,7 +23,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EditContentActivity extends AppCompatActivity {
+public class EditContentActivity extends BaseActivity {
 
     ActivityEditContentBinding bind;
     int SELECT_PICTURE = 200;

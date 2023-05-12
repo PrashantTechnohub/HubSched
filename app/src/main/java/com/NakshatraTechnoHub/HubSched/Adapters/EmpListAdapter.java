@@ -2,6 +2,7 @@ package com.NakshatraTechnoHub.HubSched.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
@@ -147,26 +148,26 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder.setView(team);
-                builder.setCancelable(true);
-                final AlertDialog dialog = builder.create();
 
-                text.setText("Are you sure to remove "+empList.get(position).getName() + " !!");
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Are you sure to remove "+empList.get(position).getName() + " !!");
 
-                yes.setOnClickListener(new View.OnClickListener() {
+                builder.setTitle("Confirm" +    empList.get(position).get_id());
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(), empList.get(position).getName() +" Removed !!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeEmployee( empList.get(position).get_id());
+
                     }
                 });
-
-                no.setOnClickListener(new View.OnClickListener() {
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss(); // Dismiss the dialog
                     }
                 });
+                builder.create().show();
 
             }
         });
@@ -198,6 +199,43 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
             }
         });
+    }
+
+    private void removeEmployee(int id) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.DELETE, Constant.withToken(Constant.REMOVE_EMP_URL+(id+""),context), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status=    response.getString("message");
+                    Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
+
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                notifyDataSetChanged();
+                try {
+                    if(error.networkResponse.statusCode == 500){
+                        String errorString = new String(error.networkResponse.data);
+                        Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e){
+
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        queue.add(objectRequest);
     }
 
 

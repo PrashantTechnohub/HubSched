@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityOrganizerListBinding;
 
-public class OrganizerListActivity extends AppCompatActivity {
+public class OrganizerListActivity extends BaseActivity {
     ActivityOrganizerListBinding bind;
 
     @Override

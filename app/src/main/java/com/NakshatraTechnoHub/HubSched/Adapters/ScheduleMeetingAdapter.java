@@ -35,10 +35,10 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
     @Override
     public void onBindViewHolder(@NonNull ScheduleMeetingAdapter.ViewHolder holder, int position) {
 
-        holder.orgName.setText(list.get(position).getOrgName());
-        holder.meetSubject.setText(list.get(position).getMeetingSubject());
-        holder.meetTime.setText(list.get(position).getMeetingTime());
-        holder.meetLocation.setText(list.get(position).getMeetingLocation());
+        holder.orgName.setText(list.get(position).getOrganiser_id()+"");
+        holder.meetSubject.setText(list.get(position).getSubject());
+        holder.meetTime.setText(list.get(position).getStartTime() +" " + "End : " +list.get(position).getEndTime());
+        holder.meetLocation.setText(list.get(position).getRoomId()+"");
 
 
     }

@@ -24,9 +24,6 @@ public class LocalPreference {
     }
 
 
-    public static void setOverView(Context context,String totalEmp, String totalMeetings, String totalScheduleMeeting, String totalRooms) {
-
-    }
 
     public static void LogOutUser(Context context, String out, Dialog dialog){
         sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
@@ -53,6 +50,7 @@ public class LocalPreference {
         String getType = sharedPref.getString("type", "");
         return getType;
     }
+
 
 
 }

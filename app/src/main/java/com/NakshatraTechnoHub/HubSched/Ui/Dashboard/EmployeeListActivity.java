@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class EmployeeListActivity extends AppCompatActivity {
+public class EmployeeListActivity extends BaseActivity {
 
     ActivityEmployeeListBinding bind;
     EmpListAdapter adapter;
@@ -44,6 +44,7 @@ public class EmployeeListActivity extends AppCompatActivity {
         bind = ActivityEmployeeListBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
+
 
 
         bind.empListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -146,7 +147,6 @@ public class EmployeeListActivity extends AppCompatActivity {
 
                             EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
 
-//                            EmpListModel model=new EmpListModel(id,name,position, status);
 
                             list.add(model);
                             bind.refresh.setRefreshing(false);

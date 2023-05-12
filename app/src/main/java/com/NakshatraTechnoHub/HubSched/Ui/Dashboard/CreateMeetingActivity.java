@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CreateMeetingActivity extends AppCompatActivity {
+public class CreateMeetingActivity extends BaseActivity {
     ActivityCreateMeetingBinding bind;
 
     DatePickerDialog datePickerDialog;

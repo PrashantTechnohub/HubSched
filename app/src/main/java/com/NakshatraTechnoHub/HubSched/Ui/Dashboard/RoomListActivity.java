@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.NakshatraTechnoHub.HubSched.Adapters.RoomListAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class RoomListActivity extends AppCompatActivity {
+public class RoomListActivity extends BaseActivity {
 
     private ActivityRoomListBinding bind;
     private RoomListAdapter adapter;
@@ -80,11 +82,13 @@ public class RoomListActivity extends AppCompatActivity {
 
                 Log.d("TAG", "onResponse: " +response);
 
+                list.clear();
+
                 if (response != null){
                     for (int i = 0; i<response.length(); i++){
                         try {
                             JSONObject object = response.getJSONObject(i);
-                            RoomListModel model = new RoomListModel(object.getInt("room_no"), object.getString("room_name"), object.getString("seat_cap"), object.getInt("floor_no"),object.getString("facilities")  );
+                            RoomListModel model = new Gson().fromJson(object.toString(),RoomListModel.class);
                             list.add(model);
 
                             if (bind.refresh.isRefreshing()){

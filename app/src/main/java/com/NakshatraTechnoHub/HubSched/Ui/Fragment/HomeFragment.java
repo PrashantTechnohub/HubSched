@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateMeetingActivity;
@@ -34,6 +35,7 @@ import com.NakshatraTechnoHub.HubSched.Adapters.RoomListAdapter;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +60,8 @@ public class HomeFragment extends Fragment {
     RequestQueue requestQueue;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { bind = FragmentHomeBinding.inflate(inflater);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        bind = FragmentHomeBinding.inflate(inflater);
 
         toolbar = (MaterialToolbar) requireActivity().findViewById(R.id.topAppBar);
         navigationView = requireActivity().findViewById(R.id.navigation_view);
@@ -167,7 +170,7 @@ public class HomeFragment extends Fragment {
                         String roomLocation = object.getString("floor_no");
                         String roomFacilities = object.getString("facilities");
 
-                        RoomListModel model = new RoomListModel(roomNo, roomLocation, roomName, seatCapacity, roomFacilities);
+                        RoomListModel model = new Gson().fromJson(object.toString(),RoomListModel.class);
 
                         roomList.add(model);
 
@@ -222,7 +225,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getScheduleMeetings() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.SCHEDULED_MEETING_URL, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.MEETING_LIST_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -235,16 +238,10 @@ public class HomeFragment extends Fragment {
 
                     for (int i=0;i<meeting.length();i++){
                         JSONObject object=meeting.getJSONObject(i);
-
-                        String meetId=object.getString("meet_id");
-                        String meetOrg=object.getString("meet_org");
-                        String meetSub=object.getString("meet_subject");
-                        String meetTime=object.getString("meet_time");
-                        String meetLocation=object.getString("meet_location");
-
-                        ScheduleMeetingModel model=new ScheduleMeetingModel(meetId,meetOrg, meetSub, meetTime, meetLocation, "nothing");
-
+                        ScheduleMeetingModel model = new Gson().fromJson(object.toString(),ScheduleMeetingModel.class);
                         list.add(model);
+                        bind.refresh.setRefreshing(false);
+
 
                     }
 
