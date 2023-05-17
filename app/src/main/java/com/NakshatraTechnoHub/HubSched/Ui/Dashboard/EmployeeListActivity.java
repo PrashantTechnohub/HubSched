@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -124,13 +125,11 @@ public class EmployeeListActivity extends BaseActivity {
 
     }
 
-    private void getEmpList() {
+    public void getEmpList() {
         RequestQueue queue = Volley.newRequestQueue(this);
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,EmployeeListActivity.this), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
 
                 Log.d("res", "onResponse: "+response);
 
@@ -141,11 +140,7 @@ public class EmployeeListActivity extends BaseActivity {
 
                         for (int i=0;i<emp_details.length();i++){
                             JSONObject jobj=emp_details.getJSONObject(i);
-
-
                             EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
-
-
                             list.add(model);
                             bind.refresh.setRefreshing(false);
 
@@ -181,19 +176,11 @@ public class EmployeeListActivity extends BaseActivity {
                 bind.noResult.setVisibility(View.VISIBLE);
                 bind.empListRecyclerView.setVisibility(View.GONE);
             }
-        }){
+        });
 
-
-
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String,String>header=new HashMap<>();
-//                header.put("User-Agent","Mozilla/5.0");
-//                return header;
-//            }
-        };
 
         queue.add(jsonObjectRequest);
+
     }
 
 

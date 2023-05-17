@@ -19,6 +19,7 @@ android {
 
     buildFeatures{
         viewBinding true
+        dataBinding true
     }
 
     buildTypes {
@@ -77,6 +78,7 @@ dependencies {
     //GSON
     implementation 'com.google.code.gson:gson:2.10.1'
 
-
+    //SearchableMultiSelectSpinner
+    implementation 'com.github.telichada:SearchableMultiSelectSpinner:2.0'
 
 }

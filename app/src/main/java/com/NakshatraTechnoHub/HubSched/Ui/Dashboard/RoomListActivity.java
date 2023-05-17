@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;

@@ -17,11 +17,13 @@ public class Constant {
 
     public static final String CREATE_ROOM_URL = BASE_URL+"/create_room" ;
     public static final String CREATE_EMP_URL = BASE_URL+"/create_employee" ;
+
     public static final String CREATE_MEETING_URL = BASE_URL+"/schedule_meet" ;
+    public static final String MEETS_FOR_DATE_URL = BASE_URL+"/meets_for_date" ;
+    public static final String EMPLOYEE_LIST_FOR_MEET_URL = BASE_URL+"/employee_list_for_meet" ;
 
     public static final String REMOVE_EMP_URL = BASE_URL+"/delete/employee/" ;
     public static final String REMOVE_ROOM_URL = BASE_URL+"/delete/room/" ;
-
 
     public static final String REMOVE_MEETING_URL = BASE_URL+"/create_room" ;
     public static final String EMP_STATUS_URL = BASE_URL+"/employee_status" ;

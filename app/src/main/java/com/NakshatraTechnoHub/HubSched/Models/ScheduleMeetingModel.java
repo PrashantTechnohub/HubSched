@@ -1,24 +1,25 @@
 package com.NakshatraTechnoHub.HubSched.Models;
 
+import java.util.List;
+
 public class ScheduleMeetingModel {
     private int _id;
     private int roomId;
     private int organiser_id;
     private int company_id;
-    private int[] employee_ids;
+    private List<Integer> employee_ids;
     private String startTime;
     private String endTime;
     private String status;
     private String subject;
 
-    public ScheduleMeetingModel(int organiser_id, int[] employee_ids, String startTime, String endTime, String status, String subject) {
-        this.organiser_id = organiser_id;
-        this.employee_ids = employee_ids;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
-        this.subject = subject;
-    }
+//    public ScheduleMeetingModel(int organiser_id, int[] employee_ids, String startTime, String endTime, String subject) {
+//        this.organiser_id = organiser_id;
+//        this.employee_ids = employee_ids;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.subject = subject;
+//    }
 
     public int get_id() {
         return _id;
@@ -52,11 +53,11 @@ public class ScheduleMeetingModel {
         this.company_id = company_id;
     }
 
-    public int[] getEmployee_ids() {
+    public List<Integer> getEmployee_ids() {
         return employee_ids;
     }
 
-    public void setEmployee_ids(int[] employee_ids) {
+    public void setEmployee_ids(List<Integer> employee_ids) {
         this.employee_ids = employee_ids;
     }
 

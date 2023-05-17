@@ -3,13 +3,20 @@ package com.NakshatraTechnoHub.HubSched.Adapters;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateMeetingActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.databinding.ClDateTimeBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,16 +36,26 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHolder> {
 
     Context context;
+
+    String start;
+    String end;
+
     ArrayList<RoomListModel> roomList = new ArrayList<>();
 
     public RoomListAdapter(Context context, ArrayList<RoomListModel> roomList) {
@@ -76,7 +96,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             if (i != facilities.size() - 1) {
                 sb.append("\n");
             }
-        };
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +116,6 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
             }
         });
-
-
 
         holder.roomFacilities.setText(sb.toString());
         SharedPreferences sh = holder.roomFacilities.getContext().getSharedPreferences("userTypeToken",MODE_PRIVATE);
@@ -130,6 +148,43 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
                     }
                 });
                 builder.create().show();
+            }
+        });
+
+        Calendar c = Calendar.getInstance();
+
+        int mYear = c.get(Calendar.YEAR); // current year
+        int mMonth = c.get(Calendar.MONTH); // current month
+        int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+
+
+        holder.setMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+
+
+                        String toDate =   dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                        start = toDate ;
+
+                        Intent intent = new Intent(view.getContext(), CreateMeetingActivity.class);
+                        intent.putExtra("selectedDate", toDate);
+                        intent.putExtra("roomName", roomList.get(position).getRoom_name());
+                        intent.putExtra("roomId", id);
+                        view.getContext(). startActivity(intent);
+
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+                datePickerDialog.show();
+
             }
         });
 

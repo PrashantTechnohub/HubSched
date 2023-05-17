@@ -135,6 +135,7 @@ public class HomeFragment extends Fragment {
         toolbar.setTitle("Admin Dashboard");
         bind.userViewLayout.setVisibility(View.GONE);
         bind.adminViewLayout.setVisibility(View.VISIBLE);
+
         if (bind.refresh.isRefreshing()){
             bind.refresh.setRefreshing(false);
             Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
@@ -163,13 +164,6 @@ public class HomeFragment extends Fragment {
                 for (int i = 0; i<response.length(); i++){
                     try {
                         JSONObject object = response.getJSONObject(i);
-
-                        int roomNo = object.getInt("room_no");
-                        String roomName = object.getString("room_name");
-                        int seatCapacity = object.getInt("seat_cap");
-                        String roomLocation = object.getString("floor_no");
-                        String roomFacilities = object.getString("facilities");
-
                         RoomListModel model = new Gson().fromJson(object.toString(),RoomListModel.class);
 
                         roomList.add(model);
@@ -204,7 +198,6 @@ public class HomeFragment extends Fragment {
         toolbar.setNavigationIcon(null);
         navigationView.setVisibility(View.GONE);
         bind.createMeetingBtn.setVisibility(View.GONE);
-
 
         bind.scheduleMeetingRecyclerView.setVisibility(View.VISIBLE);
         bind.userViewLayout.setVisibility(View.VISIBLE);

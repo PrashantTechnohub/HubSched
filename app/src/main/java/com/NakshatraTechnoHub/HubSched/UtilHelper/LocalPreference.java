@@ -23,6 +23,15 @@ public class LocalPreference {
 
     }
 
+    public static void store_id(Context context,String _id) {
+
+        sharedPref = context.getSharedPreferences("_id",Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.putString("_id", _id);
+        editor.commit();
+
+    }
+
 
 
     public static void LogOutUser(Context context, String out, Dialog dialog){
@@ -34,7 +43,7 @@ public class LocalPreference {
             dialog.cancel();
 
             Intent intent = new Intent(context, LoginActivity.class);
-            intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }
@@ -49,6 +58,12 @@ public class LocalPreference {
         sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
         String getType = sharedPref.getString("type", "");
         return getType;
+    }
+
+    public static String get_Id(Context context){
+        sharedPref = context.getSharedPreferences("_id",Context.MODE_PRIVATE);
+        String getId = sharedPref.getString("_id", "");
+        return getId;
     }
 
 

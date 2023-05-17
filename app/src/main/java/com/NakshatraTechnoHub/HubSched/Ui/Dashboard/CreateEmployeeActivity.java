@@ -47,28 +47,16 @@ public class CreateEmployeeActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-
-        updateUserType= new ArrayAdapter<>(CreateEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
-        bind.userType.setAdapter(updateUserType);
-
-
-        genderAdapter= new ArrayAdapter<>(this, R.layout.cl_list_item, genderItem);
-        positionAdapter= new ArrayAdapter<>(this, R.layout.cl_list_item, positionItem);
-
-        bind.addEmpGender.setAdapter(genderAdapter);
-        bind.addEmpPosition. setAdapter(positionAdapter);
-
-
+        dropDownAdapter();
         action = getIntent().getStringExtra("actionType");
+        userType = getIntent().getStringExtra("userType");
 
         _id =  String.valueOf(getIntent().getStringExtra("id"));
 
         if (action!=null){
             bind.actionBar.setText("Update Profile");
             bind.addEmpBtn.setText("Update Now");
-
             if (action.equals("update") || action.equals("selfAdmin")){
-                userType = getIntent().getStringExtra("userType");
                 String empId = getIntent().getStringExtra("empId");
                 String name = getIntent().getStringExtra("name");
                 String gender = getIntent().getStringExtra("gender");
@@ -95,20 +83,14 @@ public class CreateEmployeeActivity extends BaseActivity {
                 }
                 if (userType.equals("2")){
                     bind.userType.setText("Admin");
-
                 }
-
-
-
             }
-
         }
 
 
 
         pd = new ProgressDialog(this);
         pd.setMessage("Please wait...");
-
 
 
 
@@ -122,7 +104,9 @@ public class CreateEmployeeActivity extends BaseActivity {
         bind.addEmpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String empId = bind.addEmpId.getText().toString();
+
                 String name = bind.addEmpName.getText().toString();
                 String email = bind.addEmpEmail.getText().toString();
                 String mobile = bind.addEmpMobile.getText().toString();
@@ -159,6 +143,7 @@ public class CreateEmployeeActivity extends BaseActivity {
                 }else{
                     if (action!=null){
                         if (action.equals("update")){
+
                             String user_type = bind.userType.getText().toString();
 
                             if (user_type.isEmpty()) {
@@ -199,6 +184,19 @@ public class CreateEmployeeActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void dropDownAdapter() {
+        updateUserType= new ArrayAdapter<>(CreateEmployeeActivity.this, R.layout.cl_list_item, userTypeList);
+        bind.userType.setAdapter(updateUserType);
+
+
+        genderAdapter= new ArrayAdapter<>(CreateEmployeeActivity.this, R.layout.cl_list_item, genderItem);
+        bind.addEmpGender.setAdapter(genderAdapter);
+
+
+        positionAdapter= new ArrayAdapter<>(CreateEmployeeActivity.this, R.layout.cl_list_item, positionItem);
+        bind.addEmpPosition. setAdapter(positionAdapter);
     }
 
     private void updateAdmin(String userType, String id, String empId, String name, String email, String mobile, String gender, String position, String password) {

@@ -17,13 +17,17 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomManagementBinding;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateRoomBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.devstune.searchablemultiselectspinner.SearchableItem;
+import com.devstune.searchablemultiselectspinner.SearchableMultiSelectSpinner;
+import com.devstune.searchablemultiselectspinner.SelectionCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,7 +45,7 @@ import java.util.Random;
 public class CreateRoomActivity extends BaseActivity {
 
     ProgressDialog pd ;
-    ActivityRoomManagementBinding bind;
+    ActivityCreateRoomBinding bind;
     Uri selectedImageUri;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("Rooms Photos");
 
@@ -55,7 +59,7 @@ public class CreateRoomActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bind = ActivityRoomManagementBinding.inflate(getLayoutInflater());
+        bind = ActivityCreateRoomBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
         pd = new ProgressDialog(this);
@@ -94,31 +98,23 @@ public class CreateRoomActivity extends BaseActivity {
         });
 
 
+
+
         bind.createRoomFacilities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Initialize alert dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(CreateRoomActivity.this);
-
-                // set title
                 builder.setTitle("Select Facilities");
-
-                // set dialog non cancelable
                 builder.setCancelable(false);
 
                 builder.setMultiChoiceItems(facilitiesArray, selectedFacilities, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        // check condition
                         if (b) {
-                            // when checkbox selected
-                            // Add position  in lang list
+
                             facilitiesList.add(i);
-                            // Sort array list
                             Collections.sort(facilitiesList);
                         } else {
-                            // when checkbox unselected
-                            // Remove position from facilitiesList
                             facilitiesList.remove(Integer.valueOf(i));
                         }
                     }
@@ -161,7 +157,6 @@ public class CreateRoomActivity extends BaseActivity {
                         }
                     }
                 });
-                // show dialog
                 builder.show();
             
             }
@@ -216,7 +211,7 @@ public class CreateRoomActivity extends BaseActivity {
                 }
             });
         }else {
-            saveRoomDetail(String.valueOf("https://www.industriousoffice.com/wp-content/uploads/2021/04/Hero-WillisTower.jpg"));
+            saveRoomDetail("https://www.industriousoffice.com/wp-content/uploads/2021/04/Hero-WillisTower.jpg");
 
         }
 

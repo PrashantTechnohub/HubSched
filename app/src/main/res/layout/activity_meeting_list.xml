@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_page"
-    tools:context="com.NakshatraTechnoHub.HubSched.Ui.Dashboard.EmployeeListActivity">
-
+    tools:context=".Ui.Dashboard.MeetingListActivity">
 
     <RelativeLayout
         android:id="@+id/emp_action_bar"
@@ -34,23 +32,23 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
-                android:text="Employee List"
+                android:text="Meeting List"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_17sdp" />
 
             <ImageView
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_centerVertical="true"
-                android:id="@+id/search_emp"
+                android:id="@+id/search_meet"
                 android:layout_width="@dimen/_27sdp"
                 android:layout_height="@dimen/_27sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_toStartOf="@id/add_emp"
+                android:layout_toStartOf="@id/add_meeting"
                 android:src="@drawable/baseline_search_24" />
 
             <ImageView
                 android:layout_centerVertical="true"
-                android:id="@+id/add_emp"
+                android:id="@+id/add_meeting"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_alignParentEnd="true"
@@ -98,7 +96,7 @@
         android:layout_centerInParent="true">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/empList_recyclerView"
+            android:id="@+id/meeting_list_recyclerview"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -113,6 +111,5 @@
         android:layout_marginTop="13dp"
         android:src="@drawable/no_result"
         android:visibility="gone" />
-
 
 </RelativeLayout>

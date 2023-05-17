@@ -62,9 +62,6 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
             meetTime = itemView.findViewById(R.id.meet_time);
             meetLocation = itemView.findViewById(R.id.meet_location);
 
-            acptBtn = itemView.findViewById(R.id.meet_accept_btn);
-            denyBtn = itemView.findViewById(R.id.meet_deny_btn);
-
         }
     }
 }

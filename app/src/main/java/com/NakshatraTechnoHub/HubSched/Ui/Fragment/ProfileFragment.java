@@ -20,6 +20,7 @@ import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -83,6 +84,7 @@ public class ProfileFragment extends Fragment {
                 mobile = profileDetail[6];
                 password = profileDetail[7];
                 userType = profileDetail[8];
+                LocalPreference.store_id(requireContext(),_id);
 
                 Intent intent = new Intent(requireContext(), CreateEmployeeActivity.class);
                 intent.putExtra("actionType","selfAdmin");

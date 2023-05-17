@@ -1,162 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginEnd="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
     app:cardCornerRadius="@dimen/_14sdp">
 
     <LinearLayout
-        android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="@dimen/_75sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                    android:text="Room ID  "/>
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Room ID  "
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/room_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
+                android:text="MAK889845"
                 android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="MAK889845"/>
-
+                android:textSize="@dimen/_11sdp" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_7sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="@dimen/_75sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Name  "/>
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Name  "
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
+                android:text="Prashant Deshmukh"
                 android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Prashant Deshmukh"/>
-
+                android:textSize="@dimen/_11sdp" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_7sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="@dimen/_75sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Floor  "/>
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Floor  "
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/room_floor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
+                android:text="Prashant Deshmukh"
                 android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Prashant Deshmukh"/>
-
+                android:textSize="@dimen/_11sdp" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_7sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="@dimen/_75sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Seats"/>
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Seats"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/room_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="wrap_content"
+                android:text="Android Developer"
                 android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Android Developer"/>
-
+                android:textSize="@dimen/_11sdp" />
 
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginTop="@dimen/_7sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="@dimen/_75sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Facilities"/>
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Facilities"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/room_facilities"
-                android:singleLine="true"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:layout_width="@dimen/_150sdp"
+                android:singleLine="true"
+                android:text="Android Developer"
                 android:textColor="@color/purple_500"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_11sdp"
-                android:text="Android Developer"/>
+                android:textSize="@dimen/_11sdp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/view"
-                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_centerVertical="true"
-                    android:textStyle="bold"
                     android:layout_height="wrap_content"
-                    android:text="More"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:text="More"
+                    android:textStyle="bold" />
             </RelativeLayout>
-
 
 
         </LinearLayout>
@@ -167,8 +171,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llpriority"
-            android:gravity="center_vertical|left"
             android:layout_marginTop="4dp"
+            android:gravity="center_vertical|left"
             android:orientation="horizontal"
             android:visibility="gone"
             android:weightSum="2">
@@ -178,37 +182,34 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:text="Remarks :"
-                android:gravity="center_vertical"
                 android:ellipsize="end"
-                android:singleLine="true" />
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="Remarks :" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_comment"
-                android:layout_height="60dp"
                 android:layout_width="0dp"
+                android:layout_height="60dp"
                 android:layout_weight="1.5"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234556789, "
+                android:focusableInTouchMode="true"
+                android:gravity="top|left"
                 android:hint="Enter Remarks"
                 android:lines="4"
                 android:padding="7dp"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234556789, "
                 android:singleLine="false"
-                android:gravity="top|left"
-                android:focusableInTouchMode="true"
-                android:textColor="@color/black"
-                />
-
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
 
 
-
         <View
             android:layout_width="@dimen/_270sdp"
             android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:background="#DFDFDF" />
 
 
@@ -216,27 +217,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/schedule_meeting_btn"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="@dimen/_25sdp"
-                app:cornerRadius="@dimen/_14sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="#1F9324"
+                android:text="Schedule Meeting"
                 android:textSize="@dimen/_7sdp"
-                android:text="Schedule Meeting"/>
-
+                app:cornerRadius="@dimen/_14sdp" />
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/remove_room_btn"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_height="@dimen/_25sdp"
-                app:cornerRadius="@dimen/_14sdp"
-                android:textSize="@dimen/_7sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:backgroundTint="#F44336"
-                android:text="Remove Room"/>
+                android:text="Remove Room"
+                android:textSize="@dimen/_7sdp"
+                app:cornerRadius="@dimen/_14sdp" />
 
 
         </LinearLayout>
@@ -246,3 +247,4 @@
 
 
 </com.google.android.material.card.MaterialCardView>
+

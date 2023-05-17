@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.BaseActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,12 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     ActivityLoginBinding bind;
 
     ProgressDialog loader;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         bind = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
-
-
 
         loader = new ProgressDialog(LoginActivity.this);
         loader.setMessage("Please wait....");
@@ -94,18 +92,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (type.equals("admin")) {
                             LocalPreference.checkTypeToken(LoginActivity.this,type, token);
-
-
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
                             startActivity(intent);
                             loader.cancel();
-
-
                             finish();
                         } else if (type.equals("employee")) {
                             LocalPreference.checkTypeToken(LoginActivity.this,type, token);
-
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
                             startActivity(intent);
@@ -113,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }else if (type.equals("organiser")) {
                             LocalPreference.checkTypeToken(LoginActivity.this,type, token);
-
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
                             startActivity(intent);
@@ -159,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (preferences.contains("token")){
             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-            intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
