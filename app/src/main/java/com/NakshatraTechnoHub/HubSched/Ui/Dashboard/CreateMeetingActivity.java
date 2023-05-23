@@ -1,5 +1,7 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEETING_LIST_URL;
+
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -9,9 +11,15 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.NakshatraTechnoHub.HubSched.Adapters.BookedSlotAdapter;
+import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.MeetingEmpListModel;
+import com.NakshatraTechnoHub.HubSched.Models.BookedSlotModel;
+import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
+import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
@@ -23,6 +31,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.devstune.searchablemultiselectspinner.SearchableItem;
 import com.devstune.searchablemultiselectspinner.SelectionCompleteListener;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +50,9 @@ public class CreateMeetingActivity extends BaseActivity {
     JSONArray EmpIdList;
     ArrayList<MeetingEmpListModel> empList = new ArrayList<>();
 
+    ArrayList<BookedSlotModel> bookedSlotList = new ArrayList<>();
+
+    BookedSlotAdapter bookedSlotAdapter;
     ProgressDialog pd;
 
     @Override
@@ -60,6 +72,7 @@ public class CreateMeetingActivity extends BaseActivity {
 
         bind.actionBar.setText("Booked Slots");
         getBookedSlotApiCall();
+
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +150,7 @@ public class CreateMeetingActivity extends BaseActivity {
 
         //New
     }
+
 
     private ArrayList<SearchableItem> getStringArray(JSONArray empList) {
         ArrayList<SearchableItem> stringArray = new ArrayList<>();
@@ -242,13 +256,30 @@ public class CreateMeetingActivity extends BaseActivity {
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.MEETS_FOR_DATE_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                JSONArray jsonArray = new JSONArray();
                 try {
-                    String msg = response.getString("message");
-                    bind.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(CreateMeetingActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    jsonArray = response.getJSONArray("list");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            BookedSlotModel model = new Gson().fromJson(jsonObject.toString(),BookedSlotModel.class);
+                            bookedSlotList.add(model);
+                            bind.progressBar.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+
+
+
+
+                bookedSlotAdapter = new BookedSlotAdapter(CreateMeetingActivity.this, bookedSlotList);
+                bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
+                bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
 
             }
         }, new Response.ErrorListener() {
@@ -256,6 +287,7 @@ public class CreateMeetingActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 try {
                     if (error.networkResponse.statusCode == 500) {
+                        pd.dismiss();
                         String errorString = new String(error.networkResponse.data);
                     }
 
@@ -290,6 +322,7 @@ public class CreateMeetingActivity extends BaseActivity {
                 try {
 
                     JSONArray array = response.getJSONArray("userList");
+                    bind.bookedMeetingRecyclerview.setVisibility(View.GONE);
                     confirmMeeting(array);
                     pd.dismiss();
                 } catch (JSONException e) {
