@@ -32,6 +32,15 @@ public class LocalPreference {
 
     }
 
+    public static void store_FirebaseToken(Context context,String firebaseToken) {
+
+        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.putString("firebaseToken", firebaseToken);
+        editor.commit();
+
+    }
+
 
 
     public static void LogOutUser(Context context, String out, Dialog dialog){
@@ -41,7 +50,6 @@ public class LocalPreference {
             editor.clear();
             editor.commit();
             dialog.cancel();
-
             Intent intent = new Intent(context, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
@@ -52,6 +60,12 @@ public class LocalPreference {
         sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
         String getToken = sharedPref.getString("token", "");
         return getToken;
+    }
+
+    public static String getFirebaseToken(Context context){
+        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        String firebaseToken = sharedPref.getString("firebaseToken", "");
+        return firebaseToken;
     }
 
     public static String getType(Context context){

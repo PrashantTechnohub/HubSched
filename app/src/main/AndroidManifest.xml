@@ -15,6 +15,27 @@
         android:theme="@style/Theme.MeetHall"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <service
+            android:name=".Firebase.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".Firebase.MyFirebaseInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <activity
+            android:name=".Ui.Dashboard.InMeetingActivity"
+            android:exported="false" />
         <activity
             android:name=".Ui.Dashboard.MeetingListActivity"
             android:exported="false" />

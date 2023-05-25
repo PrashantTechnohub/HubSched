@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "614066476945",
+    "firebase_url": "https://hubschedtest-default-rtdb.firebaseio.com",
     "project_id": "hubschedtest",
     "storage_bucket": "hubschedtest.appspot.com"
   },

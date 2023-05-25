@@ -1,7 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEETING_LIST_URL;
-
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -14,12 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.BookedSlotAdapter;
-import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Models.MeetingEmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.BookedSlotModel;
-import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
-import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
+import com.NakshatraTechnoHub.HubSched.Models.MeetingEmpListModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
@@ -31,6 +26,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.devstune.searchablemultiselectspinner.SearchableItem;
 import com.devstune.searchablemultiselectspinner.SelectionCompleteListener;
+
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -66,11 +62,13 @@ public class CreateMeetingActivity extends BaseActivity {
         roomName = getIntent().getStringExtra("roomName");
         roomId = getIntent().getStringExtra("roomId");
         selectedDate = getIntent().getStringExtra("selectedDate");
+
+
         pd = new ProgressDialog(this);
         pd.setMessage("Please wait ...");
         bind.progressBar.setVisibility(View.VISIBLE);
-
         bind.actionBar.setText("Booked Slots");
+
         getBookedSlotApiCall();
 
         bind.back.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +145,6 @@ public class CreateMeetingActivity extends BaseActivity {
             }
         });
 
-
-        //New
     }
 
 
@@ -399,6 +395,5 @@ public class CreateMeetingActivity extends BaseActivity {
 
         queue.add(objectRequest);
     }
-
 
 }

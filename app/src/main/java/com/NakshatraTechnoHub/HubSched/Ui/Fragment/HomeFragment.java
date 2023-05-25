@@ -19,6 +19,7 @@ import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateMeetingActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.InMeetingActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
 import com.android.volley.Request;
@@ -94,7 +95,7 @@ public class HomeFragment extends Fragment {
         bind.createMeetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity() .startActivity(new Intent(requireActivity(), CreateMeetingActivity.class));
+                getActivity() .startActivity(new Intent(requireActivity(), InMeetingActivity.class));
             }
         });
 

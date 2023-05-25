@@ -1,7 +1,17 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.chrisney.enigma'
+
 }
+
+enigma{
+    enabled = true
+    injectFakeKeys = true
+    enigma.srcJava = "com.NakshatraTechnoHub.HubSched.Api.AppConstant"
+}
+
+
 
 android {
     namespace 'com.NakshatraTechnoHub.HubSched'
@@ -41,6 +51,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -80,5 +92,9 @@ dependencies {
 
     //SearchableMultiSelectSpinner
     implementation 'com.github.telichada:SearchableMultiSelectSpinner:2.0'
+
+    //socket io
+    implementation 'io.socket:socket.io-client:1.0.0'
+
 
 }

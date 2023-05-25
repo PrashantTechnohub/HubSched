@@ -21,6 +21,8 @@ import com.android.volley.toolbox.Volley;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,12 +34,20 @@ public class LoginActivity extends BaseActivity {
 
     ProgressDialog loader;
 
+    String firebaseToken ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
+
+
+
+        firebaseToken = LocalPreference.getFirebaseToken(this);
+
+        Toast.makeText(this, firebaseToken, Toast.LENGTH_SHORT).show();
 
         loader = new ProgressDialog(LoginActivity.this);
         loader.setMessage("Please wait....");
@@ -77,6 +87,7 @@ public class LoginActivity extends BaseActivity {
         try {
             params.put("email", email);
             params.put("password", password);
+            params.put("firebaseToken", firebaseToken);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -128,10 +139,15 @@ public class LoginActivity extends BaseActivity {
                 loader.cancel();
 
                 try {
-                    if(error.networkResponse.statusCode == 500){
-                        String errorString = new String(error.networkResponse.data);
-                        Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                    if (error.networkResponse!= null){
+                        if(error.networkResponse.statusCode == 500){
+                            String errorString = new String(error.networkResponse.data);
+                            Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(LoginActivity.this, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
                     }
+
                 }catch (Exception e){
                     Log.e("CreateEMP", "onErrorResponse: ", e );
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

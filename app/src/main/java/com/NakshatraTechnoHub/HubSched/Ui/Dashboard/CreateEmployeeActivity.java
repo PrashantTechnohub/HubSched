@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateEmployeeBinding;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
 import com.android.volley.Request;
@@ -237,10 +238,16 @@ public class CreateEmployeeActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 try {
-                    if(error.networkResponse.statusCode == 500){
-                        String errorString = new String(error.networkResponse.data);
-                        pd.dismiss();
-                        Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
+
+                    if (error.networkResponse != null){
+                        if(error.networkResponse.statusCode == 500){
+                            String errorString = new String(error.networkResponse.data);
+                            pd.dismiss();
+                            Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }else{
+                        Toast.makeText(CreateEmployeeActivity.this, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
                     }
 
                 }catch (Exception e){
