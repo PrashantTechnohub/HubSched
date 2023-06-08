@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:src="@drawable/baseline_account_circle_24"/>
+        <TextView
+            android:layout_gravity="start"
+            android:id="@+id/textViewName"
+            android:text="Prashant Deshmukh"
+            android:maxWidth="@dimen/_190sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_500"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_gravity="start"
+        android:padding="@dimen/_12sdp"
+        android:id="@+id/textViewMessage"
+        android:text="Hii how are you kabhi kabhi mere dil me khayal ata hai bich  "
+        android:maxWidth="@dimen/_190sdp"
+        android:background="@drawable/chat_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp" />
+
+</LinearLayout>
