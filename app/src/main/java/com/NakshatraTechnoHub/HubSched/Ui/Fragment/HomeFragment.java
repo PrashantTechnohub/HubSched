@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
         bind.createMeetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity() .startActivity(new Intent(requireActivity(), InMeetingActivity.class));
+                getActivity() .startActivity(new Intent(requireActivity(), CreateMeetingActivity.class));
             }
         });
 

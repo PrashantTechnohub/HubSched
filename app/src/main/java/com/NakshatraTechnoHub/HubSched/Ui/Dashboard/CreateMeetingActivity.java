@@ -140,7 +140,6 @@ public class CreateMeetingActivity extends BaseActivity {
         bind.checkAvailabilityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pd.show();
                 setMeetingTimeApiCall();
             }
         });
@@ -263,10 +262,15 @@ public class CreateMeetingActivity extends BaseActivity {
                             bookedSlotList.add(model);
                             bind.progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
+                            bind.progressBar.setVisibility(View.GONE);
+
                             throw new RuntimeException(e);
                         }
                     }
                 } catch (JSONException e) {
+                    bind.progressBar.setVisibility(View.GONE);
+
+
                     throw new RuntimeException(e);
                 }
 
@@ -276,6 +280,7 @@ public class CreateMeetingActivity extends BaseActivity {
                 bookedSlotAdapter = new BookedSlotAdapter(CreateMeetingActivity.this, bookedSlotList);
                 bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
                 bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
+                bind.progressBar.setVisibility(View.GONE);
 
             }
         }, new Response.ErrorListener() {
@@ -283,11 +288,14 @@ public class CreateMeetingActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 try {
                     if (error.networkResponse.statusCode == 500) {
-                        pd.dismiss();
+                        bind.progressBar.setVisibility(View.GONE);
                         String errorString = new String(error.networkResponse.data);
                     }
 
                 } catch (Exception e) {
+                    bind.progressBar.setVisibility(View.GONE);
+
+
                     Log.e("CreateEMP", "onErrorResponse: ", e);
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -300,6 +308,8 @@ public class CreateMeetingActivity extends BaseActivity {
     }
 
     private void setMeetingTimeApiCall() {
+        pd.show();
+
         JSONObject params = new JSONObject();
         try {
             params.put("date", selectedDate);

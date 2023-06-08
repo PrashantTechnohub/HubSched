@@ -8,7 +8,19 @@ public class ScheduleMeetingModel {
     private int organiser_id;
     private int company_id;
     private List<Integer> employee_ids;
+
+    private String acceptance_status;
     private String startTime;
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     private String endTime;
     private String status;
     private String subject;
@@ -20,6 +32,15 @@ public class ScheduleMeetingModel {
 //        this.endTime = endTime;
 //        this.subject = subject;
 //    }
+
+
+    public String getAcceptance_status() {
+        return acceptance_status;
+    }
+
+    public void setAcceptance_status(String acceptance_status) {
+        this.acceptance_status = acceptance_status;
+    }
 
     public int get_id() {
         return _id;

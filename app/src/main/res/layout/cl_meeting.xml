@@ -34,6 +34,20 @@
             android:textSize="@dimen/_12sdp"
             android:text="Amole Tate"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:id="@+id/join_btn"
+                android:layout_height="@dimen/_24sdp"
+                android:textSize="@dimen/_8sdp"
+                app:cornerRadius="@dimen/_11sdp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:text="Join"/>
+        </RelativeLayout>
+
     </LinearLayout>
        <View
            android:layout_width="@dimen/_270sdp"

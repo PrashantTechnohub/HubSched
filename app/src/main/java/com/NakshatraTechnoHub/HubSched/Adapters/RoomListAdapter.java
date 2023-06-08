@@ -171,7 +171,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
 
 
-                        String toDate =   dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                        String toDate = (monthOfYear + 1)  + "/" + dayOfMonth  + "/" + year;
                         start = toDate ;
 
                         Intent intent = new Intent(view.getContext(), CreateMeetingActivity.class);
@@ -187,7 +187,6 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
             }
         });
-
 
 
     }

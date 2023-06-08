@@ -7,6 +7,8 @@
     <color name="purple_700">#2955D8 </color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#BF3D33</color>
+    <color name="red">#E80000</color>
+    <color name="green">#419E45</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background_page">#F5F7F8</color>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.NakshatraTechnoHub.HubSched.Firebase.MyFirebaseMessagingService;
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 
 public class LocalPreference {
@@ -12,39 +13,29 @@ public class LocalPreference {
     static SharedPreferences sharedPref;
     static SharedPreferences.Editor editor;
 
-    static String token;
-    public static void checkTypeToken(Context context,String type, String token) {
+    public static void storeUserDetail(Context context,String type, String token, String id) {
 
-        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         editor.putString("type", type);
         editor.putString("token", token);
+        editor.putString("_id", id);
         editor.commit();
 
     }
 
     public static void store_id(Context context,String _id) {
 
-        sharedPref = context.getSharedPreferences("_id",Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         editor.putString("_id", _id);
         editor.commit();
 
     }
 
-    public static void store_FirebaseToken(Context context,String firebaseToken) {
-
-        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
-        editor.putString("firebaseToken", firebaseToken);
-        editor.commit();
-
-    }
-
-
 
     public static void LogOutUser(Context context, String out, Dialog dialog){
-        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         if (out.equals("out")){
             editor.clear();
@@ -57,29 +48,38 @@ public class LocalPreference {
     }
 
     public static String getToken(Context context){
-        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         String getToken = sharedPref.getString("token", "");
         return getToken;
     }
 
+    public static void store_FirebaseToken(Context context,String firebaseToken) {
+
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.putString("firebaseToken", firebaseToken);
+        editor.commit();
+
+    }
     public static String getFirebaseToken(Context context){
-        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         String firebaseToken = sharedPref.getString("firebaseToken", "");
         return firebaseToken;
     }
 
     public static String getType(Context context){
-        sharedPref = context.getSharedPreferences("userTypeToken",Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         String getType = sharedPref.getString("type", "");
         return getType;
     }
 
     public static String get_Id(Context context){
-        sharedPref = context.getSharedPreferences("_id",Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);
         String getId = sharedPref.getString("_id", "");
         return getId;
     }
-
+    
 
 
 }

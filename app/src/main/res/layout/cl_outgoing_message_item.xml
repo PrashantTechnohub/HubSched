@@ -6,10 +6,13 @@
 
     <TextView
         android:layout_gravity="end"
+        android:textColor="@color/white"
         android:id="@+id/textViewMessage"
-        android:background="@drawable/chat_bubble"
+        android:text="Hii how are you kabhi kabhi mere dil me khayal ata hai bich  "
+        android:maxWidth="@dimen/_190sdp"
+        android:padding="@dimen/_12sdp"
+        android:background="@drawable/chat_bubble2"
         android:layout_width="wrap_content"
-        android:text="Hii hour are you "
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 

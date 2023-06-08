@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_10sdp"
+   android:layout_margin="@dimen/_10sdp"
     app:cardCornerRadius="@dimen/_14sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -25,12 +25,29 @@
                 android:text="Scheduled by  "/>
 
             <TextView
+                android:id="@+id/meet_orgName"
                 android:fontFamily="@font/montserrat_semibold"
                 android:layout_width="wrap_content"
                 android:textColor="@color/purple_500"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_12sdp"
                 android:text="Amole Tate"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/statusView"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="italic"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_6sdp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
         <View
@@ -53,9 +70,33 @@
                 android:text="Subject  "/>
 
             <TextView
+                android:id="@+id/meet_subject"
                 android:fontFamily="@font/montserrat_semibold"
                 android:layout_width="wrap_content"
-                android:textColor="#FF5722"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_10sdp"
+                android:text="Discusse New Project "/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="@dimen/_50sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_10sdp"
+                android:text="Time  "/>
+
+            <TextView
+                android:id="@+id/meet_time"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10sdp"
                 android:text="Discusse New Project "/>
@@ -75,9 +116,10 @@
                 android:text="Date  "/>
 
             <TextView
+                android:id="@+id/meet_date"
                 android:fontFamily="@font/montserrat_semibold"
                 android:layout_width="wrap_content"
-                android:textColor="#FF5722"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10sdp"
                 android:text="27 Aug 2023"/>
@@ -97,22 +139,29 @@
                 android:text="Location  "/>
 
             <TextView
+                android:id="@+id/meet_location"
                 android:fontFamily="@font/montserrat_semibold"
                 android:layout_width="wrap_content"
-                android:textColor="#FF5722"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10sdp"
                 android:text="3rd Floor, Room No. 05"/>
 
         </LinearLayout>
-
-        <LinearLayout
+        <View
+            android:layout_width="@dimen/_270sdp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:background="#AAAAAA" />
+        <LinearLayout
+            android:id="@+id/actionLlp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.google.android.material.button.MaterialButton
                 android:layout_width="@dimen/_70sdp"
+                android:id="@+id/meet_accept_btn"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="@dimen/_25sdp"
                 app:cornerRadius="@dimen/_14sdp"
@@ -121,11 +170,46 @@
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="@dimen/_70sdp"
+                android:id="@+id/meet_deny_btn"
+
                 android:layout_height="@dimen/_25sdp"
                 app:cornerRadius="@dimen/_14sdp"
                 android:textSize="@dimen/_7sdp"
                 android:backgroundTint="#FB0909"
                 android:text="Deny"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/actionLlp2"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+           <TextView
+               android:id="@+id/meetingCountView"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="@dimen/_10sdp"
+               android:fontFamily="@font/montserrat_regular"
+               android:textColor="#9E9E9E"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="@dimen/_70sdp"
+                    android:visibility="gone"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/meet_join_btn"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    app:cornerRadius="@dimen/_14sdp"
+                    android:textSize="@dimen/_7sdp"
+                    android:text="Join Now"/>
+
+            </RelativeLayout>
+
         </LinearLayout>
 
 

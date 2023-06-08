@@ -45,9 +45,7 @@ public class LoginActivity extends BaseActivity {
 
 
 
-        firebaseToken = LocalPreference.getFirebaseToken(this);
 
-        Toast.makeText(this, firebaseToken, Toast.LENGTH_SHORT).show();
 
         loader = new ProgressDialog(LoginActivity.this);
         loader.setMessage("Please wait....");
@@ -73,14 +71,23 @@ public class LoginActivity extends BaseActivity {
                     bind.passwordId.setError("Empty");
 
                 } else {
-                    loginUser(id, pwd);
+                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToken  = task.getResult();
+                            LocalPreference.store_FirebaseToken(LoginActivity.this, firebaseToken);
+                            loginUser(id, pwd, firebaseToken);
+                        } else {
+                            Log.w("FCM TOKEN", "Fetching FCM registration token failed", task.getException());
+                        }
+                    });
+
                 }
             }
         });
 
     }
 
-    private void loginUser(String email, String password) {
+    private void loginUser(String email, String password, String firebaseToken) {
 
         JSONObject params = new JSONObject();
 
@@ -100,23 +107,23 @@ public class LoginActivity extends BaseActivity {
                 try {
                     String token = response.getString("token");
                     String type = response.getString("type");
+                    String id = response.getString("_id");
+
+                    LocalPreference.storeUserDetail(LoginActivity.this,type, token, id);
 
                         if (type.equals("admin")) {
-                            LocalPreference.checkTypeToken(LoginActivity.this,type, token);
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
                             startActivity(intent);
                             loader.cancel();
                             finish();
                         } else if (type.equals("employee")) {
-                            LocalPreference.checkTypeToken(LoginActivity.this,type, token);
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
                             startActivity(intent);
                             loader.cancel();
                             finish();
                         }else if (type.equals("organiser")) {
-                            LocalPreference.checkTypeToken(LoginActivity.this,type, token);
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("type", type);
                             startActivity(intent);
@@ -163,7 +170,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences preferences = getSharedPreferences("userTypeToken", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("userDetails", MODE_PRIVATE);
 
         if (preferences.contains("token")){
             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
