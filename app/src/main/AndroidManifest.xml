@@ -25,7 +25,7 @@
             android:name=".Ui.ScannerDeviceDashboard.ScannerDeviceActivity"
             android:exported="false" />
         <activity
-            android:name=".Ui.PanetryDashboard.PanetryActivity"
+            android:name=".Ui.PantryDashboard.PantryActivity"
             android:exported="false" />
 
         <service

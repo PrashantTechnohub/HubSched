@@ -12,7 +12,7 @@ import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.BaseActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
-import com.NakshatraTechnoHub.HubSched.Ui.PanetryDashboard.PanetryActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.PantryDashboard.PantryActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
@@ -125,7 +125,7 @@ public class LoginActivity extends BaseActivity {
                         loader.cancel();
                         finish();
                     } else if (type.equals("panetry")) {
-                        Intent intent = new Intent(LoginActivity.this, PanetryActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, PantryActivity.class);
                         intent.putExtra("type", type);
                         startActivity(intent);
                         loader.cancel();

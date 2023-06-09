@@ -33,6 +33,9 @@ public class Constant {
     public static final String MEETING_LIST_URL = BASE_URL + "/meeting_list";
     public static final String GENERATE_QR_CODE_URL = BASE_URL + "/generate_scancode";
     public static final String ATTENDENCE_TEST_URL = BASE_URL + "/attendence_test";
+
+    public static final String PANTRY_RESPOND_REQUEST_URL = BASE_URL + "/respond_pantry_request";
+    public static final String PANTRY_REQUEST_URL = BASE_URL + "/request_pantry";
     public static final String POST_CONTENT_VIEW_URL = BASE_URL + "/contentView";
 
     public static String withToken(String url, Context context) {
