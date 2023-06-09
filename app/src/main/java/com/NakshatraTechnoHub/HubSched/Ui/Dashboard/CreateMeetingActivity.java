@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.BookedSlotAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.BookedSlotModel;
 import com.NakshatraTechnoHub.HubSched.Models.MeetingEmpListModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
@@ -44,7 +45,6 @@ public class CreateMeetingActivity extends BaseActivity {
     Calendar c = Calendar.getInstance();
     String roomName, roomId, selectedDate, startTime, endTime;
     JSONArray EmpIdList;
-    ArrayList<MeetingEmpListModel> empList = new ArrayList<>();
 
     ArrayList<BookedSlotModel> bookedSlotList = new ArrayList<>();
 
@@ -145,8 +145,6 @@ public class CreateMeetingActivity extends BaseActivity {
         });
 
     }
-
-
     private ArrayList<SearchableItem> getStringArray(JSONArray empList) {
         ArrayList<SearchableItem> stringArray = new ArrayList<>();
 
@@ -242,12 +240,10 @@ public class CreateMeetingActivity extends BaseActivity {
             params.put("date", selectedDate);
             params.put("startTime", startTime);
             params.put("endTime", endTime);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(CreateMeetingActivity.this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.MEETS_FOR_DATE_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -258,30 +254,23 @@ public class CreateMeetingActivity extends BaseActivity {
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = jsonArray.getJSONObject(i);
-                            BookedSlotModel model = new Gson().fromJson(jsonObject.toString(),BookedSlotModel.class);
+                            BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
                             bookedSlotList.add(model);
                             bind.progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             bind.progressBar.setVisibility(View.GONE);
-
                             throw new RuntimeException(e);
                         }
                     }
                 } catch (JSONException e) {
                     bind.progressBar.setVisibility(View.GONE);
-
-
                     throw new RuntimeException(e);
                 }
-
-
-
 
                 bookedSlotAdapter = new BookedSlotAdapter(CreateMeetingActivity.this, bookedSlotList);
                 bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
                 bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
                 bind.progressBar.setVisibility(View.GONE);
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -291,20 +280,15 @@ public class CreateMeetingActivity extends BaseActivity {
                         bind.progressBar.setVisibility(View.GONE);
                         String errorString = new String(error.networkResponse.data);
                     }
-
                 } catch (Exception e) {
                     bind.progressBar.setVisibility(View.GONE);
-
-
                     Log.e("CreateEMP", "onErrorResponse: ", e);
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
-        queue.add(objectRequest);
-
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
     private void setMeetingTimeApiCall() {
@@ -323,7 +307,6 @@ public class CreateMeetingActivity extends BaseActivity {
 
         //
 
-        RequestQueue queue = Volley.newRequestQueue(CreateMeetingActivity.this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.EMPLOYEE_LIST_FOR_MEET_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -357,7 +340,7 @@ public class CreateMeetingActivity extends BaseActivity {
             }
         });
 
-        queue.add(objectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
 
     }
 
@@ -377,7 +360,6 @@ public class CreateMeetingActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(CreateMeetingActivity.this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_MEETING_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -403,7 +385,7 @@ public class CreateMeetingActivity extends BaseActivity {
             }
         });
 
-        queue.add(objectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
 }

@@ -8,9 +8,9 @@ public class Constant {
 
     //    public static final String BASE_URL = "http://192.168.0.120:5000/meet"; //Jab Sir nahi rhange
 
-//    public static final String BASE_URL = "http://192.168.0.242:5000//meet";
-    public static final String BASE_URL = "http://192.168.0.183:5000//meet";
-    public static final String CHAT_URL = BASE_URL+"/send_message";
+    //    public static final String BASE_URL = "http://192.168.0.242:5000//meet";
+    public static final String BASE_URL = "http://192.168.0.183:5000/meet";
+    public static final String CHAT_URL = BASE_URL + "/send_message";
     public static final String LOGIN_URL = BASE_URL + "/login";
     public static final String MEET_ROOMS_URL = BASE_URL + "/rooms";
 
@@ -31,6 +31,8 @@ public class Constant {
     public static final String REMOVE_MEETING_URL = BASE_URL + "/create_room";
     public static final String EMP_STATUS_URL = BASE_URL + "/employee_status";
     public static final String MEETING_LIST_URL = BASE_URL + "/meeting_list";
+    public static final String GENERATE_QR_CODE_URL = BASE_URL + "/generate_scancode";
+    public static final String ATTENDENCE_TEST_URL = BASE_URL + "/attendence_test";
     public static final String POST_CONTENT_VIEW_URL = BASE_URL + "/contentView";
 
     public static String withToken(String url, Context context) {

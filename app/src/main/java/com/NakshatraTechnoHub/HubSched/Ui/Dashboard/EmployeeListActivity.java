@@ -11,6 +11,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.android.volley.Request;
@@ -126,7 +128,7 @@ public class EmployeeListActivity extends BaseActivity {
     }
 
     public void getEmpList() {
-        RequestQueue queue = Volley.newRequestQueue(this);
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,EmployeeListActivity.this), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -179,7 +181,7 @@ public class EmployeeListActivity extends BaseActivity {
         });
 
 
-        queue.add(jsonObjectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
     }
 

@@ -24,12 +24,12 @@
                 android:layout_width="@dimen/_75sdp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
-                android:text="Room ID  "
+                android:text="Room No  "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
             <TextView
-                android:id="@+id/room_id"
+                android:id="@+id/room_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"

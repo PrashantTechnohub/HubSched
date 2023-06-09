@@ -73,9 +73,11 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     @Override
     public void onBindViewHolder(@NonNull RoomListAdapter.RoomHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        String id = String.valueOf(roomList.get(position).getRoom_no());
+        String id = String.valueOf(roomList.get(position).get_id());
 
-        holder.roomId.setText(id);
+
+        holder.roomNo.setText(roomList.get(position).getRoom_no()+"");
+        holder.roomName.setText(roomList.get(position).getRoom_name());
         holder.roomName.setText(roomList.get(position).getRoom_name());
         holder.roomSeats.setText(roomList.get(position).getSeat_cap()+"");
         holder.roomFloor.setText(roomList.get(position).getFloor_no());
@@ -161,7 +163,9 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         holder.setMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String id = String.valueOf(roomList.get(position).get_id());
 
+                Toast.makeText(view.getContext(), id, Toast.LENGTH_SHORT).show();
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
 
@@ -200,7 +204,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
                     String status=    response.getString("message");
                     Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
 
-
+                    notifyDataSetChanged();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -210,7 +214,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                notifyDataSetChanged();
+
                 try {
                     if(error.networkResponse.statusCode == 500){
                         String errorString = new String(error.networkResponse.data);
@@ -236,7 +240,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
     public class RoomHolder extends RecyclerView.ViewHolder {
 
-        TextView roomId, roomName, roomSeats, roomFacilities, roomFloor, view;
+        TextView roomNo, roomName, roomSeats, roomFacilities, roomFloor, view;
 
         MaterialButton setMeeting, removeRoom;
 
@@ -244,7 +248,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         public RoomHolder(@NonNull View room) {
             super(room);
 
-            roomId = room.findViewById(R.id.room_id);
+            roomNo = room.findViewById(R.id.room_no);
             roomName = room.findViewById(R.id.room_name);
             roomSeats = room.findViewById(R.id.room_seats);
             roomFacilities = room.findViewById(R.id.room_facilities);

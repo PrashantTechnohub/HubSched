@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
@@ -72,7 +73,7 @@ public class RoomListActivity extends BaseActivity {
     }
 
     private void getRoomList() {
-        RequestQueue queue = Volley.newRequestQueue(this);
+
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEET_ROOMS_URL,RoomListActivity.this), null, new Response.Listener<JSONArray>() {
             @Override
@@ -114,6 +115,6 @@ public class RoomListActivity extends BaseActivity {
             }
         });
 
-        queue.add(jsonArrayRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
     }
 }

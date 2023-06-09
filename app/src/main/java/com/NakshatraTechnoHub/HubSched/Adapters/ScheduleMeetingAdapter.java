@@ -1,22 +1,37 @@
 package com.NakshatraTechnoHub.HubSched.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Interface.MeetingInterface;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.InMeetingActivity;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.button.MaterialButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,7 +42,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeetingAdapter.ViewHolder> {
-
+    ProgressDialog pd;
+    Bitmap qrCodeBitmap;
     static MeetingInterface mHandler;
     Context context;
     ArrayList<ScheduleMeetingModel> list;
@@ -50,6 +66,9 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleMeetingAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        pd = new ProgressDialog(context);
+        pd.setMessage("Please Wait ...");
 
         String inputDate = list.get(position).getDate();
         SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
@@ -104,7 +123,78 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
             }
         });
 
+        holder.joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                String meetId =String.valueOf(list.get(position).get_id());
+                String companyId =String.valueOf(list.get(position).getCompany_id());
+                String subject =String.valueOf(list.get(position).getSubject());
+                String startTime =String.valueOf(list.get(position).getStartTime());
+                String endTime =String.valueOf(list.get(position).getEndTime());
+                generateQrCode(meetId, companyId, subject, startTime, endTime);
+            }
+        });
+
+
+    }
+
+    private Bitmap generateQrCode(String getMeetId, String companyId, String subject, String startTime, String endTime) {
+        pd.show();
+        JSONObject params = new JSONObject();
+
+        try {
+            params.put("meetId",Integer.parseInt(getMeetId));
+
+        } catch (JSONException e) {
+            pd.dismiss();
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.GENERATE_QR_CODE_URL, context), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Intent intent = new Intent(context, InMeetingActivity.class);
+                intent.putExtra("response", response.toString());
+                intent.putExtra("meetId", getMeetId);
+                intent.putExtra("companyId", companyId);
+                intent.putExtra("subject", subject);
+                intent.putExtra("startTime", startTime);
+                intent.putExtra("endTime", endTime);
+                context.startActivity(intent);
+                pd.dismiss();
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+                try {
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 500) {
+                            pd.dismiss();
+                            String errorString = new String(error.networkResponse.data);
+                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+
+                        Toast.makeText(context, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    pd.dismiss();
+                    Log.e("CreateEMP", "onErrorResponse: ", e);
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        VolleySingleton.getInstance(context).addToRequestQueue(request);
+
+        return qrCodeBitmap;
     }
 
     private static void fetchMeetingTimeStatus(String date, String startTime, String endTime, TextView countdownTimerView, MaterialButton joinBtn, Context context) {
@@ -182,6 +272,8 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
             countdownTimerView.setTextColor(context.getResources().getColor(R.color.red));
         } else if (currentDateTime.equals(meetingStartTime) || (currentDateTime.after(meetingStartTime) && currentDateTime.before(meetingEndTime))) {
             // Meeting is ongoing
+            joinBtn.setVisibility(View.VISIBLE); // Set join button visibility to VISIBLE
+
             countdownTimerView.setText("Meeting is ongoing.");
             countdownTimerView.setTextColor(context.getResources().getColor(R.color.green));
         }

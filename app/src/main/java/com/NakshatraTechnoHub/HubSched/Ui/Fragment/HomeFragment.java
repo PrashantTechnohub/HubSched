@@ -2,24 +2,24 @@ package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.NakshatraTechnoHub.HubSched.Adapters.RoomListAdapter;
 import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
+import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateMeetingActivity;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.InMeetingActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
 import com.android.volley.Request;
@@ -32,8 +32,6 @@ import com.android.volley.toolbox.Volley;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
-import com.NakshatraTechnoHub.HubSched.Adapters.RoomListAdapter;
-import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -58,7 +56,6 @@ public class HomeFragment extends Fragment {
     NavigationView navigationView;
     MaterialToolbar toolbar;
 
-    RequestQueue requestQueue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,12 +63,11 @@ public class HomeFragment extends Fragment {
 
         toolbar = (MaterialToolbar) requireActivity().findViewById(R.id.topAppBar);
         navigationView = requireActivity().findViewById(R.id.navigation_view);
-        String type =  LocalPreference.getType(requireContext());
-        requestQueue = Volley.newRequestQueue(requireActivity());
+        String type = LocalPreference.getType(requireContext());
 
         if (type.equals("admin")) {
             adminFunction();
-        } else if (type.equals("employee")) {
+        } else if (type.equals("employee") || type.equals("scanner")) {
             employeeFunction();
         } else if (type.equals("organiser")) {
             organizerFunction();
@@ -91,11 +87,10 @@ public class HomeFragment extends Fragment {
         });
 
 
-
         bind.createMeetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity() .startActivity(new Intent(requireActivity(), CreateMeetingActivity.class));
+                getActivity().startActivity(new Intent(requireActivity(), CreateMeetingActivity.class));
             }
         });
 
@@ -116,7 +111,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-
         ImageSlider imageSlider = bind.imageSlider;
         List<SlideModel> slideModels = new ArrayList<>();
         slideModels.add(new SlideModel("https://img.freepik.com/free-photo/group-diverse-people-having-business-meeting_53876-25060.jpg", ScaleTypes.FIT));
@@ -124,7 +118,6 @@ public class HomeFragment extends Fragment {
         slideModels.add(new SlideModel("https://www.incimages.com/uploaded_files/image/1920x1080/getty_473909426_129584.jpg", ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://lexpeeps.in/wp-content/uploads/2020/05/1024px-Secretary_Kerry_Hosts_the_Quarterly_Millennium_Challenge_Corp_MCC_Board_of_Directors_Meeting-1024x425.jpg", ScaleTypes.FIT));
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
-
 
 
         return bind.getRoot();
@@ -137,7 +130,7 @@ public class HomeFragment extends Fragment {
         bind.userViewLayout.setVisibility(View.GONE);
         bind.adminViewLayout.setVisibility(View.VISIBLE);
 
-        if (bind.refresh.isRefreshing()){
+        if (bind.refresh.isRefreshing()) {
             bind.refresh.setRefreshing(false);
             Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
         }
@@ -162,14 +155,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(JSONArray response) {
 
-                for (int i = 0; i<response.length(); i++){
+                for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject object = response.getJSONObject(i);
-                        RoomListModel model = new Gson().fromJson(object.toString(),RoomListModel.class);
+                        RoomListModel model = new Gson().fromJson(object.toString(), RoomListModel.class);
 
                         roomList.add(model);
 
-                        if (bind.refresh.isRefreshing()){
+                        if (bind.refresh.isRefreshing()) {
                             bind.refresh.setRefreshing(false);
                             Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
                         }
@@ -186,11 +179,11 @@ public class HomeFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Room List Error", "onErrorResponse: " +error);
+                Log.d("Room List Error", "onErrorResponse: " + error);
             }
         });
 
-        requestQueue.add(arrayRequest);
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(arrayRequest);
 
     }
 
@@ -223,23 +216,23 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.d("res", "onResponse: "+response);
+                Log.d("res", "onResponse: " + response);
 
                 try {
-                    JSONArray meeting =response.getJSONArray("scheduleMeeting");
+                    JSONArray meeting = response.getJSONArray("scheduleMeeting");
                     list.clear();
 
 
-                    for (int i=0;i<meeting.length();i++){
-                        JSONObject object=meeting.getJSONObject(i);
-                        ScheduleMeetingModel model = new Gson().fromJson(object.toString(),ScheduleMeetingModel.class);
+                    for (int i = 0; i < meeting.length(); i++) {
+                        JSONObject object = meeting.getJSONObject(i);
+                        ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
                         list.add(model);
                         bind.refresh.setRefreshing(false);
 
 
                     }
 
-                    if (bind.refresh.isRefreshing()){
+                    if (bind.refresh.isRefreshing()) {
                         bind.refresh.setRefreshing(false);
                     }
 
@@ -247,7 +240,6 @@ public class HomeFragment extends Fragment {
                     bind.scheduleMeetingRecyclerView.setAdapter(adapter);
                     bind.scheduleMeetingRecyclerView.invalidate();
                     bind.scheduleMeetingRecyclerView.removeAllViews();
-
 
 
                 } catch (JSONException e) {
@@ -263,7 +255,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        requestQueue.add(jsonObjectRequest);
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
 
     }
 

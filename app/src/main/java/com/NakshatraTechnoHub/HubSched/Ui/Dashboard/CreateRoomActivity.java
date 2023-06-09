@@ -17,6 +17,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateRoomBinding;
 import com.android.volley.Request;
@@ -231,7 +232,7 @@ public class CreateRoomActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(CreateRoomActivity.this);
+
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_ROOM_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -254,7 +255,7 @@ public class CreateRoomActivity extends BaseActivity {
             }
         });
 
-        queue.add(objectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
     @SuppressLint("SetTextI18n")

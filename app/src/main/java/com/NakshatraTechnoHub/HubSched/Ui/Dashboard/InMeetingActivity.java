@@ -1,36 +1,34 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ChatAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.MessageModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.QRCodeGeneratorUtil;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,30 +47,36 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class InMeetingActivity extends AppCompatActivity {
-
     private Socket socket;
-    private CountDownTimer countDownTimer;
     private List<MessageModel> messageList;
-
     EditText msg;
-     ChatAdapter chatAdapter;
-    ImageView buttonSend;
+    ChatAdapter chatAdapter;
+    ImageView buttonSend, moreBtn;
     TextView timeLeft, subjectView;
     RecyclerView recyclerViewChat;
+    String meetId, companyId, subject, startTime, endTime,response;
 
-    String meetId, companyId, subject, startTime, endTime;
+    //__________________________________
+    ImageView qrCodeView;
+    RelativeLayout inMeetingLayout, qrCodeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_meeting);
 
-
         timeLeft = findViewById(R.id.time_left);
         msg = findViewById(R.id.editTextMessage);
         recyclerViewChat = findViewById(R.id.recyclerViewChat);
         buttonSend = findViewById(R.id.buttonSend);
         subjectView = findViewById(R.id.subject);
+        qrCodeView = findViewById(R.id.qr_code_image);
+        moreBtn = findViewById(R.id.more_btn);
+
+        inMeetingLayout = findViewById(R.id.InMeetingRL);
+        qrCodeLayout = findViewById(R.id.qrCodeRL);
+
+
 
         messageList = new ArrayList<>();
 
@@ -80,43 +84,86 @@ public class InMeetingActivity extends AppCompatActivity {
 
         chatAdapter = new ChatAdapter(messageList, getUserId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setReverseLayout(true); // Set reverse layout
         layoutManager.setStackFromEnd(true);
         recyclerViewChat.setLayoutManager(layoutManager);
         recyclerViewChat.setAdapter(chatAdapter);
-        Intent intent = getIntent();
 
-
+        Intent intent = getIntent() ;
         meetId = intent.getStringExtra("meetId");
         companyId = intent.getStringExtra("companyId");
         subject = intent.getStringExtra("subject");
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+        response = getIntent().getStringExtra("response");
+
+
         subjectView.setText(subject);
 
-        buttonSend.setOnClickListener(new View.OnClickListener() {
+        buttonSend.setOnClickListener(v -> sendMessage());
+        moreBtn.setOnClickListener(view -> moreOptions());
+        generateQrCode();
+        startSocketConnection();
+        startCountdownTimer(endTime);
+    }
+
+    private void moreOptions() {
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(InMeetingActivity.this, R.style.MaterialAlertDialog_Rounded);
+        LayoutInflater inflater1 = (LayoutInflater) InMeetingActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View team = inflater1.inflate(R.layout.cl_in_meeting_more_option, null);
+        builder.setView(team);
+
+        TextView showQrBtn = team.findViewById(R.id.show_qr_menu_btn);
+        TextView panetryBtn = team.findViewById(R.id.panetry_menu_btn);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+
+        showQrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                sendMessage();
+            public void onClick(View view) {
+                inMeetingLayout.setVisibility(View.GONE);
+                qrCodeLayout.setVisibility(View.VISIBLE);
+                dialog.dismiss();
             }
         });
 
-        startCountdownTimer(startTime, endTime); // Start the countdown timer with 30 minutes duration
+        panetryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
+
+
+
+
+
+    }
+
+    private void generateQrCode() {
+
+        if (this.response != null){
+            Bitmap code =  QRCodeGeneratorUtil.generateQRCode(this.response);
+            qrCodeView.setImageBitmap(code);
+        }
+
+    }
+
+    private void startSocketConnection() {
         try {
             socket = IO.socket("http://192.168.0.182:5000/");
             socket.connect();
 
             socket.on(Socket.EVENT_CONNECT, args -> {
-                // Connected to the server
                 Log.d("Socket", "Connected");
 
             }).on(Socket.EVENT_DISCONNECT, args -> {
-                // Disconnected from the server
                 Log.d("Socket", "Disconnected");
-
-
-            }).on("chat-" +meetId +"-"+ companyId, args -> {
+                
+            }).on("chat-" + meetId + "-" + companyId, args -> {
 
                 JSONObject data = (JSONObject) args[0];
 
@@ -140,28 +187,26 @@ public class InMeetingActivity extends AppCompatActivity {
                     }
 
                 }
+            }).on("qr-verification",args -> {
+                
+                qrCodeLayout.setVisibility(View.GONE);
+                inMeetingLayout.setVisibility(View.VISIBLE);
+                
+                
             });
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
-
-
-
-
-    private void startCountdownTimer(String startTimeString, String endTimeString) {
+    private void startCountdownTimer(String endTimeString) {
 
 // Define the date format for parsing the time strings
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
         try {
-            // Parse the start time string
-            Date startTime = timeFormat.parse(startTimeString);
 
             // Parse the end time string
             Date endTime = timeFormat.parse(endTimeString);
@@ -176,15 +221,12 @@ public class InMeetingActivity extends AppCompatActivity {
             // Create a CountDownTimer for the remaining time
             new CountDownTimer(remainingTimeMillis, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    long remainingMinutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
-                    String remainingTime = String.format(Locale.getDefault(), "%02d:%02d",
-                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60);
+                    String remainingTime = String.format(Locale.getDefault(), "%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisUntilFinished), TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60);
                     timeLeft.setText(remainingTime);
                 }
 
                 public void onFinish() {
-                    timeLeft.setText("00:00");
+                    timeLeft.setText(R.string.meeting_is_over);
                 }
             }.start();
         } catch (ParseException e) {
@@ -204,27 +246,15 @@ public class InMeetingActivity extends AppCompatActivity {
 
         JSONObject jsonMessage = new JSONObject();
         try {
-            jsonMessage.put("meetId",meetId );
+            jsonMessage.put("meetId", meetId);
             jsonMessage.put("message", message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CHAT_URL, getApplicationContext()), jsonMessage,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("MSG11", "onResponse: Done");
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("MSG11", "onResponse: " + error.getMessage());
-                    }
-                });
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CHAT_URL, getApplicationContext()), jsonMessage, response -> Log.d("MSG11", "onResponse: Done"), error -> Log.d("MSG11", "onResponse: " + error.getMessage()));
 
-        Volley.newRequestQueue(this).add(request);
+        VolleySingleton.getInstance(this).addToRequestQueue(request);
     }
 
     @Override

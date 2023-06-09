@@ -96,5 +96,13 @@ dependencies {
     //socket io
     implementation 'io.socket:socket.io-client:2.0.0'
 
+    //Qr code generator
+
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
+
 
 }

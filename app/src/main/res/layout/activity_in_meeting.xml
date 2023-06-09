@@ -8,7 +8,8 @@
     tools:context=".Ui.Dashboard.InMeetingActivity">
 
     <RelativeLayout
-        android:id="@+id/emp_action_bar"
+        android:id="@+id/InMeetingRL"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
@@ -21,11 +22,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/exit_meeting"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:id="@+id/more_btn"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/baseline_exit_to_app_24" />
+            android:src="@drawable/baseline_menu_24" />
 
         <TextView
             android:id="@+id/actionBar"
@@ -202,6 +205,67 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/qrCodeRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <ImageView
+            android:id="@+id/hubsched"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/_75sdp"
+            android:scaleType="centerCrop"
+            android:layout_height="@dimen/_75sdp"
+            android:src="@drawable/hubsched12"/>
+
+
+
+        <TextView
+            android:layout_below="@id/hubsched"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:id="@+id/text1"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Scan QR Code"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp" />
+
+        <TextView
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:id="@+id/text2"
+            android:gravity="center"
+            android:layout_below="@id/text1"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Scan this code to verify your profile"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16sdp" />
+
+
+        <ImageView
+            android:id="@+id/qr_code_image"
+            android:layout_below="@id/text2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="@dimen/_280sdp" />
+
+
+    </RelativeLayout>
 
 
 

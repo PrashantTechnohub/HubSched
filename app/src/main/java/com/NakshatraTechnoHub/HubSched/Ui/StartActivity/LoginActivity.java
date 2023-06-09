@@ -1,7 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.StartActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,18 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.BaseActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.PanetryDashboard.PanetryActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -34,7 +32,7 @@ public class LoginActivity extends BaseActivity {
 
     ProgressDialog loader;
 
-    String firebaseToken ;
+    String firebaseToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +40,6 @@ public class LoginActivity extends BaseActivity {
         bind = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
-
-
-
 
 
         loader = new ProgressDialog(LoginActivity.this);
@@ -56,7 +51,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
 
                 loader.show();
-                
+
                 String id = bind.emailId.getText().toString();
                 String pwd = bind.passwordId.getText().toString();
 
@@ -73,7 +68,7 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            firebaseToken  = task.getResult();
+                            firebaseToken = task.getResult();
                             LocalPreference.store_FirebaseToken(LoginActivity.this, firebaseToken);
                             loginUser(id, pwd, firebaseToken);
                         } else {
@@ -109,27 +104,39 @@ public class LoginActivity extends BaseActivity {
                     String type = response.getString("type");
                     String id = response.getString("_id");
 
-                    LocalPreference.storeUserDetail(LoginActivity.this,type, token, id);
+                    LocalPreference.storeUserDetail(LoginActivity.this, type, token, id);
 
-                        if (type.equals("admin")) {
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            intent.putExtra("type", type);
-                            startActivity(intent);
-                            loader.cancel();
-                            finish();
-                        } else if (type.equals("employee")) {
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            intent.putExtra("type", type);
-                            startActivity(intent);
-                            loader.cancel();
-                            finish();
-                        }else if (type.equals("organiser")) {
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            intent.putExtra("type", type);
-                            startActivity(intent);
-                            loader.cancel();
-                            finish();
-                        }
+                    if (type.equals("admin")) {
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("type", type);
+                        startActivity(intent);
+                        loader.cancel();
+                        finish();
+                    } else if (type.equals("employee")) {
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("type", type);
+                        startActivity(intent);
+                        loader.cancel();
+                        finish();
+                    } else if (type.equals("organiser")) {
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("type", type);
+                        startActivity(intent);
+                        loader.cancel();
+                        finish();
+                    } else if (type.equals("panetry")) {
+                        Intent intent = new Intent(LoginActivity.this, PanetryActivity.class);
+                        intent.putExtra("type", type);
+                        startActivity(intent);
+                        loader.cancel();
+                        finish();
+                    } else if (type.equals("scanner")) {
+                        Intent intent = new Intent(LoginActivity.this, ScannerDeviceActivity.class);
+                        intent.putExtra("type", type);
+                        startActivity(intent);
+                        loader.cancel();
+                        finish();
+                    }
 
 
                 } catch (JSONException e) {
@@ -146,25 +153,25 @@ public class LoginActivity extends BaseActivity {
                 loader.cancel();
 
                 try {
-                    if (error.networkResponse!= null){
-                        if(error.networkResponse.statusCode == 500){
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 500) {
                             String errorString = new String(error.networkResponse.data);
                             Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(LoginActivity.this, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
                     }
 
-                }catch (Exception e){
-                    Log.e("CreateEMP", "onErrorResponse: ", e );
+                } catch (Exception e) {
+                    Log.e("CreateEMP", "onErrorResponse: ", e);
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-        requestQueue.add(request);
+        VolleySingleton.getInstance(this).addToRequestQueue(request);
+
     }
 
     @Override
@@ -172,8 +179,14 @@ public class LoginActivity extends BaseActivity {
         super.onStart();
         SharedPreferences preferences = getSharedPreferences("userDetails", MODE_PRIVATE);
 
-        if (preferences.contains("token")){
+        if (preferences.contains("type")) {
             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        if (LocalPreference.getType(LoginActivity.this).equals("scanner")) {
+            Intent intent = new Intent(LoginActivity.this, ScannerDeviceActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

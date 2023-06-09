@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateEmployeeBinding;
@@ -28,14 +29,14 @@ public class CreateEmployeeActivity extends BaseActivity {
     ProgressDialog pd;
 
     ArrayAdapter<String> positionAdapter;
-    String []positionItem = {"Organizer", "HR", "Manager", "Designer", "Tester", "Sales Manager", "Software Engineer", "Android Developer", "Web Developer", "Accountant", "Digital Marketer"};
+    String []positionItem = {"Organizer", "HR", "Manager", "Designer", "Tester", "Sales Manager", "Software Engineer", "Android Developer", "Web Developer", "Accountant", "Digital Marketer", "Panetry", "Scanner Device"};
 
     ArrayAdapter<String> genderAdapter;
     String []genderItem = {"Male", "Female"};
 
 
     ArrayAdapter<String> updateUserType;
-    String []userTypeList = {"Employee", "Organizer", "Admin"};
+    String []userTypeList = {"Admin", "Organizer", "Employee", "Panetry", "Scanner Device"};
 
     ActivityCreateEmployeeBinding bind;
 
@@ -176,7 +177,15 @@ public class CreateEmployeeActivity extends BaseActivity {
                         }
                         if (user_type.equals("Admin")){
                             user_type = "2";
+                        }
 
+
+                        if (user_type.equals("Scanner Device")){
+                            user_type = "-1";
+                        }
+
+                        if (user_type.equals("Panetry")){
+                            user_type = "-2";
                         }
 
                         addEmployee(empId, name, email, mobile, gender, position, password, user_type);
@@ -219,7 +228,7 @@ public class CreateEmployeeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(CreateEmployeeActivity.this);
+
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.UPDATE_PROFILE_URL, CreateEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -259,7 +268,7 @@ public class CreateEmployeeActivity extends BaseActivity {
             }
         });
 
-        queue.add(objectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
     private void updateEmployee(String userType ,String id, String empId, String name, String email, String mobile, String gender, String position, String password) {
@@ -281,7 +290,7 @@ public class CreateEmployeeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(CreateEmployeeActivity.this);
+
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, Constant.withToken(Constant.EMPLOYEE_UPDATE_URL, CreateEmployeeActivity.this),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -314,7 +323,7 @@ public class CreateEmployeeActivity extends BaseActivity {
             }
         });
 
-        queue.add(objectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
 
     }
 
@@ -337,7 +346,7 @@ public class CreateEmployeeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        RequestQueue queue = Volley.newRequestQueue(CreateEmployeeActivity.this);
+
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_EMP_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
@@ -361,7 +370,6 @@ public class CreateEmployeeActivity extends BaseActivity {
                         String errorString = new String(error.networkResponse.data);
                         Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
                     }
-
                     Log.e("CreateEMP", "onErrorResponse: ", error );
                 }catch (Exception e){
                     Log.e("CreateEMP", "onErrorResponse: ", e );
@@ -374,7 +382,7 @@ public class CreateEmployeeActivity extends BaseActivity {
 
 
 
-        queue.add(objectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
         
     }
 }

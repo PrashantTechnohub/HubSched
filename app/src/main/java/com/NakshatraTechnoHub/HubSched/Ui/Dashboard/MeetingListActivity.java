@@ -10,6 +10,7 @@ import android.view.View;
 import com.NakshatraTechnoHub.HubSched.Adapters.EmpListAdapter;
 import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
@@ -46,7 +47,7 @@ public class MeetingListActivity extends BaseActivity {
     }
 
     private void getMeetingList() {
-        RequestQueue queue = Volley.newRequestQueue(MeetingListActivity.this);
+
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEETING_LIST_URL, MeetingListActivity.this), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -75,7 +76,7 @@ public class MeetingListActivity extends BaseActivity {
             }
         });
 
-        queue.add(arrayRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(arrayRequest);
 
     }
 

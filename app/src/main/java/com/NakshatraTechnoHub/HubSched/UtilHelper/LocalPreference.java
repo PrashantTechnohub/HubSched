@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Firebase.MyFirebaseMessagingService;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
@@ -93,8 +94,7 @@ public class LocalPreference {
             });
 
 
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(request);
+            VolleySingleton.getInstance(context).addToRequestQueue(request);
 
         }
     }

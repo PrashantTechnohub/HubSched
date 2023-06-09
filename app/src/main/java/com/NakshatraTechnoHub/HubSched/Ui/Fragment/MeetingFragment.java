@@ -17,9 +17,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Interface.MeetingInterface;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentMeetingBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -67,7 +69,7 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
     }
 
     private void getMeetingList() {
-        RequestQueue queue = Volley.newRequestQueue(requireContext());
+
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEETING_LIST_URL, requireContext()), null, new Response.Listener<JSONArray>() {
             @Override
@@ -104,7 +106,8 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
             }
         });
 
-        queue.add(arrayRequest);
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(arrayRequest);
+
 
     }
 
@@ -143,8 +146,7 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
         });
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(request);
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(request);
 
     }
 }
