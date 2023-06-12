@@ -82,7 +82,6 @@ public class EditContentActivity extends BaseActivity {
                     throw new RuntimeException(e);
                 }
 
-                jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Constant.POST_CONTENT_VIEW_URL, object, response -> Toast.makeText(EditContentActivity.this, "done", Toast.LENGTH_SHORT).show(), error -> HelperUtil.ShowResponseDialog(error.getMessage(), EditContentActivity.this));
             }
         });
 

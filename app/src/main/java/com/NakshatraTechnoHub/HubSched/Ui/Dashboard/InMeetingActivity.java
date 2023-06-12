@@ -133,7 +133,12 @@ public class InMeetingActivity extends AppCompatActivity {
         panetryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(InMeetingActivity.this, PantryOrderActivity.class);
+                intent.putExtra("meetId", meetId);
+                intent.putExtra("companyId", companyId);
 
+                startActivity(intent);
+                dialog.dismiss();
             }
         });
 
