@@ -1,14 +1,17 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.PantryItemListAdapter;
@@ -32,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PantryOrderActivity extends AppCompatActivity  {
+public class PantryOrderActivity extends AppCompatActivity implements PantryItemListAdapter.OrderListener  {
 
     private List<PantryItemModel> itemList;
     private RecyclerView recyclerView;
@@ -69,12 +72,97 @@ public class PantryOrderActivity extends AppCompatActivity  {
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onOrderPlace(selectedItems);
+                List<OrderPlaceModel> selectedItems = adapter.getSelectedItems();
+                showSelectedItemsDialog(selectedItems);
             }
         });
 
 
     }
+
+
+    private void showSelectedItemsDialog(List<OrderPlaceModel> selectedItems) {
+        // Create a dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+
+        // Inflate the dialog layout
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_selected_items, null);
+        builder.setView(dialogView);
+
+        // Get references to dialog views
+        TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
+        TextView contentTextView = dialogView.findViewById(R.id.dialog_content);
+
+        // Set dialog title
+        titleTextView.setText("Selected Items");
+
+        // Prepare the content string with selected items
+        StringBuilder contentBuilder = new StringBuilder();
+        for (OrderPlaceModel item : selectedItems) {
+            contentBuilder.append(item.getItemName()).append(" - ").append(item.getQuantity()).append("\n");
+        }
+        String content = contentBuilder.toString().trim();
+
+        // Set the content text
+        contentTextView.setText(content);
+
+        builder.setPositiveButton("Place Order", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                postSelectedItems(selectedItems);
+            }
+        });
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+
+    }
+
+    private void postSelectedItems(List<OrderPlaceModel> selectedItems) {
+        // Create a JSON object for the request body
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("meetId", "your_meet_id");
+
+            // Create a JSON array for the items
+            JSONArray itemsArray = new JSONArray();
+            for (OrderPlaceModel item : selectedItems) {
+                JSONObject itemObject = new JSONObject();
+//
+                itemObject.put("itemName", item.getItemName());
+                itemObject.put("quantity", item.getQuantity());
+                itemObject.put("additionalInfo", item.getDescription());
+                itemsArray.put(itemObject);
+            }
+            requestBody.put("items", itemsArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Create a Volley request
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.PANTRY_REQUEST_URL,PantryOrderActivity.this), requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response
+                        // Display success message or perform any other action
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle the error
+                        // Display error message or perform any other action
+                    }
+                });
+
+
+    }
+
 
     private void getItemList() {
         itemList = new ArrayList<>();
@@ -99,43 +187,9 @@ public class PantryOrderActivity extends AppCompatActivity  {
     }
 
 
-    public void onOrderPlace(List<OrderPlaceModel> selectedItems) {
-        JSONArray jsonArray = new JSONArray();
-        pd.show();
 
-        for (OrderPlaceModel item : selectedItems) {
-            try {
-                JSONObject jsonItem = new JSONObject();
-                jsonItem.put("meetId", item.getMeetId());
-                jsonItem.put("item", item.getItemName());
-                jsonItem.put("quantity", item.getQuantity());
-                jsonItem.put("description", item.getDescription());
-                jsonArray.put(jsonItem);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        // Create a request using Volley to post the JSON array
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, Constant.withToken(Constant.PANTRY_REQUEST_URL, PantryOrderActivity.this), jsonArray,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        pd.dismiss();
-                        // Handle the response
-                        Toast.makeText(PantryOrderActivity.this, "Ordered done !", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle the error
-                        pd.dismiss();
-                        Toast.makeText(PantryOrderActivity.this, "Failed to ordered !!", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onOrderListUpdated(List<OrderPlaceModel> selectedItems) {
 
-                    }
-                });
-
-        // Add the request to the Volley request queue
-        VolleySingleton.getInstance(PantryOrderActivity.this).addToRequestQueue(request);
     }
 }

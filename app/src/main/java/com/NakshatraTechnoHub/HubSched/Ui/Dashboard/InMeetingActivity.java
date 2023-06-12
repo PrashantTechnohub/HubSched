@@ -1,6 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,7 +41,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -55,7 +53,7 @@ public class InMeetingActivity extends AppCompatActivity {
     ImageView buttonSend, moreBtn;
     TextView timeLeft, subjectView;
     RecyclerView recyclerViewChat;
-    String meetId, companyId, subject, startTime, endTime,response;
+    String meetId, companyId, subject, startTime, endTime, response;
 
     //__________________________________
     ImageView qrCodeView;
@@ -78,7 +76,6 @@ public class InMeetingActivity extends AppCompatActivity {
         qrCodeLayout = findViewById(R.id.qrCodeRL);
 
 
-
         messageList = new ArrayList<>();
 
         String getUserId = LocalPreference.get_Id(InMeetingActivity.this);
@@ -89,7 +86,7 @@ public class InMeetingActivity extends AppCompatActivity {
         recyclerViewChat.setLayoutManager(layoutManager);
         recyclerViewChat.setAdapter(chatAdapter);
 
-        Intent intent = getIntent() ;
+        Intent intent = getIntent();
         meetId = intent.getStringExtra("meetId");
         companyId = intent.getStringExtra("companyId");
         subject = intent.getStringExtra("subject");
@@ -103,8 +100,26 @@ public class InMeetingActivity extends AppCompatActivity {
         buttonSend.setOnClickListener(v -> sendMessage());
         moreBtn.setOnClickListener(view -> moreOptions());
         generateQrCode();
+        getChat();
         startSocketConnection();
-        startCountdownTimer( endTime, timeLeft);
+        startCountdownTimer(endTime, timeLeft);
+    }
+
+    private void getChat() {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.GET_CHAT_URL, getApplicationContext()), null,
+
+                response -> {
+                    Log.d("MSG11", "onResponse: Done");
+
+                }, error -> {
+            Log.d("MSG11", "onResponse: " + error.getMessage());
+
+        });
+
+
+        VolleySingleton.getInstance(this).addToRequestQueue(request);
+
     }
 
     private void startCountdownTimer(String endTime, final TextView timeLeftTextView) {
@@ -173,7 +188,6 @@ public class InMeetingActivity extends AppCompatActivity {
         }
     }
 
-
     private void moreOptions() {
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(InMeetingActivity.this, R.style.MaterialAlertDialog_Rounded);
@@ -186,7 +200,6 @@ public class InMeetingActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
 
 
         showQrBtn.setOnClickListener(new View.OnClickListener() {
@@ -211,17 +224,14 @@ public class InMeetingActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     private void generateQrCode() {
 
-        if (this.response != null){
-            Bitmap code =  QRCodeGeneratorUtil.generateQRCode(this.response);
+        if (this.response != null) {
+            Bitmap code = QRCodeGeneratorUtil.generateQRCode(this.response);
             qrCodeView.setImageBitmap(code);
-        }else {
+        } else {
             Toast.makeText(this, "Something went wrong !", Toast.LENGTH_SHORT).show();
         }
 
@@ -229,7 +239,7 @@ public class InMeetingActivity extends AppCompatActivity {
 
     private void startSocketConnection() {
         try {
-            socket = IO.socket("http://192.168.0.182:5000/");
+            socket = IO.socket(Constant.domain);
             socket.connect();
 
             socket.on(Socket.EVENT_CONNECT, args -> {
@@ -237,7 +247,7 @@ public class InMeetingActivity extends AppCompatActivity {
 
             }).on(Socket.EVENT_DISCONNECT, args -> {
                 Log.d("Socket", "Disconnected");
-                
+
             }).on("chat-" + meetId + "-" + companyId, args -> {
 
                 JSONObject data = (JSONObject) args[0];
@@ -262,19 +272,12 @@ public class InMeetingActivity extends AppCompatActivity {
                     }
 
                 }
-            }).on("qr-verification",args -> {
-                
-                qrCodeLayout.setVisibility(View.GONE);
-                inMeetingLayout.setVisibility(View.VISIBLE);
-                
-                
             });
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
-
 
 
     private void sendMessage() {

@@ -22,6 +22,7 @@ import com.NakshatraTechnoHub.HubSched.Interface.MeetingInterface;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
+import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentMeetingBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -140,7 +141,20 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                try {
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 500) {
+                            String errorString = new String(error.networkResponse.data);
+                            Toast.makeText(requireContext(), errorString, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
+                    }
 
+                } catch (Exception e) {
+                    Log.e("CreateEMP", "onErrorResponse: ", e);
+                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

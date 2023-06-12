@@ -7,6 +7,7 @@
     android:layout_marginStart="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_10sdp"
+    android:id="@+id/order_layout"
     app:cardCornerRadius="@dimen/_14sdp">
 
     <LinearLayout
@@ -19,21 +20,14 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <CheckBox
 
-                android:id="@+id/checkbox"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"/>
 
             <ImageView
                 android:id="@+id/item_image"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:src="@drawable/water_icn"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/checkbox"/>
+                android:layout_centerVertical="true" />
 
             <TextView
                 android:id="@+id/item_name"
