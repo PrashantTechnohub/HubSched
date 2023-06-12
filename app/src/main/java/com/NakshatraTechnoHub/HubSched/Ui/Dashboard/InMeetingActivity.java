@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,8 +104,75 @@ public class InMeetingActivity extends AppCompatActivity {
         moreBtn.setOnClickListener(view -> moreOptions());
         generateQrCode();
         startSocketConnection();
-        startCountdownTimer(endTime);
+        startCountdownTimer( endTime, timeLeft);
     }
+
+    private void startCountdownTimer(String endTime, final TextView timeLeftTextView) {
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+
+        try {
+            Date endDate = format.parse(endTime);
+
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(endDate);
+
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTimeInMillis(System.currentTimeMillis());
+
+            // Set the date part of the current time to match the end time
+            currentCalendar.set(Calendar.YEAR, endCalendar.get(Calendar.YEAR));
+            currentCalendar.set(Calendar.MONTH, endCalendar.get(Calendar.MONTH));
+            currentCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.get(Calendar.DAY_OF_MONTH));
+
+            if (currentCalendar.after(endCalendar)) {
+                timeLeftTextView.setText("End time has already passed.");
+                return;
+            }
+
+            long endTimeMillis = endCalendar.getTimeInMillis();
+            long currentTimeMillis = currentCalendar.getTimeInMillis();
+
+            long remainingTimeMillis = endTimeMillis - currentTimeMillis;
+
+            CountDownTimer countDownTimer = new CountDownTimer(remainingTimeMillis, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    long seconds = millisUntilFinished / 1000;
+                    long minutes = (seconds / 60) % 60;
+                    long hours = (seconds / 3600) % 24;
+
+                    String remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d sec",
+                            hours, minutes, seconds);
+
+                    if (minutes >= 60) {
+                        long totalMinutes = minutes + (hours * 60);
+                        remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d sec",
+                                totalMinutes / 60, totalMinutes % 60, seconds);
+                    }
+
+                    if (seconds >= 60) {
+                        long totalSeconds = seconds + (minutes * 60) + (hours * 3600);
+                        remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d sec",
+                                totalSeconds / 3600, (totalSeconds / 60) % 60, totalSeconds % 60);
+                    }
+
+                    timeLeftTextView.setText(remainingTime);
+                }
+
+                @Override
+                public void onFinish() {
+                    // Countdown timer finished, handle any necessary actions
+                    timeLeftTextView.setText("Time's up!");
+                }
+            };
+
+            countDownTimer.start();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle any parsing errors
+        }
+    }
+
 
     private void moreOptions() {
 
@@ -153,6 +221,8 @@ public class InMeetingActivity extends AppCompatActivity {
         if (this.response != null){
             Bitmap code =  QRCodeGeneratorUtil.generateQRCode(this.response);
             qrCodeView.setImageBitmap(code);
+        }else {
+            Toast.makeText(this, "Something went wrong !", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -206,38 +276,6 @@ public class InMeetingActivity extends AppCompatActivity {
     }
 
 
-    private void startCountdownTimer(String endTimeString) {
-
-// Define the date format for parsing the time strings
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-
-        try {
-
-            // Parse the end time string
-            Date endTime = timeFormat.parse(endTimeString);
-
-            // Get the current time
-            Calendar calendar = Calendar.getInstance();
-            Date currentTime = calendar.getTime();
-
-            // Calculate the remaining time in milliseconds
-            long remainingTimeMillis = endTime.getTime() - currentTime.getTime();
-
-            // Create a CountDownTimer for the remaining time
-            new CountDownTimer(remainingTimeMillis, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    String remainingTime = String.format(Locale.getDefault(), "%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisUntilFinished), TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60);
-                    timeLeft.setText(remainingTime);
-                }
-
-                public void onFinish() {
-                    timeLeft.setText(R.string.meeting_is_over);
-                }
-            }.start();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void sendMessage() {
         String message = msg.getText().toString().trim();

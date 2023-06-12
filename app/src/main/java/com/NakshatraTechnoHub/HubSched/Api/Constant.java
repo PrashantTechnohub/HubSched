@@ -8,8 +8,8 @@ public class Constant {
 
     //    public static final String BASE_URL = "http://192.168.0.120:5000/meet"; //Jab Sir nahi rhange
 
-    //    public static final String BASE_URL = "http://192.168.0.242:5000//meet";
-    public static final String BASE_URL = "http://192.168.0.183:5000/meet";
+        public static final String BASE_URL = "http://192.168.0.242:5000//meet";
+//    public static final String BASE_URL = "http://192.168.0.183:5000/meet";
     public static final String CHAT_URL = BASE_URL + "/send_message";
     public static final String LOGIN_URL = BASE_URL + "/login";
     public static final String MEET_ROOMS_URL = BASE_URL + "/rooms";
