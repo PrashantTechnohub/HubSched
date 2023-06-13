@@ -239,6 +239,7 @@ public class CreateMeetingActivity extends BaseActivity {
         try {
             params.put("date", selectedDate);
             params.put("startTime", startTime);
+            params.put("roomId ", roomId);
             params.put("endTime", endTime);
         } catch (JSONException e) {
             e.printStackTrace();

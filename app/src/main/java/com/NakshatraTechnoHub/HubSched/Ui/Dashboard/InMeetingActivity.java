@@ -30,6 +30,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -107,15 +108,47 @@ public class InMeetingActivity extends AppCompatActivity {
 
     private void getChat() {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.GET_CHAT_URL, getApplicationContext()), null,
-
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.GET_CHAT_URL + "/" + meetId, getApplicationContext()), null,
                 response -> {
-                    Log.d("MSG11", "onResponse: Done");
+                    try {
+                        JSONArray messagesArray = response.getJSONArray("result");
 
-                }, error -> {
-            Log.d("MSG11", "onResponse: " + error.getMessage());
+                        for (int i = 0; i < messagesArray.length(); i++) {
+                            JSONObject messageObj = messagesArray.getJSONObject(i);
+                            int id = messageObj.getInt("sender_id");
+                            String message = messageObj.getString("message");
+                            String name = messageObj.getString("sender_name");
 
-        });
+                            MessageModel newMessage = new MessageModel(id, message, name);
+                            messageList.add(newMessage);
+                        }
+
+                        runOnUiThread(() -> {
+                            chatAdapter.notifyDataSetChanged();
+                            recyclerViewChat.scrollToPosition(messageList.size() - 1);
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Log.d("MSG11", "onErrorResponse: " + error.getMessage());
+                    try {
+                        if (error.networkResponse != null) {
+                            if (error.networkResponse.statusCode == 500) {
+                                String errorString = new String(error.networkResponse.data);
+                                Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("CreateEMP", "onErrorResponse: ", e);
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
 
         VolleySingleton.getInstance(this).addToRequestQueue(request);
