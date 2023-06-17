@@ -31,6 +31,7 @@ public class LoginActivity extends BaseActivity {
     ActivityLoginBinding bind;
 
 
+    //TESTING
     String firebaseToken;
 
     @Override
