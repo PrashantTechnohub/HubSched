@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
-import com.NakshatraTechnoHub.HubSched.Interface.MeetingInterface;
+import com.NakshatraTechnoHub.HubSched.Interface.ApiInterface;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.InMeetingActivity;
@@ -44,11 +44,11 @@ import java.util.Locale;
 public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeetingAdapter.ViewHolder> {
     ProgressDialog pd;
     Bitmap qrCodeBitmap;
-    static MeetingInterface mHandler;
+    static ApiInterface mHandler;
     Context context;
     ArrayList<ScheduleMeetingModel> list;
 
-    public static void setHandler(MeetingInterface handler) {
+    public static void setHandler(ApiInterface handler) {
         mHandler = handler;
     }
 
@@ -112,13 +112,13 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
             @Override
             public void onClick(View view) {
                 mHandler.clickHandler(list.get(position).get_id(), true, position);
+
             }
         });
         holder.denyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mHandler.clickHandler(list.get(position).get_id(), false, position);
-
 
             }
         });
@@ -283,6 +283,7 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
     public int getItemCount() {
         return list.size();
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

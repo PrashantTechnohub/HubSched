@@ -2,24 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item
-        android:id="@+id/hallManagement"
-        android:icon="@drawable/baseline_add_business_24"
-        android:title="Room Management">
-    </item>
+
 
     <item
         android:id="@+id/employeeList"
         android:icon="@drawable/baseline_people_alt_24"
-        android:title="Employee List">
+        android:title="Manage Employee">
     </item>
 
     <item
-        android:id="@+id/organizerList"
-        android:icon="@drawable/baseline_group_work_24"
-        android:title="Organizer List">
+        android:id="@+id/meetingList"
+        android:icon="@drawable/baseline_meeting_room_24"
+        android:title="Manage Meeting">
     </item>
-
+    <item
+        android:id="@+id/hallManagement"
+        android:icon="@drawable/baseline_add_business_24"
+        android:title="Manage Room">
+    </item>
     <item
         android:id="@+id/editContent"
         android:icon="@drawable/baseline_display_settings_24"

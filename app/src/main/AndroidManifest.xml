@@ -22,7 +22,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Ui.Dashboard.PantryOrderActivity"
+            android:name=".Ui.Dashboard.PantryOrderedListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Ui.Dashboard.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Ui.Dashboard.PantryOrderPlaceActivity"
             android:exported="false" />
         <activity
             android:name=".Ui.ScannerDeviceDashboard.ScannerDeviceActivity"
@@ -65,8 +71,7 @@
             android:exported="false" />
         <activity
             android:name=".Ui.Dashboard.CreateRoomActivity"
-            android:exported="false"
-            android:label="@string/title_activity_hall_management" />
+            android:exported="false" />
         <activity
             android:name=".Ui.Dashboard.EmployeeListActivity"
             android:exported="false"

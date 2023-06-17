@@ -5,12 +5,14 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.NakshatraTechnoHub.HubSched.UtilHelper.NetworkReceiver;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -19,6 +21,15 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (pd.isDialogShown()) {
+            pd.handleBackPress(this, keyCode);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

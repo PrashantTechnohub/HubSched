@@ -21,7 +21,9 @@ import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,6 +51,7 @@ public class ProfileFragment extends Fragment {
         MaterialToolbar toolbar = getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle("Account");
 
+        pd.mShow(getActivity());
 
         bind.logOutBtn.setOnClickListener(v -> {
 
@@ -86,7 +89,6 @@ public class ProfileFragment extends Fragment {
                 mobile = profileDetail[6];
                 password = profileDetail[7];
                 userType = profileDetail[8];
-                LocalPreference.store_id(requireContext(),_id);
 
                 Intent intent = new Intent(requireContext(), CreateEmployeeActivity.class);
                 intent.putExtra("actionType","selfAdmin");
@@ -149,17 +151,18 @@ public class ProfileFragment extends Fragment {
                     bind.empGender.setText(gender);
                     bind.empMail.setText(email);
                     bind.empMobile.setText(mobile);
+                    pd.mDismiss();
 
 
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    ErrorHandler.handleException(getActivity(), e);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                ErrorHandler.handleVolleyError(getActivity(), error);
             }
         });
 

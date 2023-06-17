@@ -68,17 +68,6 @@
 
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:id="@+id/create_meeting_btn"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_700"
-            android:src="@drawable/baseline_add_24"
-            app:borderWidth="0dp"
-            app:fabSize="normal"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_30sdp"/>
 
         <RelativeLayout
             android:id="@+id/admin_view_layout"

@@ -1,91 +1,68 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.NakshatraTechnoHub.HubSched.Adapters.ChatAdapter;
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
-import com.NakshatraTechnoHub.HubSched.Models.MessageModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.QRCodeGeneratorUtil;
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
-
 public class InMeetingActivity extends AppCompatActivity {
-    private Socket socket;
-    private List<MessageModel> messageList;
-    EditText msg;
-    ChatAdapter chatAdapter;
-    ImageView buttonSend, moreBtn;
+
+    MaterialCardView showQrBtn, discussionBtn, memberBtn, pantryBtn;
+
+    MaterialButton hideQrBtn;
+
     TextView timeLeft, subjectView;
-    RecyclerView recyclerViewChat;
     String meetId, companyId, subject, startTime, endTime, response;
 
     //__________________________________
     ImageView qrCodeView;
-    RelativeLayout inMeetingLayout, qrCodeLayout;
+    RelativeLayout inMeetingLayout, qrCodeLayout , actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_meeting);
 
+        pd.mShow(this);
+
         timeLeft = findViewById(R.id.time_left);
-        msg = findViewById(R.id.editTextMessage);
-        recyclerViewChat = findViewById(R.id.recyclerViewChat);
-        buttonSend = findViewById(R.id.buttonSend);
         subjectView = findViewById(R.id.subject);
         qrCodeView = findViewById(R.id.qr_code_image);
-        moreBtn = findViewById(R.id.more_btn);
+
+        showQrBtn = findViewById(R.id.showQrCodeBtn);
+        hideQrBtn = findViewById(R.id.hideQr_btn);
+        discussionBtn = findViewById(R.id.chat_discussion_btn);
+        pantryBtn = findViewById(R.id.pantry_btn);
+        memberBtn = findViewById(R.id.inMeeting_member_btn);
 
         inMeetingLayout = findViewById(R.id.InMeetingRL);
         qrCodeLayout = findViewById(R.id.qrCodeRL);
+        actionBar = findViewById(R.id.rl1);
 
 
-        messageList = new ArrayList<>();
 
-        String getUserId = LocalPreference.get_Id(InMeetingActivity.this);
 
-        chatAdapter = new ChatAdapter(messageList, getUserId);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true);
-        recyclerViewChat.setLayoutManager(layoutManager);
-        recyclerViewChat.setAdapter(chatAdapter);
 
         Intent intent = getIntent();
         meetId = intent.getStringExtra("meetId");
@@ -98,62 +75,50 @@ public class InMeetingActivity extends AppCompatActivity {
 
         subjectView.setText(subject);
 
-        buttonSend.setOnClickListener(v -> sendMessage());
-        moreBtn.setOnClickListener(view -> moreOptions());
+
         generateQrCode();
-        getChat();
-        startSocketConnection();
+
         startCountdownTimer(endTime, timeLeft);
+
+        showQrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inMeetingLayout.setVisibility(View.GONE);
+                qrCodeLayout.setVisibility(View.VISIBLE);
+                actionBar.setVisibility(View.GONE);
+            }
+        });
+        hideQrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inMeetingLayout.setVisibility(View.VISIBLE);
+                qrCodeLayout.setVisibility(View.GONE);
+                actionBar.setVisibility(View.VISIBLE);
+            }
+        });
+
+        pantryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InMeetingActivity.this, PantryOrderedListActivity.class);
+                intent.putExtra("meetId", meetId);
+                intent.putExtra("companyId", companyId);
+
+                startActivity(intent);
+            }
+        });
+        discussionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InMeetingActivity.this, ChatActivity.class);
+                intent.putExtra("meetId", meetId);
+                intent.putExtra("companyId", companyId);
+
+                startActivity(intent);
+            }
+        });
     }
 
-    private void getChat() {
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.GET_CHAT_URL + "/" + meetId, getApplicationContext()), null,
-                response -> {
-                    try {
-                        JSONArray messagesArray = response.getJSONArray("result");
-
-                        for (int i = 0; i < messagesArray.length(); i++) {
-                            JSONObject messageObj = messagesArray.getJSONObject(i);
-                            int id = messageObj.getInt("sender_id");
-                            String message = messageObj.getString("message");
-                            String name = messageObj.getString("sender_name");
-
-                            MessageModel newMessage = new MessageModel(id, message, name);
-                            messageList.add(newMessage);
-                        }
-
-                        runOnUiThread(() -> {
-                            chatAdapter.notifyDataSetChanged();
-                            recyclerViewChat.scrollToPosition(messageList.size() - 1);
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> {
-                    Log.d("MSG11", "onErrorResponse: " + error.getMessage());
-                    try {
-                        if (error.networkResponse != null) {
-                            if (error.networkResponse.statusCode == 500) {
-                                String errorString = new String(error.networkResponse.data);
-                                Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } catch (Exception e) {
-                        Log.e("CreateEMP", "onErrorResponse: ", e);
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
-
-    }
 
     private void startCountdownTimer(String endTime, final TextView timeLeftTextView) {
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.getDefault());
@@ -216,47 +181,10 @@ public class InMeetingActivity extends AppCompatActivity {
 
             countDownTimer.start();
         } catch (ParseException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(), e);
+
             // Handle any parsing errors
         }
-    }
-
-    private void moreOptions() {
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(InMeetingActivity.this, R.style.MaterialAlertDialog_Rounded);
-        LayoutInflater inflater1 = (LayoutInflater) InMeetingActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View team = inflater1.inflate(R.layout.cl_in_meeting_more_option, null);
-        builder.setView(team);
-
-        TextView showQrBtn = team.findViewById(R.id.show_qr_menu_btn);
-        TextView panetryBtn = team.findViewById(R.id.panetry_menu_btn);
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-        showQrBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                inMeetingLayout.setVisibility(View.GONE);
-                qrCodeLayout.setVisibility(View.VISIBLE);
-                dialog.dismiss();
-            }
-        });
-
-        panetryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(InMeetingActivity.this, PantryOrderActivity.class);
-                intent.putExtra("meetId", meetId);
-                intent.putExtra("companyId", companyId);
-
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
-
-
     }
 
     private void generateQrCode() {
@@ -264,81 +192,16 @@ public class InMeetingActivity extends AppCompatActivity {
         if (this.response != null) {
             Bitmap code = QRCodeGeneratorUtil.generateQRCode(this.response);
             qrCodeView.setImageBitmap(code);
+            pd.mDismiss();
         } else {
+            pd.mDismiss();
             Toast.makeText(this, "Something went wrong !", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private void startSocketConnection() {
-        try {
-            socket = IO.socket(Constant.domain);
-            socket.connect();
-
-            socket.on(Socket.EVENT_CONNECT, args -> {
-                Log.d("Socket", "Connected");
-
-            }).on(Socket.EVENT_DISCONNECT, args -> {
-                Log.d("Socket", "Disconnected");
-
-            }).on("chat-" + meetId + "-" + companyId, args -> {
-
-                JSONObject data = (JSONObject) args[0];
-
-                if (data.has("message")) {
-                    try {
-                        String message = data.getString("message");
-                        int id = data.getInt("sender_id");
-                        String name = data.getString("sender_name");
-
-                        MessageModel newMessage = new MessageModel(id, message, name);
-
-                        messageList.add(newMessage);
 
 
-                        runOnUiThread(() -> {
-                            chatAdapter.notifyItemInserted(messageList.size() - 1);
-                            recyclerViewChat.smoothScrollToPosition(messageList.size() - 1);
-                        });
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            });
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 
 
-    private void sendMessage() {
-        String message = msg.getText().toString().trim();
-        if (!message.isEmpty()) {
-            saveMessageToServer(message);
-            msg.setText("");
-        }
-    }
-
-    private void saveMessageToServer(String message) {
-
-        JSONObject jsonMessage = new JSONObject();
-        try {
-            jsonMessage.put("meetId", meetId);
-            jsonMessage.put("message", message);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CHAT_URL, getApplicationContext()), jsonMessage, response -> Log.d("MSG11", "onResponse: Done"), error -> Log.d("MSG11", "onResponse: " + error.getMessage()));
-
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        socket.disconnect();
-    }
 }

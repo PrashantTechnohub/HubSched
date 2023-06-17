@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_centerInParent="true"
     android:layout_height="match_parent"
-    android:background="#F3F8FB"
+    android:background="@color/background_page"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity">
 
     <ScrollView
@@ -15,17 +15,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:text="LOGIN MEET ID"
+                android:text="LOGIN HUBSCHED ID"
                 android:textColor="#2B2B2B"
                 android:textSize="@dimen/_18sdp" />
 
@@ -36,7 +35,7 @@
                 android:layout_marginStart="@dimen/_23sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
-                android:hint="Meet - ID"
+                android:hint="Hubsched - ID"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
@@ -47,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textEmailAddress"
-                    android:textAppearance="@style/TextStyle"/>
+                    android:textAppearance="@style/TextStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,33 +74,24 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+            <TextView
+                android:gravity="end"
                 android:layout_width="@dimen/_270sdp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="Forgot password"
-                    android:textSize="@dimen/_10sdp"
-                    tools:ignore="TextSizeCheck" />
-
-            </LinearLayout>
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Forgot password"
+                android:textSize="@dimen/_10sdp"
+                tools:ignore="TextSizeCheck" />
 
             <com.google.android.material.button.MaterialButton
 
                 android:id="@+id/login_btn"
                 android:layout_width="@dimen/_270sdp"
                 android:layout_height="@dimen/_42sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="LOGIN"
                 app:cornerRadius="@dimen/_14sdp" />
-
-
-
 
             <pl.droidsonroids.gif.GifImageView
                 android:layout_width="wrap_content"
@@ -113,10 +103,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -138,7 +126,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -215,7 +202,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
 
         </LinearLayout>
 

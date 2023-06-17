@@ -2,6 +2,7 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityMeetingListBinding;
 import com.android.volley.Request;
@@ -43,6 +46,22 @@ public class MeetingListActivity extends BaseActivity {
         bind = ActivityMeetingListBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
+        pd.mShow(this);
+
+        bind.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMeetingList();
+            }
+        });
+
         getMeetingList();
     }
 
@@ -60,19 +79,27 @@ public class MeetingListActivity extends BaseActivity {
                         list.add(model);
 
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        pd.mDismiss();
+                        bind.refresh.setRefreshing(false);
+                        ErrorHandler.handleException(getApplicationContext(), e);
+
                     }
                 }
 
                 adapter = new ScheduleMeetingAdapter(MeetingListActivity.this, list);
                 bind.meetingListRecyclerview.setLayoutManager(new LinearLayoutManager(MeetingListActivity.this));
                 bind.meetingListRecyclerview.setAdapter(adapter);
+                bind.refresh.setRefreshing(false);
+                pd.mDismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Room List Error", "onErrorResponse: " +error);
+                pd.mDismiss();
+                bind.refresh.setRefreshing(false);
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
             }
         });
 

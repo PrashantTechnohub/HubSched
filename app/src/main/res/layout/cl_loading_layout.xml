@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_90sdp"
+    android:layout_height="@dimen/_50sdp"
+    android:layout_gravity="center"
+    android:backgroundTint="#FBFBFB"
+    app:cardCornerRadius="@dimen/_14sdp"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_50sdp">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/loader" />
+    </RelativeLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

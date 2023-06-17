@@ -9,7 +9,7 @@ public class Constant {
     //    public static final String BASE_URL = "http://192.168.0.120:5000/meet"; //Jab Sir nahi rhange
 
 //        public static final String BASE_URL = "http://192.168.0.242:5000//meet";
-    public static final String domain = "http://192.168.0.183:5000";
+    public static final String domain = "http://192.168.0.182:5000";
     public static final String BASE_URL = domain+"/meet";
     public static final String CHAT_URL = BASE_URL + "/send_message";
     public static final String GET_CHAT_URL = BASE_URL + "/get_chats/";
@@ -17,6 +17,8 @@ public class Constant {
     public static final String MEET_ROOMS_URL = BASE_URL + "/rooms";
 
     public static final String LOGOUT_URL = BASE_URL + "/logout";
+
+    public static final String LOGOUT_PANTRY_URL = BASE_URL + "/pantry_logout";
     public static final String MEET_REQUEST_URL = BASE_URL + "/meet_request";
     public static final String EMP_LIST_URL = BASE_URL + "/employees";
     public static final String EMPLOYEE_UPDATE_URL = BASE_URL + "/update_employee";
@@ -38,7 +40,8 @@ public class Constant {
 
     public static final String PANTRY_RESPOND_REQUEST_URL = BASE_URL + "/respond_pantry_request";
     public static final String PANTRY_REQUEST_URL = BASE_URL + "/request_pantry";
-
+    public static final String TRIGGER_PANTRY = BASE_URL + "/trigger_pantry";
+    public static final String GET_TRIGGER_PANTRY = BASE_URL + "/get_pantry_orders";
     public static String withToken(String url, Context context) {
         String token = LocalPreference.getToken(context);
         String str = url + "?token=" + token;

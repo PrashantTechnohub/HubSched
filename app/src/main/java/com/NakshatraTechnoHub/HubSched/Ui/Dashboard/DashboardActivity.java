@@ -1,27 +1,14 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.media.RingtoneManager;
-import android.net.ConnectivityManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -29,19 +16,14 @@ import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.MeetingFragment;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.ProfileFragment;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.SupportFragment;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.NetworkReceiver;
-import com.NakshatraTechnoHub.HubSched.databinding.ActivityDashboardBinding;
 
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityDashboardBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -100,8 +82,8 @@ public class DashboardActivity extends BaseActivity {
                     startActivity(new Intent(DashboardActivity.this, EmployeeListActivity.class));
                     break;
 
-                case R.id.organizerList:
-                    startActivity(new Intent(DashboardActivity.this, OrganizerListActivity.class));
+                case R.id.meetingList:
+                    startActivity(new Intent(DashboardActivity.this, MeetingListActivity.class));
                     break;
 
                 case R.id.editContent:
@@ -139,14 +121,37 @@ public class DashboardActivity extends BaseActivity {
                 case R.id.support:
                     selectedFragment = new SupportFragment();
                     break;
-
-
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (currentFragment != null && currentFragment.getClass().equals(selectedFragment.getClass())) {
+                // Selected fragment is already visible, no need to replace
+                return true;
+            }
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             return true;
         }
     };
 
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
+        // Hide all other fragments
+        for (Fragment frag : getSupportFragmentManager().getFragments()) {
+            if (frag != null && frag != fragment) {
+                transaction.hide(frag);
+            }
+        }
+
+        // Show or add the selected fragment
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.fragment_container, fragment);
+        }
+
+        transaction.commit();
+    }
 }

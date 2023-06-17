@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="custom_dialog_width">300dp</dimen>
+    <dimen name="custom_dialog_height">200dp</dimen>
+
+</resources>

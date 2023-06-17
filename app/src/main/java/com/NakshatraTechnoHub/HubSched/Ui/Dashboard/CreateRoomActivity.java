@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateRoomBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,7 +47,6 @@ import java.util.Random;
 
 public class CreateRoomActivity extends BaseActivity {
 
-    ProgressDialog pd ;
     ActivityCreateRoomBinding bind;
     Uri selectedImageUri;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("Rooms Photos");
@@ -63,8 +64,6 @@ public class CreateRoomActivity extends BaseActivity {
         bind = ActivityCreateRoomBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
-        pd = new ProgressDialog(this);
-        pd.setMessage("Creating Room..");
 
         
         selectedFacilities = new boolean[facilitiesArray.length];
@@ -183,8 +182,7 @@ public class CreateRoomActivity extends BaseActivity {
     }
 
     private void createRoom() {
-        pd.show();
-
+        pd.mShow(this);
         if (selectedImageUri!=null){
             StorageReference fileReference = storageReference.child( generateRandomImageName()+"." +getFileExtension(selectedImageUri));
             fileReference.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -196,7 +194,6 @@ public class CreateRoomActivity extends BaseActivity {
                             Uri downloadUri = uri;
                             saveRoomDetail(String.valueOf(downloadUri));
                             bind.imge.setImageURI(downloadUri);
-                            Toast.makeText(CreateRoomActivity.this, String.valueOf(downloadUri), Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -207,7 +204,7 @@ public class CreateRoomActivity extends BaseActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    pd.dismiss();
+                    pd.mDismiss();
                     Toast.makeText(CreateRoomActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -229,29 +226,22 @@ public class CreateRoomActivity extends BaseActivity {
             params.put("floor_no", bind.createRoomFloor.getText().toString());
             params.put("facilities",jsonArray);
         } catch (JSONException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(), e);
         }
 
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_ROOM_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                pd.dismiss();
+                pd.mDismiss();
                 Toast.makeText(CreateRoomActivity.this, "Done!!", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pd.dismiss();
-                if(error.networkResponse.statusCode == 500){
-                    String errorString = new String(error.networkResponse.data);
-                    Toast.makeText(CreateRoomActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                }
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-                if(error.networkResponse.statusCode == 200){
-                    startActivity(new Intent(getApplicationContext(), RoomListActivity.class));
-                }
-                Log.e("CreateRoom", "onErrorResponse: ", error );
             }
         });
 

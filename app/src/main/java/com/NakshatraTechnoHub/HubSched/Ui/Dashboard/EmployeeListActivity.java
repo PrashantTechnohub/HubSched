@@ -14,6 +14,11 @@ import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
+import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -46,7 +51,19 @@ public class EmployeeListActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
+        pd.mShow(this);
 
+        new Receiver(this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject object) {
+
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        }).getAddress(4.34,5.244);
 
         bind.empListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
@@ -129,7 +146,64 @@ public class EmployeeListActivity extends BaseActivity {
 
     public void getEmpList() {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,EmployeeListActivity.this), null, new Response.Listener<JSONObject>() {
+        new Receiver(this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject object) {
+                try {
+                    JSONArray emp_details =object.getJSONArray("emp_details");
+                    list.clear();
+
+
+                    for (int i=0;i<emp_details.length();i++){
+                        JSONObject jobj=emp_details.getJSONObject(i);
+                        EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
+                        list.add(model);
+                        bind.refresh.setRefreshing(false);
+
+                    }
+
+//                    bind.empListRecyclerView.setAdapter(new MyAdapter(list, new MyAdapter.OnBindInterface() {
+//                        @Override
+//                        public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+//                            EmpListModel model = list.get(position);
+//                            View container = holder.itemView;
+//                            container.findViewById()
+//                        }
+//                    }, R.layout.cl_emp_list));
+
+
+
+                } catch (JSONException e) {
+                    ErrorHandler.handleException(getApplicationContext(), e);
+
+
+                }
+
+                adapter = new EmpListAdapter(getApplicationContext(), list);
+                bind.empListRecyclerView.setAdapter(adapter);
+                bind.empListRecyclerView.invalidate();
+                bind.empListRecyclerView.removeAllViews();
+                pd.mDismiss();
+
+                if (bind.refresh.isRefreshing()){
+                    bind.refresh.setRefreshing(false);
+                    Toast.makeText(EmployeeListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                if (bind.refresh.isRefreshing()){
+                    bind.refresh.setRefreshing(false);
+                }
+                Log.d("TAG", "onError: " +error.getMessage());
+                bind.noResult.setVisibility(View.VISIBLE);
+                bind.empListRecyclerView.setVisibility(View.GONE);
+            }
+        }).getEmpList();
+
+   /*     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_LIST_URL,EmployeeListActivity.this), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -149,8 +223,10 @@ public class EmployeeListActivity extends BaseActivity {
                         }
 
 
+
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        ErrorHandler.handleException(getApplicationContext(), e);
+
 
                     }
 
@@ -158,7 +234,7 @@ public class EmployeeListActivity extends BaseActivity {
                     bind.empListRecyclerView.setAdapter(adapter);
                     bind.empListRecyclerView.invalidate();
                     bind.empListRecyclerView.removeAllViews();
-
+                    pd.mDismiss();
 
                 if (bind.refresh.isRefreshing()){
                     bind.refresh.setRefreshing(false);
@@ -177,11 +253,13 @@ public class EmployeeListActivity extends BaseActivity {
                 Log.d("TAG", "onError: " +error.getMessage());
                 bind.noResult.setVisibility(View.VISIBLE);
                 bind.empListRecyclerView.setVisibility(View.GONE);
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
             }
         });
 
 
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);*/
 
     }
 

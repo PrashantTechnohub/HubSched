@@ -87,13 +87,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-        bind.createMeetingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(requireActivity(), CreateMeetingActivity.class));
-            }
-        });
-
         bind.showCurrentMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +184,6 @@ public class HomeFragment extends Fragment {
         toolbar.setTitle("Employee Dashboard");
         toolbar.setNavigationIcon(null);
         navigationView.setVisibility(View.GONE);
-        bind.createMeetingBtn.setVisibility(View.GONE);
 
         bind.scheduleMeetingRecyclerView.setVisibility(View.VISIBLE);
         bind.userViewLayout.setVisibility(View.VISIBLE);

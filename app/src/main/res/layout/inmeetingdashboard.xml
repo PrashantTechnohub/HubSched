@@ -421,9 +421,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/qrCodeRL"
         android:visibility="gone"
-        android:layout_below="@id/rl1"
+        android:id="@+id/qrCodeRL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -433,11 +432,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
 
-
+        <ImageView
+            android:id="@+id/hubsched"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/_75sdp"
+            android:scaleType="centerCrop"
+            android:layout_height="@dimen/_75sdp"
+            android:src="@drawable/hubsched12"/>
 
 
 
         <TextView
+            android:layout_below="@id/hubsched"
             android:layout_marginHorizontal="@dimen/_14sdp"
             android:id="@+id/text1"
             android:layout_marginTop="@dimen/_15sdp"
@@ -471,16 +478,6 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_width="@dimen/_280sdp"
             android:layout_height="@dimen/_280sdp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:id="@+id/hideQr_btn"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/qr_code_image"
-            app:cornerRadius="@dimen/_14sdp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Hide QR Code"/>
 
 
     </RelativeLayout>

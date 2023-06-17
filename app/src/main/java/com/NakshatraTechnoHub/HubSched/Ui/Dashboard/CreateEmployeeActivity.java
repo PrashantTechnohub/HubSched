@@ -11,6 +11,8 @@ import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateEmployeeBinding;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
 import com.android.volley.Request;
@@ -25,8 +27,7 @@ import org.json.JSONObject;
 
 
 public class CreateEmployeeActivity extends BaseActivity {
-
-    ProgressDialog pd;
+    
 
     ArrayAdapter<String> positionAdapter;
     String []positionItem = {"Organizer", "HR", "Manager", "Designer", "Tester", "Sales Manager", "Software Engineer", "Android Developer", "Web Developer", "Accountant", "Digital Marketer", "Panetry", "Scanner Device"};
@@ -88,13 +89,7 @@ public class CreateEmployeeActivity extends BaseActivity {
                 }
             }
         }
-
-
-
-        pd = new ProgressDialog(this);
-        pd.setMessage("Please wait...");
-
-
+        
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +205,7 @@ public class CreateEmployeeActivity extends BaseActivity {
     }
 
     private void updateAdmin(String userType, String id, String empId, String name, String email, String mobile, String gender, String position, String password) {
-        pd.show();
+        pd.mShow(this);
         JSONObject params = new JSONObject();
         try {
             params.put("userType", userType);
@@ -224,8 +219,9 @@ public class CreateEmployeeActivity extends BaseActivity {
             params.put("password",password);
 
         } catch (JSONException e) {
-            pd.dismiss();
-            e.printStackTrace();
+            pd.mDismiss();
+            ErrorHandler.handleException(getApplicationContext(), e);
+
         }
 
 
@@ -234,36 +230,21 @@ public class CreateEmployeeActivity extends BaseActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String msg=    response.getString("message");
-                    pd.dismiss();
+                    pd.mDismiss();
                     Toast.makeText(CreateEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (JSONException e) {
-                    pd.dismiss();
-                    throw new RuntimeException(e);
+                    pd.mDismiss();
+                    ErrorHandler.handleException(getApplicationContext(), e);
+
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try {
-
-                    if (error.networkResponse != null){
-                        if(error.networkResponse.statusCode == 500){
-                            String errorString = new String(error.networkResponse.data);
-                            pd.dismiss();
-                            Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                        }
-
-                    }else{
-                        Toast.makeText(CreateEmployeeActivity.this, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
-                    }
-
-                }catch (Exception e){
-                    pd.dismiss();
-                    Log.e("CreateEMP", "onErrorResponse: ", e );
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+                pd.mDismiss();
 
             }
         });
@@ -272,7 +253,7 @@ public class CreateEmployeeActivity extends BaseActivity {
     }
 
     private void updateEmployee(String userType ,String id, String empId, String name, String email, String mobile, String gender, String position, String password) {
-        pd.show();
+        pd.mShow(getApplicationContext());
         JSONObject params = new JSONObject();
         try {
             params.put("userType", userType);
@@ -286,8 +267,8 @@ public class CreateEmployeeActivity extends BaseActivity {
             params.put("password",password);
 
         } catch (JSONException e) {
-            pd.dismiss();
-            e.printStackTrace();
+            pd.mDismiss();
+            ErrorHandler.handleException(getApplicationContext(), e);
         }
 
 
@@ -296,29 +277,20 @@ public class CreateEmployeeActivity extends BaseActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String msg=    response.getString("message");
-                    pd.dismiss();
+                    pd.mDismiss();
                    finish();
                 } catch (JSONException e) {
-                    pd.dismiss();
-                    throw new RuntimeException(e);
+                    pd.mDismiss();
+                    ErrorHandler.handleException(getApplicationContext(), e);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try {
-                    if(error.networkResponse.statusCode == 500){
-                        String errorString = new String(error.networkResponse.data);
-                        pd.dismiss();
-                        Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                    }
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-                }catch (Exception e){
-                    pd.dismiss();
-                    Log.e("CreateEMP", "onErrorResponse: ", e );
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
 
             }
         });
@@ -330,7 +302,7 @@ public class CreateEmployeeActivity extends BaseActivity {
 
     private void addEmployee(String empId, String name, String email, String mobile, String gender, String position, String password, String userType) {
 
-        pd.show();
+        pd.mShow(this);
         JSONObject params = new JSONObject();
         try {
             params.put("userType", userType);
@@ -343,7 +315,7 @@ public class CreateEmployeeActivity extends BaseActivity {
             params.put("password", password);
            
         } catch (JSONException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(), e);
         }
 
 
@@ -353,35 +325,24 @@ public class CreateEmployeeActivity extends BaseActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String msg=    response.getString("message");
-                    pd.dismiss();
+                    pd.mDismiss();
                     Toast.makeText(CreateEmployeeActivity.this,msg, Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    ErrorHandler.handleException(getApplicationContext(), e);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pd.dismiss();
-                try {
-                    if(error.networkResponse.statusCode == 500){
-                        String errorString = new String(error.networkResponse.data);
-                        Toast.makeText(CreateEmployeeActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                    }
-                    Log.e("CreateEMP", "onErrorResponse: ", error );
-                }catch (Exception e){
-                    Log.e("CreateEMP", "onErrorResponse: ", e );
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-                    Toast.makeText(CreateEmployeeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
 
             }
         });
-
-
-
+        
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
         
     }

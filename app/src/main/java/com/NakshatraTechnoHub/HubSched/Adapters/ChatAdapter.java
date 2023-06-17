@@ -11,7 +11,6 @@ import com.NakshatraTechnoHub.HubSched.Models.MessageModel;
 import com.NakshatraTechnoHub.HubSched.R;
 
 import java.util.List;
-
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHolder> {
     private List<MessageModel> messageList;
     private String currentUserId;
@@ -37,6 +36,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        if (position < 0 || position >= messageList.size()) {
+            return; // Handle invalid position
+        }
+
         MessageModel message = messageList.get(position);
         holder.messageTextView.setText(message.getMessage());
 
@@ -58,6 +61,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
 
     @Override
     public int getItemViewType(int position) {
+        if (position < 0 || position >= messageList.size()) {
+            return -1; // Handle invalid position
+        }
+
         MessageModel message = messageList.get(position);
         if (String.valueOf(message.getId()).equals(currentUserId)) {
             // Outgoing message
@@ -78,3 +85,4 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         }
     }
 }
+

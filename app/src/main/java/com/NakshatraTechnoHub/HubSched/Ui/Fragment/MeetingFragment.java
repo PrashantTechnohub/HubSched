@@ -3,14 +3,11 @@ package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEET_REQUEST_URL;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,19 +15,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
-import com.NakshatraTechnoHub.HubSched.Interface.MeetingInterface;
+import com.NakshatraTechnoHub.HubSched.Interface.ApiInterface;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
-import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentMeetingBinding;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 
@@ -40,16 +35,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MeetingFragment extends Fragment implements MeetingInterface {
+public class MeetingFragment extends Fragment implements ApiInterface {
 
     ScheduleMeetingAdapter adapter;
     ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
-    FragmentMeetingBinding bind;
+    FragmentMeetingBinding bind = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         bind = FragmentMeetingBinding.inflate(inflater);
 
+
+        pd.mShow(getActivity());
 
         MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle("Meeting");
@@ -70,8 +68,6 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
     }
 
     private void getMeetingList() {
-
-
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEETING_LIST_URL, requireContext()), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -82,14 +78,17 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
                         JSONObject object = response.getJSONObject(i);
                         ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
 
+                        pd.mDismiss();
                         list.add(model);
-                        if (bind.refresh.isRefreshing()){
+                        if (bind.refresh.isRefreshing()) {
                             bind.refresh.setRefreshing(false);
                             Toast.makeText(getContext(), "Refreshed", Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        pd.mDismiss();
+                        ErrorHandler.handleException(requireContext(), e);
+
                     }
                 }
 
@@ -100,10 +99,11 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (bind.refresh.isRefreshing()){
+                if (bind.refresh.isRefreshing()) {
                     bind.refresh.setRefreshing(false);
                 }
-                Log.d("Room List Error", "onErrorResponse: " + error);
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(getActivity(), error);
             }
         });
 
@@ -132,8 +132,9 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
                 try {
                     String msg = response.getString("message");
                     Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    getMeetingList();
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    ErrorHandler.handleException(getContext(), e);
                 }
             }
 
@@ -141,24 +142,9 @@ public class MeetingFragment extends Fragment implements MeetingInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try {
-                    if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 500) {
-                            String errorString = new String(error.networkResponse.data);
-                            Toast.makeText(requireContext(), errorString, Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(requireContext(), "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (Exception e) {
-                    Log.e("CreateEMP", "onErrorResponse: ", e);
-                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
+                ErrorHandler.handleVolleyError(requireActivity(), error);
             }
         });
-
 
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(request);
 

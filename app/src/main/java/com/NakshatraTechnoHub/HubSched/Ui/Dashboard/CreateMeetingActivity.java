@@ -2,6 +2,7 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +18,9 @@ import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.BookedSlotModel;
 import com.NakshatraTechnoHub.HubSched.Models.MeetingEmpListModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,8 +52,6 @@ public class CreateMeetingActivity extends BaseActivity {
     ArrayList<BookedSlotModel> bookedSlotList = new ArrayList<>();
 
     BookedSlotAdapter bookedSlotAdapter;
-    ProgressDialog pd;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +60,15 @@ public class CreateMeetingActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-        roomName = getIntent().getStringExtra("roomName");
-        roomId = getIntent().getStringExtra("roomId");
-        selectedDate = getIntent().getStringExtra("selectedDate");
 
+        Intent intent = getIntent();
+        roomName = intent.getStringExtra("roomName");
+        roomId = intent.getStringExtra("roomId");
+        selectedDate = intent.getStringExtra("selectedDate");
 
-        pd = new ProgressDialog(this);
-        pd.setMessage("Please wait ...");
-        bind.progressBar.setVisibility(View.VISIBLE);
+        
+        pd.mShow(this);
         bind.actionBar.setText("Booked Slots");
-
         getBookedSlotApiCall();
 
         bind.back.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +116,20 @@ public class CreateMeetingActivity extends BaseActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
 
+                        Calendar currentTime = Calendar.getInstance(); // Get the current time
+
+                        // Create a calendar instance for the selected time
+                        Calendar selectedTime = Calendar.getInstance();
+                        selectedTime.set(Calendar.HOUR_OF_DAY, selectedHour);
+                        selectedTime.set(Calendar.MINUTE, selectedMinute);
+
+                        // Check if the selected time is in the past
+                        if (selectedTime.before(currentTime)) {
+                            // Display a message to the user or perform any desired action
+                            Toast.makeText(CreateMeetingActivity.this, "Invalid time selection", Toast.LENGTH_SHORT).show();
+                            return; // Exit the method
+                        }
+
                         int adjustedHour = selectedHour % 12;
                         if (adjustedHour == 0) {
                             adjustedHour = 12;
@@ -130,8 +144,6 @@ public class CreateMeetingActivity extends BaseActivity {
                         // Display the selected time
                         bind.fromView.setText(endTime);
                     }
-
-
                 }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), false).show();
 
 
@@ -155,6 +167,7 @@ public class CreateMeetingActivity extends BaseActivity {
                 stringArray.add(item);
             }
         } catch (Exception e) {
+            ErrorHandler.handleException(getApplicationContext(), e);
 
         }
 
@@ -220,10 +233,9 @@ public class CreateMeetingActivity extends BaseActivity {
         bind.createMeetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pd.show();
                 String subject = bind.meetingSubject.getText().toString();
                 if (subject.isEmpty()) {
-                    pd.dismiss();
+                    pd.mDismiss();
                     bind.meetingSubject.requestFocus();
                     bind.meetingSubject.setError("Empty");
                 }  else {
@@ -239,10 +251,10 @@ public class CreateMeetingActivity extends BaseActivity {
         try {
             params.put("date", selectedDate);
             params.put("startTime", startTime);
-            params.put("roomId ", roomId);
+            params.put("roomId", roomId);
             params.put("endTime", endTime);
         } catch (JSONException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(), e);
         }
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.MEETS_FOR_DATE_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
@@ -257,35 +269,28 @@ public class CreateMeetingActivity extends BaseActivity {
                             jsonObject = jsonArray.getJSONObject(i);
                             BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
                             bookedSlotList.add(model);
-                            bind.progressBar.setVisibility(View.GONE);
+                            pd.mDismiss();
                         } catch (JSONException e) {
-                            bind.progressBar.setVisibility(View.GONE);
-                            throw new RuntimeException(e);
+                            pd.mDismiss();
+                            ErrorHandler.handleException(getApplicationContext(), e);
                         }
                     }
                 } catch (JSONException e) {
-                    bind.progressBar.setVisibility(View.GONE);
-                    throw new RuntimeException(e);
+                    pd.mDismiss();
+                    ErrorHandler.handleException(getApplicationContext(), e);
                 }
 
                 bookedSlotAdapter = new BookedSlotAdapter(CreateMeetingActivity.this, bookedSlotList);
                 bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
                 bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
-                bind.progressBar.setVisibility(View.GONE);
+                pd.mDismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try {
-                    if (error.networkResponse.statusCode == 500) {
-                        bind.progressBar.setVisibility(View.GONE);
-                        String errorString = new String(error.networkResponse.data);
-                    }
-                } catch (Exception e) {
-                    bind.progressBar.setVisibility(View.GONE);
-                    Log.e("CreateEMP", "onErrorResponse: ", e);
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
             }
         });
 
@@ -293,7 +298,7 @@ public class CreateMeetingActivity extends BaseActivity {
     }
 
     private void setMeetingTimeApiCall() {
-        pd.show();
+        pd.mShow(CreateMeetingActivity.this);
 
         JSONObject params = new JSONObject();
         try {
@@ -303,7 +308,7 @@ public class CreateMeetingActivity extends BaseActivity {
             params.put("endTime", endTime);
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(), e);
         }
 
         //
@@ -316,27 +321,17 @@ public class CreateMeetingActivity extends BaseActivity {
                     JSONArray array = response.getJSONArray("userList");
                     bind.bookedMeetingRecyclerview.setVisibility(View.GONE);
                     confirmMeeting(array);
-                    pd.dismiss();
+                    pd.mDismiss();
                 } catch (JSONException e) {
-                    pd.dismiss();
-                    throw new RuntimeException(e);
+                    pd.mDismiss();
+                    ErrorHandler.handleException(getApplicationContext(), e);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try {
-                    if (error.networkResponse.statusCode == 500) {
-                        String errorString = new String(error.networkResponse.data);
-                        pd.dismiss();
-                        Toast.makeText(CreateMeetingActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (Exception e) {
-                    pd.dismiss();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }
         });
@@ -346,6 +341,8 @@ public class CreateMeetingActivity extends BaseActivity {
     }
 
     private void scheduleMeetingApiCall(String subject, JSONArray empIdList) {
+        pd.mShow(CreateMeetingActivity.this);
+
         JSONObject params = new JSONObject();
         String _id = LocalPreference.get_Id(CreateMeetingActivity.this);
         try {
@@ -358,30 +355,22 @@ public class CreateMeetingActivity extends BaseActivity {
             params.put("employee_ids", empIdList);
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(), e);
         }
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_MEETING_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                pd.dismiss();
+                pd.mDismiss();
                 Toast.makeText(CreateMeetingActivity.this, "Meeting Created", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try {
-                    if (error.networkResponse.statusCode == 500) {
-                        String errorString = new String(error.networkResponse.data);
-                        pd.dismiss();
-                        Toast.makeText(CreateMeetingActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                    }
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-                } catch (Exception e) {
-                    pd.dismiss();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
 
             }
         });
