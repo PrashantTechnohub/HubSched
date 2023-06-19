@@ -18,8 +18,10 @@ import com.NakshatraTechnoHub.HubSched.Models.MessageModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
@@ -47,7 +49,6 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        pd.mShow(this);
 
         msg = findViewById(R.id.editTextMessage);
         recyclerViewChat = findViewById(R.id.recyclerViewChat);
@@ -78,37 +79,38 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getChat() {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.GET_CHAT_URL + "/" + meetId, getApplicationContext()), null,
-                response -> {
-                    try {
-                        JSONArray messagesArray = response.getJSONArray("result");
 
-                        for (int i = 0; i < messagesArray.length(); i++) {
-                            JSONObject messageObj = messagesArray.getJSONObject(i);
-                            int id = messageObj.getInt("sender_id");
-                            String message = messageObj.getString("message");
-                            String name = messageObj.getString("sender_name");
+        new Receiver(ChatActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray messagesArray = response.getJSONArray("result");
 
-                            MessageModel newMessage = new MessageModel(id, message, name);
-                            messageList.add(newMessage);
-                        }
+                    for (int i = 0; i < messagesArray.length(); i++) {
+                        JSONObject messageObj = messagesArray.getJSONObject(i);
+                        int id = messageObj.getInt("sender_id");
+                        String message = messageObj.getString("message");
+                        String name = messageObj.getString("sender_name");
 
-                        chatAdapter.notifyItemInserted(messageList.size());
-                        recyclerViewChat.scrollToPosition(messageList.size() - 1);
-                        pd.mDismiss();
-
-                    } catch (JSONException e) {
-                        ErrorHandler.handleException(getApplicationContext(), e);
+                        MessageModel newMessage = new MessageModel(id, message, name);
+                        messageList.add(newMessage);
                     }
-                },
-                error -> {
-                    pd.mDismiss();
-                    ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-                });
+                    chatAdapter.notifyItemInserted(messageList.size());
+                    recyclerViewChat.scrollToPosition(messageList.size() - 1);
+                    
 
+                } catch (JSONException e) {
+                    ErrorHandler.handleException(getApplicationContext(), e);
+                }
+            }
 
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
+            }
+        }).getChat(Integer.parseInt(meetId));
 
     }
 
@@ -141,14 +143,14 @@ public class ChatActivity extends AppCompatActivity {
                             public void run() {
                                 chatAdapter.notifyItemInserted(messageList.size());
                                 recyclerViewChat.smoothScrollToPosition(messageList.size() - 1);
-                                pd.mDismiss();
+                                
                             }
                         });
 
-                        pd.mDismiss();
+                        
 
                     } catch (JSONException e) {
-                        pd.mDismiss();
+                        
                         ErrorHandler.handleException(getApplicationContext(), e);
                     }
 
@@ -156,7 +158,7 @@ public class ChatActivity extends AppCompatActivity {
             });
 
         } catch (URISyntaxException e) {
-            pd.mDismiss();
+            
             ErrorHandler.handleException(getApplicationContext(), e);
         }
     }
@@ -181,12 +183,29 @@ public class ChatActivity extends AppCompatActivity {
 
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CHAT_URL, getApplicationContext()), jsonMessage, response -> Log.d("MSG11", "onResponse: Done"), error -> {
-            ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-        });
+        new Receiver(ChatActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String msg=    response.getString("message");
 
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
+                    Toast.makeText(ChatActivity.this,msg, Toast.LENGTH_SHORT).show();
+                    finish();
+                } catch (JSONException e) {
+
+                    ErrorHandler.handleException(getApplicationContext(), e);
+
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
+            }
+        }).save_sms_to_server(jsonMessage);
+        
     }
 
     @Override

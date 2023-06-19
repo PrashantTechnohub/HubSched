@@ -1,10 +1,8 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -13,24 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.BookedSlotAdapter;
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.BookedSlotModel;
-import com.NakshatraTechnoHub.HubSched.Models.MeetingEmpListModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.devstune.searchablemultiselectspinner.SearchableItem;
 import com.devstune.searchablemultiselectspinner.SelectionCompleteListener;
-
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -52,6 +41,7 @@ public class CreateMeetingActivity extends BaseActivity {
     ArrayList<BookedSlotModel> bookedSlotList = new ArrayList<>();
 
     BookedSlotAdapter bookedSlotAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +56,7 @@ public class CreateMeetingActivity extends BaseActivity {
         roomId = intent.getStringExtra("roomId");
         selectedDate = intent.getStringExtra("selectedDate");
 
-        
-        pd.mShow(this);
+
         bind.actionBar.setText("Booked Slots");
         getBookedSlotApiCall();
 
@@ -157,6 +146,7 @@ public class CreateMeetingActivity extends BaseActivity {
         });
 
     }
+
     private ArrayList<SearchableItem> getStringArray(JSONArray empList) {
         ArrayList<SearchableItem> stringArray = new ArrayList<>();
 
@@ -200,7 +190,7 @@ public class CreateMeetingActivity extends BaseActivity {
         bind.selectEmployees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomSelectionSpinner.show(CreateMeetingActivity.this , "Done", stringArray, new SelectionCompleteListener() {
+                CustomSelectionSpinner.show(CreateMeetingActivity.this, "Done", stringArray, new SelectionCompleteListener() {
                     @Override
                     public void onCompleteSelection(@NonNull ArrayList<SearchableItem> arrayList) {
                         EmpIdList = new JSONArray();
@@ -215,11 +205,11 @@ public class CreateMeetingActivity extends BaseActivity {
 
                         String empList = formatIdList(mailList);
 
-                        if (!empList.isEmpty()){
+                        if (!empList.isEmpty()) {
                             bind.selectedEmployeesView.setVisibility(View.VISIBLE);
                             bind.selectedEmployeesView.setText(empList);
                             bind.text.setText("Selected Employees ");
-                        }else{
+                        } else {
                             bind.selectedEmployeesView.setVisibility(View.GONE);
                         }
 
@@ -235,10 +225,9 @@ public class CreateMeetingActivity extends BaseActivity {
             public void onClick(View view) {
                 String subject = bind.meetingSubject.getText().toString();
                 if (subject.isEmpty()) {
-                    pd.mDismiss();
                     bind.meetingSubject.requestFocus();
                     bind.meetingSubject.setError("Empty");
-                }  else {
+                } else {
                     scheduleMeetingApiCall(subject, EmpIdList);
                 }
             }
@@ -256,8 +245,7 @@ public class CreateMeetingActivity extends BaseActivity {
         } catch (JSONException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.MEETS_FOR_DATE_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
+        new Receiver(CreateMeetingActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
                 JSONArray jsonArray = new JSONArray();
@@ -269,36 +257,33 @@ public class CreateMeetingActivity extends BaseActivity {
                             jsonObject = jsonArray.getJSONObject(i);
                             BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
                             bookedSlotList.add(model);
-                            pd.mDismiss();
+
                         } catch (JSONException e) {
-                            pd.mDismiss();
+
                             ErrorHandler.handleException(getApplicationContext(), e);
                         }
                     }
                 } catch (JSONException e) {
-                    pd.mDismiss();
+
                     ErrorHandler.handleException(getApplicationContext(), e);
                 }
 
                 bookedSlotAdapter = new BookedSlotAdapter(CreateMeetingActivity.this, bookedSlotList);
                 bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
                 bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
-                pd.mDismiss();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                pd.mDismiss();
+            public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }
-        });
+        }).getBookedSlotList(params);
 
-        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
     private void setMeetingTimeApiCall() {
-        pd.mShow(CreateMeetingActivity.this);
+
 
         JSONObject params = new JSONObject();
         try {
@@ -311,9 +296,8 @@ public class CreateMeetingActivity extends BaseActivity {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
 
-        //
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.EMPLOYEE_LIST_FOR_MEET_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
+        new Receiver(CreateMeetingActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -321,27 +305,26 @@ public class CreateMeetingActivity extends BaseActivity {
                     JSONArray array = response.getJSONArray("userList");
                     bind.bookedMeetingRecyclerview.setVisibility(View.GONE);
                     confirmMeeting(array);
-                    pd.mDismiss();
+
                 } catch (JSONException e) {
-                    pd.mDismiss();
+
                     ErrorHandler.handleException(getApplicationContext(), e);
                 }
 
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }
-        });
+        }).emp_list_for_meeting(params);
 
-        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
 
     }
 
     private void scheduleMeetingApiCall(String subject, JSONArray empIdList) {
-        pd.mShow(CreateMeetingActivity.this);
+
 
         JSONObject params = new JSONObject();
         String _id = LocalPreference.get_Id(CreateMeetingActivity.this);
@@ -357,25 +340,21 @@ public class CreateMeetingActivity extends BaseActivity {
         } catch (JSONException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_MEETING_URL, CreateMeetingActivity.this), params, new Response.Listener<JSONObject>() {
+        new Receiver(CreateMeetingActivity.this, new Receiver.ApiListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                pd.mDismiss();
+            public void onResponse(JSONObject object) {
+
                 Toast.makeText(CreateMeetingActivity.this, "Meeting Created", Toast.LENGTH_SHORT).show();
                 finish();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                pd.mDismiss();
+            public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
-
             }
-        });
+        }).create_meeting(params);
 
-        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
 }

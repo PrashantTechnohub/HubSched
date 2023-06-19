@@ -20,6 +20,7 @@ import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateRoomBinding;
 import com.android.volley.Request;
@@ -204,7 +205,7 @@ public class CreateRoomActivity extends BaseActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    pd.mDismiss();
+                    
                     Toast.makeText(CreateRoomActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -228,24 +229,20 @@ public class CreateRoomActivity extends BaseActivity {
         } catch (JSONException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
-
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.CREATE_ROOM_URL,getApplicationContext()),params, new Response.Listener<JSONObject>() {
+        new Receiver(CreateRoomActivity.this, new Receiver.ApiListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                pd.mDismiss();
+            public void onResponse(JSONObject object) {
+                finish();
                 Toast.makeText(CreateRoomActivity.this, "Done!!", Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                pd.mDismiss();
+            public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }
-        });
+        }).create_room(params);
 
-        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 
     @SuppressLint("SetTextI18n")

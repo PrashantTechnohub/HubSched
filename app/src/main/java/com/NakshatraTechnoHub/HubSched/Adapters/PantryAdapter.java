@@ -51,6 +51,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
     public void onBindViewHolder(@NonNull PantryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.room_no.setText(pantryList.get(position).getRoomAddress());
         holder.name.setText(pantryList.get(position).getOrderedBy());
+        holder.orderNo.setText("#Order: "+String.valueOf(position + 1)); // Set the order number
 
         if (!pantryList.get(position).getStatus().equals("requested")) {
             holder.ad_layout.setVisibility(View.GONE);
@@ -126,7 +127,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView room_no, name, orderStatus;
+        TextView room_no, name, orderStatus, orderNo;
 
         LinearLayout ad_layout;
         MaterialButton acceptBtn, denyBtn, showOrderBtn;
@@ -141,6 +142,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
             acceptBtn = (itemView).findViewById(R.id.accept_order);
             denyBtn = (itemView).findViewById(R.id.deny_order);
             showOrderBtn = (itemView).findViewById(R.id.show_order);
+            orderNo = (itemView).findViewById(R.id.order_no);
         }
     }
 }

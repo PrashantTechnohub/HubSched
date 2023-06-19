@@ -1,5 +1,7 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import com.NakshatraTechnoHub.HubSched.Models.OrderPlaceModel;
 import com.NakshatraTechnoHub.HubSched.Models.PantryItemModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -52,7 +55,7 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantry_order_place);
 
-        pd.mShow(this);
+
         placeOrder = findViewById(R.id.place_order_button);
         recyclerView = findViewById(R.id.pantry_list_recyclerview);
         refresh = findViewById(R.id.refresh);
@@ -146,23 +149,20 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
             ErrorHandler.handleException(getApplicationContext(), e);
         }
 
-        // Create a Volley request
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.PANTRY_REQUEST_URL, PantryOrderPlaceActivity.this), requestBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(PantryOrderPlaceActivity.this, "Ordered Successful", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        ErrorHandler.handleVolleyError(getApplicationContext(), error);
-                        pd.mDismiss();
-                    }
-                });
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
 
+        new Receiver(PantryOrderPlaceActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject object) {
+                finish();
+                Toast.makeText(PantryOrderPlaceActivity.this, "Ordered Successful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+                
+            }
+        }).post_item_to_pantry();
 
     }
 
@@ -186,7 +186,7 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
         // Create and set the adapter
         adapter = new PantryItemListAdapter(PantryOrderPlaceActivity.this,meetId, itemList);
         recyclerView.setAdapter(adapter);
-        pd.mDismiss();
+        
     }
 
 

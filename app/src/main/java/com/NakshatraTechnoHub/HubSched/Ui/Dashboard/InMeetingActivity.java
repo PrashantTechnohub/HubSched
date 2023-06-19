@@ -44,7 +44,7 @@ public class InMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_meeting);
 
-        pd.mShow(this);
+        
 
         timeLeft = findViewById(R.id.time_left);
         subjectView = findViewById(R.id.subject);

@@ -16,6 +16,7 @@ import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityMeetingListBinding;
@@ -46,7 +47,6 @@ public class MeetingListActivity extends BaseActivity {
         bind = ActivityMeetingListBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
-        pd.mShow(this);
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +67,10 @@ public class MeetingListActivity extends BaseActivity {
 
     private void getMeetingList() {
 
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEETING_LIST_URL, MeetingListActivity.this), null, new Response.Listener<JSONArray>() {
+        new Receiver(MeetingListActivity.this, new Receiver.ListListener() {
             @Override
             public void onResponse(JSONArray response) {
-
+                list.clear();
                 for (int i = 0; i<response.length(); i++){
                     try {
                         JSONObject object = response.getJSONObject(i);
@@ -79,7 +79,7 @@ public class MeetingListActivity extends BaseActivity {
                         list.add(model);
 
                     } catch (JSONException e) {
-                        pd.mDismiss();
+
                         bind.refresh.setRefreshing(false);
                         ErrorHandler.handleException(getApplicationContext(), e);
 
@@ -90,20 +90,16 @@ public class MeetingListActivity extends BaseActivity {
                 bind.meetingListRecyclerview.setLayoutManager(new LinearLayoutManager(MeetingListActivity.this));
                 bind.meetingListRecyclerview.setAdapter(adapter);
                 bind.refresh.setRefreshing(false);
-                pd.mDismiss();
 
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                pd.mDismiss();
+            public void onError(VolleyError error) {
                 bind.refresh.setRefreshing(false);
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }
-        });
-
-        VolleySingleton.getInstance(this).addToRequestQueue(arrayRequest);
+        }).getMeetingList();
 
     }
 

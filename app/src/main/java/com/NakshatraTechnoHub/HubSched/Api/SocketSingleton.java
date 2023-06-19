@@ -11,7 +11,7 @@ public class SocketSingleton {
 
     private SocketSingleton() {
         try {
-            socket = IO.socket("http://192.168.0.182:5000/");
+            socket = IO.socket(Constant.domain);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

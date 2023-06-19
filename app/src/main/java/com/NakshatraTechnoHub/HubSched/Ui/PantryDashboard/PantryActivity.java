@@ -21,13 +21,10 @@ import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.SocketSingleton;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Interface.ApiInterface;
-import com.NakshatraTechnoHub.HubSched.Models.MessageModel;
 import com.NakshatraTechnoHub.HubSched.Models.PantryModel;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomErrorDialog;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -44,7 +41,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 public class PantryActivity extends AppCompatActivity implements ApiInterface {
     RecyclerView recyclerView;
@@ -141,7 +137,7 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
             public void onErrorResponse(VolleyError error) {
                 pd.mDismiss();
                 refresh.setRefreshing(false);
-               ErrorHandler.handleException(PantryActivity.this, error);
+                ErrorHandler.handleException(PantryActivity.this, error);
 
 
             }
@@ -152,8 +148,7 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
 
     private void socketConnection() {
 
-//        SocketSingleton socketSingleton = SocketSingleton.getInstance();
-        Socket socket =         SocketSingleton.getInstance().getSocket().connect();
+        Socket socket = SocketSingleton.getInstance().getSocket().connect();
 
         socket.on(Socket.EVENT_CONNECT, args -> {
             Log.d("Socket", "Connected");
@@ -172,6 +167,8 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
             });
 
         });
+
+
     }
 
     private void parsingOrderedList(JSONArray jsonArray) {
@@ -199,8 +196,6 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
                         Toast.makeText(PantryActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
                     }
                     pd.mDismiss();
-
-                    // Scroll to the last item in the list
                     int lastIndex = list.size() - 1;
                     if (lastIndex >= 0) {
                         recyclerView.scrollToPosition(lastIndex);

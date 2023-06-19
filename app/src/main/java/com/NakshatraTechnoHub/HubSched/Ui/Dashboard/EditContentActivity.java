@@ -24,7 +24,7 @@ public class EditContentActivity extends BaseActivity {
     JsonObjectRequest jsonObjectRequest;
     JSONObject object = new JSONObject();
 
-    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +32,6 @@ public class EditContentActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-        //Progress Dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please Wait ....");
 
         //One Volley Queue
         queue = Volley.newRequestQueue(getApplicationContext());
@@ -66,7 +63,6 @@ public class EditContentActivity extends BaseActivity {
         //Update Content Buttons
         bind.contentOneBtn.setOnClickListener(v -> {
             if(bind.contentOneName.getText().toString().isEmpty() && bind.contentOneUrl.getText().toString().isEmpty() ){
-                progressDialog.dismiss();
                 Toast.makeText(EditContentActivity.this, "Fill all fields !!", Toast.LENGTH_SHORT).show();
             }else{
 

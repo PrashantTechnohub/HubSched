@@ -23,6 +23,7 @@ import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
 import com.android.volley.Request;
@@ -50,8 +51,7 @@ public class ProfileFragment extends Fragment {
         bind = FragmentProfileBinding.inflate(inflater);
         MaterialToolbar toolbar = getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle("Account");
-
-        pd.mShow(getActivity());
+        
 
         bind.logOutBtn.setOnClickListener(v -> {
 
@@ -130,20 +130,20 @@ public class ProfileFragment extends Fragment {
         return bind.getRoot();
     }
     private String[] fetchProfile() {
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_PROFILE_URL, requireContext()), null, new Response.Listener<JSONObject>() {
+        
+        new Receiver(getContext(), new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                     _id = response.getString("_id");
-                     name = response.getString("name");
-                     empId = response.getString("empId");
-                     position = response.getString("position");
-                     gender = response.getString("gender");
-                     email = response.getString("email");
-                     mobile = response.getString("mobile");
-                     password = response.getString("password");
-                     userType = response.getString("userType");
+                    _id = response.getString("_id");
+                    name = response.getString("name");
+                    empId = response.getString("empId");
+                    position = response.getString("position");
+                    gender = response.getString("gender");
+                    email = response.getString("email");
+                    mobile = response.getString("mobile");
+                    password = response.getString("password");
+                    userType = response.getString("userType");
 
                     bind.empName.setText(name);
                     bind.empId.setText(empId);
@@ -151,23 +151,35 @@ public class ProfileFragment extends Fragment {
                     bind.empGender.setText(gender);
                     bind.empMail.setText(email);
                     bind.empMobile.setText(mobile);
-                    pd.mDismiss();
+                    
 
 
                 } catch (JSONException e) {
                     ErrorHandler.handleException(getActivity(), e);
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getActivity(), error);
+
             }
-        });
+        }).getProfileDetail();
 
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(objectRequest);
-
+//        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_PROFILE_URL, requireContext()), null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//               
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//            }
+//        });
+//
+//        VolleySingleton.getInstance(getActivity()).addToRequestQueue(objectRequest);
+//
 
 
 

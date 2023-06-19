@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityRoomListBinding;
 import com.android.volley.Request;
@@ -42,7 +43,7 @@ public class RoomListActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-        pd.mShow(this);
+        
 
         bind.addRoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,12 +78,9 @@ public class RoomListActivity extends BaseActivity {
     }
 
     private void getRoomList() {
-
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEET_ROOMS_URL,RoomListActivity.this), null, new Response.Listener<JSONArray>() {
+        new Receiver(RoomListActivity.this, new Receiver.ListListener() {
             @Override
             public void onResponse(JSONArray response) {
-
                 list.clear();
 
                 if (response != null){
@@ -98,29 +96,26 @@ public class RoomListActivity extends BaseActivity {
                             }
 
                         } catch (JSONException e) {
-                            pd.mDismiss();
+
                             ErrorHandler.handleException(getApplicationContext(), e);
                         }
                     }
 
                     adapter = new RoomListAdapter(getApplicationContext(), list);
                     bind.roomListRecyclerView.setAdapter(adapter);
-                    pd.mDismiss();
+
                 }else{
                     bind.roomListRecyclerView.setVisibility(View.GONE);
                     bind.noResult.setVisibility(View.VISIBLE);
-                    pd.mDismiss();
                 }
 
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pd.mDismiss();
-                ErrorHandler.handleVolleyError(getApplicationContext(), error);
-            }
-        });
 
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
+            }
+        }).getRoomList();
     }
 }

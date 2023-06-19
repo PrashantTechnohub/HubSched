@@ -14,6 +14,7 @@ import com.NakshatraTechnoHub.HubSched.Ui.PantryDashboard.PantryActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
 import com.android.volley.Request;
@@ -28,10 +29,8 @@ import org.json.JSONObject;
 
 public class LoginActivity extends BaseActivity {
 
-    ActivityLoginBinding bind;
+    public ActivityLoginBinding bind;
 
-
-    //TESTING
     String firebaseToken;
 
     @Override
@@ -81,7 +80,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void loginUser(String email, String password, String firebaseToken) {
+    public void loginUser(String email, String password, String firebaseToken) {
 
         JSONObject params = new JSONObject();
 
@@ -91,11 +90,11 @@ public class LoginActivity extends BaseActivity {
             params.put("firebaseToken", firebaseToken);
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            ErrorHandler.handleException(getApplicationContext(),e);
             pd.mDismiss();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.LOGIN_URL, params, new Response.Listener<JSONObject>() {
+        new Receiver(LoginActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -146,17 +145,12 @@ public class LoginActivity extends BaseActivity {
                 pd.mDismiss();
             }
 
-
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(VolleyError error) {
                 pd.mDismiss();
                 ErrorHandler.handleVolleyError(LoginActivity.this, error);
             }
-        });
-
-
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
+        }).loginUser(params);
 
     }
 

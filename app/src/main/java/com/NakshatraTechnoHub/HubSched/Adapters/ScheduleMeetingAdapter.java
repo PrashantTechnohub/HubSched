@@ -42,7 +42,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeetingAdapter.ViewHolder> {
-    ProgressDialog pd;
+    
     Bitmap qrCodeBitmap;
     static ApiInterface mHandler;
     Context context;
@@ -66,9 +66,7 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleMeetingAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-
-        pd = new ProgressDialog(context);
-        pd.setMessage("Please Wait ...");
+        
 
         String inputDate = list.get(position).getDate();
         SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
@@ -140,14 +138,14 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
     }
 
     private Bitmap generateQrCode(String getMeetId, String companyId, String subject, String startTime, String endTime) {
-        pd.show();
+        
         JSONObject params = new JSONObject();
 
         try {
             params.put("meetId",Integer.parseInt(getMeetId));
 
         } catch (JSONException e) {
-            pd.dismiss();
+            
             e.printStackTrace();
         }
 
@@ -162,7 +160,7 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
                 intent.putExtra("startTime", startTime);
                 intent.putExtra("endTime", endTime);
                 context.startActivity(intent);
-                pd.dismiss();
+                
             }
 
 
@@ -174,7 +172,7 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
                 try {
                     if (error.networkResponse != null) {
                         if (error.networkResponse.statusCode == 500) {
-                            pd.dismiss();
+                            
                             String errorString = new String(error.networkResponse.data);
                             Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
                         }
@@ -184,7 +182,7 @@ public class ScheduleMeetingAdapter extends RecyclerView.Adapter<ScheduleMeeting
                     }
 
                 } catch (Exception e) {
-                    pd.dismiss();
+                    
                     Log.e("CreateEMP", "onErrorResponse: ", e);
                     Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }

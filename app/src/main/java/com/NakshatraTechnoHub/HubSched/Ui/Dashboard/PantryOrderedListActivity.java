@@ -1,30 +1,24 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.NakshatraTechnoHub.HubSched.Adapters.PantryMyOrderListAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.SocketSingleton;
 import com.NakshatraTechnoHub.HubSched.Models.PantryModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.android.volley.VolleyError;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -41,6 +35,8 @@ public class PantryOrderedListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<PantryModel> list = new ArrayList<>();
 
+    PantryMyOrderListAdapter adapter;
+
     SwipeRefreshLayout refresh;
     String meetId, companyId;
     Socket socket;
@@ -54,12 +50,15 @@ public class PantryOrderedListActivity extends AppCompatActivity {
         addOrderBtn = findViewById(R.id.add_order_btn);
         refresh = findViewById(R.id.refresh);
 
+        adapter = new PantryMyOrderListAdapter(PantryOrderedListActivity.this, list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(PantryOrderedListActivity.this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
 
         Intent intent = getIntent();
         meetId = intent.getStringExtra("meetId");
-        companyId = intent.getStringExtra("companyId");
+        companyId = LocalPreference.get_company_Id(this);
 
         orderListApi();
         socketConnection();
@@ -84,20 +83,31 @@ public class PantryOrderedListActivity extends AppCompatActivity {
 
     }
 
+
     private void socketConnection() {
-        SocketSingleton socketSingleton = SocketSingleton.getInstance();
-        socket = socketSingleton.getSocket();
+        Socket socket = SocketSingleton.getInstance().getSocket().connect();
 
         socket.on(Socket.EVENT_CONNECT, args -> {
             Log.d("Socket", "Connected");
+
+            socket.emit("trigger_pantry", companyId);
+
         }).on(Socket.EVENT_DISCONNECT, args -> {
             Log.d("Socket", "Disconnected");
-        }).on("pantry_list-" + companyId, args -> {
+
+        }).on("pantry_list-" + companyId + "-" + meetId, args -> {
+
             JSONArray jsonArray = (JSONArray) args[0];
-            runOnUiThread(() -> {
-                parsingOrderedList(jsonArray);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    parsingOrderedList(jsonArray);
+                }
             });
-        }).emit("trigger_pantry", companyId);
+
+        });
+
+
     }
 
     private void parsingOrderedList(JSONArray jsonArray) {
@@ -120,67 +130,15 @@ public class PantryOrderedListActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    recyclerView.setAdapter(new MyAdapter<PantryModel>(list, new MyAdapter.OnBindInterface() {
-                        @Override
-                        public void onBindHolder(MyAdapter.MyHolder holder, int position) {
-                            PantryModel model = list.get(position);
-                            TextView room_no = holder.itemView.findViewById(R.id.room_no);
-                            TextView name = holder.itemView.findViewById(R.id.name);
-                            TextView orderStatus = holder.itemView.findViewById(R.id.order_status);
-                            MaterialButton showOrderBtn = holder.itemView.findViewById(R.id.show_order);
-
-                            orderStatus.setVisibility(View.VISIBLE);
-
-                            orderStatus.setText(model.getStatus());
-                            room_no.setText(model.getRoomAddress());
-                            name.setText(model.getOrderedBy());
-
-                            showOrderBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(PantryOrderedListActivity.this, R.style.MaterialAlertDialog_Rounded);
-                                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    View team = inflater1.inflate(R.layout.cl_dialogebox_pantry, null);
-                                    builder.setView(team);
-
-                                    TextView textViewItem = team.findViewById(R.id.textViewItem);
-
-                                    JSONArray jsonArray = list.get(position).getJsonArray();// Replace "response" with your actual JSON response object
-
-                                    StringBuilder itemQuantityBuilder = new StringBuilder();
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jsonObject = null;
-                                        try {
-                                            jsonObject = jsonArray.getJSONObject(i);
-                                            String item = jsonObject.getString("itemName");
-                                            int quantity = jsonObject.getInt("quantity");
-
-                                            // Append the item and quantity to the StringBuilder
-                                            itemQuantityBuilder.append(item + "              " + quantity).append("\n\n");
-                                        } catch (JSONException e) {
-                                            throw new RuntimeException(e);
-                                        }
-
-                                    }
-
-                                    textViewItem.setText(itemQuantityBuilder.toString());
-
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
-                                }
-                            });
-
-                        }
-                    }, R.layout.cl_orderedlist));
+                    adapter.notifyDataSetChanged(); // Notify the adapter that the data has changed
 
 
                     if (refresh.isRefreshing()) {
                         refresh.setRefreshing(false);
                         Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
                     }
-                    pd.mDismiss();
 
-                    // Scroll to the last item in the list
+
                     int lastIndex = list.size() - 1;
                     if (lastIndex >= 0) {
                         recyclerView.scrollToPosition(lastIndex);
@@ -209,8 +167,6 @@ public class PantryOrderedListActivity extends AppCompatActivity {
                         refresh.setRefreshing(false);
 
 
-                    pd.mDismiss();
-
                 } catch (Exception e) {
 
                     ErrorHandler.handleException(getApplicationContext(), e);
@@ -226,4 +182,6 @@ public class PantryOrderedListActivity extends AppCompatActivity {
             }
         }).getMyOrderList(Integer.parseInt(meetId));
     }
+
+
 }
