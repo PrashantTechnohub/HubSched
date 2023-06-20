@@ -1,6 +1,7 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ public class CreateEmployeeActivity extends BaseActivity {
 
 
     ArrayAdapter<String> updateUserType;
-    String[] userTypeList = {"Admin", "Organizer", "Employee", "Panetry", "Scanner Device"};
+    String[] userTypeList = {"Admin", "Organizer", "Employee", "Pantry", "Scanner Device"};
 
     ActivityCreateEmployeeBinding bind;
 
@@ -93,7 +94,6 @@ public class CreateEmployeeActivity extends BaseActivity {
             public void onClick(View view) {
 
                 String empId = bind.addEmpId.getText().toString();
-
                 String name = bind.addEmpName.getText().toString();
                 String email = bind.addEmpEmail.getText().toString();
                 String mobile = bind.addEmpMobile.getText().toString();
@@ -101,33 +101,10 @@ public class CreateEmployeeActivity extends BaseActivity {
                 String position = bind.addEmpPosition.getText().toString();
                 String password = bind.addEmpPassword.getText().toString();
                 String confirmPassword = bind.addEmpCPassword.getText().toString();
-                Toast.makeText(CreateEmployeeActivity.this, "" + name, Toast.LENGTH_SHORT).show();
-                if (empId.isEmpty()) {
-                    bind.addEmpId.requestFocus();
-                    bind.addEmpId.setError("Empty !");
-                } else if (name.isEmpty()) {
-                    bind.addEmpName.requestFocus();
-                    bind.addEmpName.setError("Empty !");
-                } else if (email.isEmpty()) {
-                    bind.addEmpEmail.requestFocus();
-                    bind.addEmpEmail.setError("Empty !");
-                } else if (mobile.isEmpty()) {
-                    bind.addEmpMobile.requestFocus();
-                    bind.addEmpMobile.setError("Empty !");
-                } else if (gender.isEmpty()) {
-                    Toast.makeText(CreateEmployeeActivity.this, "Please select Gender", Toast.LENGTH_SHORT).show();
+                String userType = bind.userType.getText().toString();
 
-                } else if (position.isEmpty()) {
-                    Toast.makeText(CreateEmployeeActivity.this, "Please select Position", Toast.LENGTH_SHORT).show();
-                } else if (password.isEmpty()) {
-                    bind.addEmpPassword.requestFocus();
-                    bind.addEmpPassword.setError("Empty !");
-                } else if (confirmPassword.isEmpty()) {
-                    bind.addEmpCPassword.requestFocus();
-                    bind.addEmpCPassword.setError("Empty !");
-                } else if (!confirmPassword.equals(password)) {
-                    Toast.makeText(CreateEmployeeActivity.this, "Password not match !!", Toast.LENGTH_SHORT).show();
-                } else {
+                boolean isValid = validateInput(empId, name, email, mobile, gender, position, userType, password, confirmPassword);
+                if (isValid) {
                     if (action != null) {
                         if (action.equals("update")) {
 
@@ -169,7 +146,7 @@ public class CreateEmployeeActivity extends BaseActivity {
                             user_type = "-1";
                         }
 
-                        if (user_type.equals("Panetry")) {
+                        if (user_type.equals("Pantry")) {
                             user_type = "-2";
                         }
 
@@ -177,6 +154,7 @@ public class CreateEmployeeActivity extends BaseActivity {
                     }
 
                 }
+
             }
         });
     }
@@ -308,5 +286,84 @@ public class CreateEmployeeActivity extends BaseActivity {
         }).update_profile(params);
 
     }
+
+
+    public boolean validateInput(String empId, String name, String email, String mobile, String gender, String position, String userType, String password, String confirmPassword) {
+        if (password.length() < 6) {
+            Toast.makeText(this, "Password will be more than 6 characters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            // Passwords do not match
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+
+        if (empId.isEmpty()) {
+            bind.addEmpId.requestFocus();
+            bind.addEmpId.setError("Employee ID cannot be empty");
+            return false;
+        }
+
+        if (name.isEmpty()) {
+            bind.addEmpName.requestFocus();
+            bind.addEmpName.setError("Name cannot be empty");
+            return false;
+        }
+
+        if (email.isEmpty()) {
+            bind.addEmpEmail.requestFocus();
+            bind.addEmpEmail.setError("Email cannot be empty");
+            return false;
+        } else if (!isValidEmail(email)) {
+            bind.addEmpEmail.requestFocus();
+            bind.addEmpEmail.setError("Invalid email format");
+            return false;
+        }
+
+        if (mobile.isEmpty()) {
+            bind.addEmpMobile.requestFocus();
+            bind.addEmpMobile.setError("Mobile number cannot be empty");
+            return false;
+        }
+
+        if (gender.isEmpty()) {
+            Toast.makeText(this, "Gender cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (position.isEmpty()) {
+            Toast.makeText(this, "Position cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (userType.isEmpty()) {
+            Toast.makeText(this, "User cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (confirmPassword.isEmpty()) {
+            bind.addEmpCPassword.requestFocus();
+            bind.addEmpCPassword.setError("Confirm password cannot be empty");
+            return false;
+        }
+
+        // Add more validation checks here if needed
+
+        return true; // All validation passed
+    }
+
+    private boolean isValidEmail(CharSequence email) {
+        if (TextUtils.isEmpty(email)) {
+            return false;
+        }
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.+[a-z]+";
+        return email.toString().matches(emailPattern);
+    }
+
+
 
 }
