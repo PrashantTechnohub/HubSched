@@ -1,6 +1,5 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,23 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.NakshatraTechnoHub.HubSched.Adapters.RoomListAdapter;
-import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateMeetingActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
@@ -46,8 +40,6 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
 
-    ScheduleMeetingAdapter adapter;
-    RoomListAdapter roomListAdapter;
 
     ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
     ArrayList<RoomListModel> roomList = new ArrayList<>();
@@ -165,8 +157,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                roomListAdapter = new RoomListAdapter(getActivity(), roomList);
-                bind.scheduleMeetingRecyclerView.setAdapter(roomListAdapter);
+
 
             }
         }, new Response.ErrorListener() {
@@ -228,10 +219,7 @@ public class HomeFragment extends Fragment {
                         bind.refresh.setRefreshing(false);
                     }
 
-                    adapter = new ScheduleMeetingAdapter(getActivity(), list);
-                    bind.scheduleMeetingRecyclerView.setAdapter(adapter);
-                    bind.scheduleMeetingRecyclerView.invalidate();
-                    bind.scheduleMeetingRecyclerView.removeAllViews();
+
 
 
                 } catch (JSONException e) {

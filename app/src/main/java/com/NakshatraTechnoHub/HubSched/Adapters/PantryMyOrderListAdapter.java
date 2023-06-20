@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.NakshatraTechnoHub.HubSched.Models.PantryModel;
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.PantryOrderedListActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -46,16 +45,16 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
 
         holder.orderStatus.setVisibility(View.VISIBLE);
 
-        holder. orderNo.setText("#Order: "+String.valueOf(position + 1)); // Set the order number
-        holder.  orderStatus.setText(model.getStatus());
-        holder. room_no.setText(model.getRoomAddress());
-        holder. name.setText(model.getOrderedBy());
+        holder.orderNo.setText("#Order: " + String.valueOf(position + 1)); // Set the order number
+        holder.orderStatus.setText(model.getStatus());
+        holder.room_no.setText(model.getRoomAddress());
+        holder.name.setText(model.getOrderedBy());
 
-        holder. showOrderBtn.setOnClickListener(new View.OnClickListener() {
+        holder.showOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.MaterialAlertDialog_Rounded);
-                LayoutInflater inflater1 = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater1 = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View team = inflater1.inflate(R.layout.cl_dialogebox_pantry, null);
                 builder.setView(team);
 
@@ -88,7 +87,6 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
     }
 
 
-
     @Override
     public int getItemCount() {
         return list.size();
@@ -98,14 +96,15 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
 
         TextView room_no, orderNo, orderStatus, name;
         MaterialButton showOrderBtn;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-             room_no = itemView.findViewById(R.id.room_no);
-             orderNo = itemView.findViewById(R.id.order_no);
-             name = itemView.findViewById(R.id.name);
-             orderStatus = itemView.findViewById(R.id.order_status);
-             showOrderBtn = itemView.findViewById(R.id.show_order);
+            room_no = itemView.findViewById(R.id.room_no);
+            orderNo = itemView.findViewById(R.id.order_no);
+            name = itemView.findViewById(R.id.name);
+            orderStatus = itemView.findViewById(R.id.order_status);
+            showOrderBtn = itemView.findViewById(R.id.show_order);
         }
     }
 }

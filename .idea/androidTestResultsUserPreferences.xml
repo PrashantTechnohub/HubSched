@@ -9,6 +9,38 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="2810d15c0404" value="120" />
+                  <entry key="5X9LNFGMSCX4XGNZ" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Realme&#10; RMX1901" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi&#10; Redmi Note 4" value="120" />
+                  <entry key="ddd397f3" value="120" />
+                  <entry key="realme&#10; RMX3151" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-489066323">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="2810d15c0404" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi&#10; Redmi Note 4" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1918488023">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="2810d15c0404" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; Redmi Note 4" value="120" />

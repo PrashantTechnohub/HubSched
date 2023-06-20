@@ -1,31 +1,16 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import com.NakshatraTechnoHub.HubSched.Adapters.EmpListAdapter;
-import com.NakshatraTechnoHub.HubSched.Adapters.ScheduleMeetingAdapter;
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
-import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
-import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
-import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityMeetingListBinding;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -38,7 +23,6 @@ public class MeetingListActivity extends BaseActivity {
 
     ActivityMeetingListBinding bind;
 
-    ScheduleMeetingAdapter adapter;
     ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
     
     @Override
@@ -86,9 +70,7 @@ public class MeetingListActivity extends BaseActivity {
                     }
                 }
 
-                adapter = new ScheduleMeetingAdapter(MeetingListActivity.this, list);
                 bind.meetingListRecyclerview.setLayoutManager(new LinearLayoutManager(MeetingListActivity.this));
-                bind.meetingListRecyclerview.setAdapter(adapter);
                 bind.refresh.setRefreshing(false);
 
             }

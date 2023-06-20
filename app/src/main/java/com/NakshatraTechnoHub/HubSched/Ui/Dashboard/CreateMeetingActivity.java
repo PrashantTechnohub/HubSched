@@ -4,17 +4,19 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.NakshatraTechnoHub.HubSched.Adapters.BookedSlotAdapter;
 import com.NakshatraTechnoHub.HubSched.Models.BookedSlotModel;
+import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomSelectionSpinner;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
 import com.android.volley.VolleyError;
@@ -38,9 +40,11 @@ public class CreateMeetingActivity extends BaseActivity {
     String roomName, roomId, selectedDate, startTime, endTime;
     JSONArray EmpIdList;
 
+
     ArrayList<BookedSlotModel> bookedSlotList = new ArrayList<>();
 
-    BookedSlotAdapter bookedSlotAdapter;
+    MyAdapter<BookedSlotModel> bookedSlotAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,35 +252,34 @@ public class CreateMeetingActivity extends BaseActivity {
         new Receiver(CreateMeetingActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
-                JSONArray jsonArray = new JSONArray();
                 try {
-                    jsonArray = response.getJSONArray("list");
+                    JSONArray jsonArray = response.getJSONArray("list");
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = jsonArray.getJSONObject(i);
-                            BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
-                            bookedSlotList.add(model);
-
-                        } catch (JSONException e) {
-
-                            ErrorHandler.handleException(getApplicationContext(), e);
-                        }
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
+                        bookedSlotList.add(model);
                     }
-                } catch (JSONException e) {
 
+                    // Create and set the adapter
+                    bookedSlotAdapter = new MyAdapter<>(bookedSlotList, new MyAdapter.OnBindInterface() {
+                        @Override
+                        public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+                            TextView startTime = holder.itemView.findViewById(R.id.start_time);
+                            TextView endTime = holder.itemView.findViewById(R.id.end_Time);
+                            startTime.setText(bookedSlotList.get(position).getStartTime());
+                            endTime.setText(bookedSlotList.get(position).getEndTime());
+                        }
+                    }, R.layout.cl_create_meeting);
+                    bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
+                    bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
+                } catch (JSONException e) {
                     ErrorHandler.handleException(getApplicationContext(), e);
                 }
-
-                bookedSlotAdapter = new BookedSlotAdapter(CreateMeetingActivity.this, bookedSlotList);
-                bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
-                bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
             }
 
             @Override
             public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
-
             }
         }).getBookedSlotList(params);
 

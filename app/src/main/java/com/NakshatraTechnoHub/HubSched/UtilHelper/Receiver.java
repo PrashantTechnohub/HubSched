@@ -5,6 +5,8 @@ import static com.NakshatraTechnoHub.HubSched.Api.Constant.CHAT_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_ROOM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEET_REQUEST_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_EMP_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_ROOM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_PROFILE_URL;
 
 import android.app.ProgressDialog;
@@ -149,7 +151,7 @@ public class Receiver {
 
                 } catch (Exception e) {
                     Log.e(TAG, error.toString());
-                    ErrorHandler.handleException(context, e);
+                    ErrorHandler.handleException(context, error);
                     Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
                     pd.mDismiss();
                 }
@@ -190,7 +192,7 @@ public class Receiver {
         getList(Request.Method.GET,  Constant.withToken(Constant.MEETING_LIST_URL, context), new JSONObject());
     }
     public void getBookedSlotList(JSONObject param) {
-        getList(Request.Method.POST,  Constant.withToken(Constant.MEETS_FOR_DATE_URL, context), param);
+        getdata(Request.Method.POST,  Constant.withToken(Constant.MEETS_FOR_DATE_URL, context), param);
     }
 
     public void getProfileDetail() {
@@ -210,6 +212,14 @@ public class Receiver {
 
     public void accept_denied_meeting(JSONObject params ) {
         getdata(Request.Method.POST, Constant.withToken(MEET_REQUEST_URL, context), params);
+    }
+
+    public void remove_room(Integer id ) {
+        getdata(Request.Method.DELETE, Constant.withToken(REMOVE_ROOM_URL+(id+""), context), new JSONObject());
+    }
+
+    public void remove_emp(Integer id ) {
+        getdata(Request.Method.DELETE, Constant.withToken(REMOVE_EMP_URL+(id+""), context), new JSONObject());
     }
     public void create_room(JSONObject params ) {
         getdata(Request.Method.POST, Constant.withToken(CREATE_ROOM_URL, context), params);

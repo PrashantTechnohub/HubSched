@@ -3,8 +3,12 @@ package com.NakshatraTechnoHub.HubSched.Ui.StartActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.EditText;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
@@ -46,39 +50,76 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
 
                 pd.mShow(LoginActivity.this);
-                
+
+                if (!validateField(bind.emailId, "Email")) {
+                    pd.mDismiss();
+                    return;
+                }
+
+                if (!validateField(bind.passwordId, "Password")) {
+                    pd.mDismiss();
+                    return;
+                }
 
 
                 String id = bind.emailId.getText().toString();
                 String pwd = bind.passwordId.getText().toString();
 
-                if (id.isEmpty()) {
-                    pd.mDismiss();
-                    bind.emailId.requestFocus();
-                    bind.emailId.setError("Empty");
-
-                } else if (pwd.isEmpty()) {
-                    pd.mDismiss();
-                    bind.passwordId.requestFocus();
-                    bind.passwordId.setError("Empty");
-
-                } else {
-                    pd.hideKeyboard(LoginActivity.this);
-                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            firebaseToken = task.getResult();
-                            LocalPreference.store_FirebaseToken(LoginActivity.this, firebaseToken);
-                            loginUser(id, pwd, firebaseToken);
-                        } else {
-                            Log.w("FCM TOKEN", "Fetching FCM registration token failed", task.getException());
-                        }
-                    });
-
-                }
+                pd.hideKeyboard(LoginActivity.this);
+                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        firebaseToken = task.getResult();
+                        LocalPreference.store_FirebaseToken(LoginActivity.this, firebaseToken);
+                        loginUser(id, pwd, firebaseToken);
+                    } else {
+                        pd.mDismiss();
+                        Log.w("FCM TOKEN", "Fetching FCM registration token failed", task.getException());
+                    }
+                });
             }
         });
 
     }
+
+
+    private boolean validateField(EditText editText, String fieldName) {
+        String value = editText.getText().toString().trim();
+
+        if (value.isEmpty()) {
+            editText.setError(fieldName + " is required");
+            editText.requestFocus();
+            return false;
+        }
+
+        // Add specific validation rules for each field
+        if (fieldName.equals("Email")) {
+            if (!isValidEmail(value)) {
+                editText.setError("Invalid email");
+                editText.requestFocus();
+                return false;
+            }
+        } else if (fieldName.equals("Password")) {
+            if (value.length() < 5) {
+                editText.setError("Password must be at least 5 characters");
+                editText.requestFocus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isValidEmail(CharSequence email) {
+        if (TextUtils.isEmpty(email)) {
+            return false;
+        }
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.+[a-z]+";
+        return email.toString().matches(emailPattern);
+    }
+
+
+
 
     public void loginUser(String email, String password, String firebaseToken) {
 
