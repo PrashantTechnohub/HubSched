@@ -50,7 +50,6 @@ public class ChatActivity extends AppCompatActivity {
         recyclerViewChat = findViewById(R.id.recyclerViewChat);
         buttonSend = findViewById(R.id.buttonSend);
 
-        Intent intent = getIntent();
 
         meetId = LocalPreference.get_meetId(this);
         companyId = LocalPreference.get_company_Id(this);
@@ -103,7 +102,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error) {
-//                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+//                ErrorHandler.handleVolleyError(ChatActivity.this, error);
 
             }
         }).getChat(Integer.parseInt(meetId));
@@ -146,16 +145,18 @@ public class ChatActivity extends AppCompatActivity {
                         
 
                     } catch (JSONException e) {
-                        
-                        ErrorHandler.handleException(getApplicationContext(), e);
+                        Log.d("ChatError11", "onError: " +e.toString());
+
+                        ErrorHandler.handleException(ChatActivity.this, e);
                     }
 
                 }
             });
 
         } catch (URISyntaxException e) {
-            
-            ErrorHandler.handleException(getApplicationContext(), e);
+            Log.d("ChatError11", "onError: " +e.toString());
+
+            ErrorHandler.handleException(ChatActivity.this, e);
         }
     }
 
@@ -175,7 +176,8 @@ public class ChatActivity extends AppCompatActivity {
             jsonMessage.put("meetId", meetId);
             jsonMessage.put("message", message);
         } catch (JSONException e) {
-            ErrorHandler.handleException(getApplicationContext(), e);
+            ErrorHandler.handleException(ChatActivity.this, e);
+            Log.d("ChatError11", "onError: " +e.toString());
 
         }
 
@@ -183,21 +185,13 @@ public class ChatActivity extends AppCompatActivity {
         new Receiver(ChatActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    String msg=    response.getString("message");
+                Toast.makeText(ChatActivity.this,"send", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(ChatActivity.this,msg, Toast.LENGTH_SHORT).show();
-                    finish();
-                } catch (JSONException e) {
-
-                    ErrorHandler.handleException(getApplicationContext(), e);
-
-                }
             }
 
             @Override
             public void onError(VolleyError error) {
-                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+                Log.d("ChatError111", "onError: " +error.toString());
 
             }
         }).save_sms_to_server(jsonMessage);

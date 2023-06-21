@@ -17,8 +17,12 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.NakshatraTechnoHub.HubSched.Ui.StartActivity.LoginActivity;
 
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+@FixMethodOrder(MethodSorters.JVM)
 
 public class LoginTest {
 
@@ -27,7 +31,7 @@ public class LoginTest {
 
 
     @Test
-    public void invalidEmail() {
+    public void test01_invalidEmail() {
         // Perform login with invalid credentials
         Espresso.onView(withId(R.id.email_id)).perform(ViewActions.typeText("invalid@gmail.com"));
         Espresso.onView(withId(R.id.password_id)).perform(ViewActions.typeText("1232332"));
@@ -35,7 +39,7 @@ public class LoginTest {
     }
 
     @Test
-    public void passwordAbove6Digit() {
+    public void test02_passwordAbove6Digit() {
         // Perform login with invalid credentials
         Espresso.onView(withId(R.id.email_id)).perform(ViewActions.typeText("invalid@gmail.com"));
         Espresso.onView(withId(R.id.password_id)).perform(ViewActions.typeText("1232332"));
@@ -43,7 +47,7 @@ public class LoginTest {
     }
 
     @Test
-    public void passwordBelow6Digit() {
+    public void test03_passwordBelow6Digit() {
         // Perform login with invalid credentials
         Espresso.onView(withId(R.id.email_id)).perform(ViewActions.typeText("invalid@gmail.com"));
         Espresso.onView(withId(R.id.password_id)).perform(ViewActions.typeText("1332"));
@@ -52,7 +56,7 @@ public class LoginTest {
 
 
     @Test
-    public void LoginWithValidCred() {
+    public void test04_LoginWithValidCred() {
 
 
         ViewInteraction emailField = Espresso.onView(withId(R.id.email_id));

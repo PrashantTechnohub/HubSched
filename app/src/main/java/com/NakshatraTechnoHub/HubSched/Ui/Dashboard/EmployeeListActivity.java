@@ -42,7 +42,6 @@ public class EmployeeListActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-        pd.mShow(this);
 
 
 
@@ -154,7 +153,7 @@ public class EmployeeListActivity extends BaseActivity {
                 bind.empListRecyclerView.setAdapter(adapter);
                 bind.empListRecyclerView.invalidate();
                 bind.empListRecyclerView.removeAllViews();
-                pd.mDismiss();
+
 
                 if (bind.refresh.isRefreshing()){
                     bind.refresh.setRefreshing(false);
