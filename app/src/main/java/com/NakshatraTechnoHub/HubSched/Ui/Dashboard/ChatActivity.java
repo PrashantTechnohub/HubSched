@@ -13,16 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ChatAdapter;
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.MessageModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,8 +52,8 @@ public class ChatActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        meetId = intent.getStringExtra("meetId");
-        companyId = intent.getStringExtra("companyId");
+        meetId = LocalPreference.get_meetId(this);
+        companyId = LocalPreference.get_company_Id(this);
 
         messageList = new ArrayList<>();
 
@@ -101,13 +97,13 @@ public class ChatActivity extends AppCompatActivity {
                     
 
                 } catch (JSONException e) {
-                    ErrorHandler.handleException(getApplicationContext(), e);
+                    Log.d("TAG", "onResponse: "+e);
                 }
             }
 
             @Override
             public void onError(VolleyError error) {
-                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+//                ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }
         }).getChat(Integer.parseInt(meetId));

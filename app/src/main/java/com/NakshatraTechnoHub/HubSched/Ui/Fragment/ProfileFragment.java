@@ -16,22 +16,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
-import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -151,7 +143,7 @@ public class ProfileFragment extends Fragment {
                     bind.empGender.setText(gender);
                     bind.empMail.setText(email);
                     bind.empMobile.setText(mobile);
-                    
+
 
 
                 } catch (JSONException e) {
@@ -162,24 +154,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getActivity(), error);
-
+                pd.mDismiss();
             }
         }).getProfileDetail();
 
-//        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, Constant.withToken(Constant.EMP_PROFILE_URL, requireContext()), null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//               
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//            }
-//        });
-//
-//        VolleySingleton.getInstance(getActivity()).addToRequestQueue(objectRequest);
-//
 
 
 
@@ -193,7 +171,7 @@ public class ProfileFragment extends Fragment {
         profileDetail[6] =mobile;
         profileDetail[7] =password;
         profileDetail[8] =userType;
-
+        pd.mDismiss();
         return profileDetail;
 
     }

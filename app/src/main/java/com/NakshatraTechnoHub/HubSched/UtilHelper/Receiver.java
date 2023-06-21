@@ -9,13 +9,11 @@ import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_ROOM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_PROFILE_URL;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.RoomListActivity;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -53,7 +51,7 @@ public class Receiver {
     }
 
     private void getdata(int method, String url, JSONObject object) {
-        
+        pd.mShow(context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(method, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -64,20 +62,20 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                
+                pd.mDismiss();
                 listener.onError(error);
                 try {
-                    
+
                     Log.e(TAG, new String(error.networkResponse.data));
-                    ErrorHandler.handleVolleyError(context, error);
-                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
-                    pd.mDismiss();
+
+//                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
+
                 } catch (Exception e) {
                     
                     Log.e(TAG, error.toString());
-                    ErrorHandler.handleException(context, e);
-                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
-                    pd.mDismiss();
+                    
+//                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
@@ -131,29 +129,30 @@ public class Receiver {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(method, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray array) {
+                pd.mDismiss();
                 Log.d(TAG, "onResponse: " + array);
                 listListener.onResponse(array);
-                pd.mDismiss();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-
-                
+                pd.mDismiss();
+                listListener.onError(error);
                 try {
-                    listListener.onError(error);
+
                     Log.e(TAG, new String(error.networkResponse.data));
                     String err = new String(error.networkResponse.data);
-                    CustomErrorDialog.mShow(context, "Error", err);
-                    Toast.makeText(context, "" + err, Toast.LENGTH_SHORT).show();
-                    pd.mDismiss();
+                    
+//                    Toast.makeText(context, "" + err, Toast.LENGTH_SHORT).show();
+
 
                 } catch (Exception e) {
                     Log.e(TAG, error.toString());
-                    ErrorHandler.handleException(context, error);
-                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
-                    pd.mDismiss();
+                    
+//                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
@@ -198,8 +197,8 @@ public class Receiver {
     public void getProfileDetail() {
         getdata(Request.Method.GET,  Constant.withToken(Constant.EMP_PROFILE_URL, context), new JSONObject());
     }
-    public void post_item_to_pantry() {
-        getdata(Request.Method.POST,  Constant.withToken(Constant.PANTRY_REQUEST_URL, context), new JSONObject());
+    public void post_item_to_pantry(JSONObject requestBody) {
+        getdata(Request.Method.POST,  Constant.withToken(Constant.PANTRY_REQUEST_URL, context), requestBody);
     }
     public void emp_list_for_meeting(JSONObject object) {
         getdata(Request.Method.POST,  Constant.withToken(Constant.EMPLOYEE_LIST_FOR_MEET_URL, context),object);

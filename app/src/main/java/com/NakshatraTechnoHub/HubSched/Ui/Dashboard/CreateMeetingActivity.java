@@ -18,6 +18,7 @@ import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityCreateMeetingBinding;
 import com.android.volley.VolleyError;
 import com.devstune.searchablemultiselectspinner.SearchableItem;
@@ -328,6 +329,7 @@ public class CreateMeetingActivity extends BaseActivity {
 
     private void scheduleMeetingApiCall(String subject, JSONArray empIdList) {
 
+        pd.mShow(CreateMeetingActivity.this);
 
         JSONObject params = new JSONObject();
         String _id = LocalPreference.get_Id(CreateMeetingActivity.this);
@@ -347,6 +349,7 @@ public class CreateMeetingActivity extends BaseActivity {
             @Override
             public void onResponse(JSONObject object) {
 
+                pd.mDismiss();
                 Toast.makeText(CreateMeetingActivity.this, "Meeting Created", Toast.LENGTH_SHORT).show();
                 finish();
             }

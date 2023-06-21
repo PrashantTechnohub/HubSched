@@ -154,6 +154,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:textColor="@color/black"
                                             android:textSize="@dimen/_10sdp"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="Total Employee"/>
@@ -165,6 +166,7 @@
                                     <TextView
                                         android:id="@+id/totalTrialUser"
                                         android:layout_width="@dimen/_35sdp"
+                                        android:textColor="@color/black"
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/_10sdp"
 
@@ -185,6 +187,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textSize="@dimen/_10sdp"
+                                            android:textColor="@color/black"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="Total Meeting"/>
                                     </LinearLayout>
@@ -195,6 +198,7 @@
                                     <TextView
                                         android:id="@+id/totalPrimeUser"
                                         android:layout_width="@dimen/_35sdp"
+                                        android:textColor="@color/black"
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/_10sdp"
 
@@ -222,6 +226,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textSize="@dimen/_10sdp"
+                                            android:textColor="@color/black"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="Future Meeting"/>
                                     </LinearLayout>
@@ -235,7 +240,7 @@
                                         android:layout_width="@dimen/_35sdp"
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/_10sdp"
-
+                                        android:textColor="@color/black"
 
                                         android:text=""/>
                                 </LinearLayout>
@@ -254,6 +259,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textSize="@dimen/_10sdp"
+                                            android:textColor="@color/black"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="Schedule Meeting"/>
                                     </LinearLayout>
@@ -266,7 +272,7 @@
                                         android:layout_width="@dimen/_35sdp"
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/_10sdp"
-
+                                        android:textColor="@color/black"
 
                                         android:text=""/>
                                 </LinearLayout>
@@ -293,6 +299,7 @@
                                             android:layout_height="wrap_content"
                                             android:textSize="@dimen/_10sdp"
                                             android:singleLine="true"
+                                            android:textColor="@color/black"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="Total Rooms"/>
                                     </LinearLayout>
@@ -303,6 +310,7 @@
                                     <TextView
                                         android:id="@+id/totalPerformance"
                                         android:layout_width="@dimen/_35sdp"
+                                        android:textColor="@color/black"
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/_10sdp"
 
@@ -338,7 +346,7 @@
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/_10sdp"
 
-
+                                        android:textColor="@color/black"
                                         android:text=""/>
                                 </LinearLayout>
 
@@ -398,6 +406,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textSize="@dimen/_10sdp"
+                                            android:textColor="@color/black"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="Reported Bugs"/>
                                     </LinearLayout>
@@ -429,6 +438,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textSize="@dimen/_10sdp"
+                                            android:textColor="@color/black"
                                             android:layout_marginEnd="@dimen/_4sdp"
                                             android:text="App Crashes"/>
                                     </LinearLayout>

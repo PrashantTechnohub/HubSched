@@ -1,34 +1,25 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.PantryItemListAdapter;
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.OrderPlaceModel;
 import com.NakshatraTechnoHub.HubSched.Models.PantryItemModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
@@ -62,8 +53,7 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        Intent intent = getIntent() ;
-        meetId = intent.getStringExtra("meetId");
+        meetId = LocalPreference.get_meetId(this);
 
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -135,11 +125,10 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
         try {
             requestBody.put("meetId", meetId);
 
-            // Create a JSON array for the items
             JSONArray itemsArray = new JSONArray();
+
             for (OrderPlaceModel item : selectedItems) {
                 JSONObject itemObject = new JSONObject();
-//
                 itemObject.put("itemName", item.getItemName());
                 itemObject.put("quantity", item.getQuantity());
                 itemsArray.put(itemObject);
@@ -162,15 +151,14 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
                 
             }
-        }).post_item_to_pantry();
+        }).post_item_to_pantry(requestBody);
 
     }
 
 
     private void getItemList() {
         itemList = new ArrayList<>();
-        Intent intent = getIntent() ;
-        meetId = intent.getStringExtra("meetId");
+        meetId = LocalPreference.get_meetId(PantryOrderPlaceActivity.this);
 
         // Add pantry items to the list
         List<String> itemNames = Arrays.asList("TEA", "WATER", "PEPSI", "SAMOSA", "JUICE");
@@ -188,7 +176,6 @@ public class PantryOrderPlaceActivity extends AppCompatActivity implements Pantr
         recyclerView.setAdapter(adapter);
         
     }
-
 
 
     @Override

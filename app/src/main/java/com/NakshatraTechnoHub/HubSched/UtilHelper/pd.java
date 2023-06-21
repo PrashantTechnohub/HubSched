@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ProgressBar;
 
 import androidx.core.content.ContextCompat;
 

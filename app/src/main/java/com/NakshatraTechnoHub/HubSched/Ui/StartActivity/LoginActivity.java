@@ -3,15 +3,11 @@ package com.NakshatraTechnoHub.HubSched.Ui.StartActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.BaseActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.PantryDashboard.PantryActivity;
@@ -21,10 +17,7 @@ import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -49,7 +42,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                pd.mShow(LoginActivity.this);
+
 
                 if (!validateField(bind.emailId, "Email")) {
                     pd.mDismiss();
@@ -131,8 +124,9 @@ public class LoginActivity extends BaseActivity {
             params.put("firebaseToken", firebaseToken);
 
         } catch (JSONException e) {
-            ErrorHandler.handleException(getApplicationContext(),e);
             pd.mDismiss();
+            ErrorHandler.handleException(getApplicationContext(),e);
+
         }
 
         new Receiver(LoginActivity.this, new Receiver.ApiListener() {
@@ -176,8 +170,10 @@ public class LoginActivity extends BaseActivity {
                         startActivity(intent);
                         pd.mDismiss();
                         finish();
+                    }else {
+                        pd.mDismiss();
                     }
-
+                    pd.mDismiss();
 
                 } catch (JSONException e) {
                     pd.mDismiss();

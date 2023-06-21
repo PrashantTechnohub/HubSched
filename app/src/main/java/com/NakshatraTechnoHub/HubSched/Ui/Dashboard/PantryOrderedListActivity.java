@@ -56,8 +56,8 @@ public class PantryOrderedListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        Intent intent = getIntent();
-        meetId = intent.getStringExtra("meetId");
+        meetId = LocalPreference.get_meetId(this);
+
         companyId = LocalPreference.get_company_Id(this);
 
         orderListApi();

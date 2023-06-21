@@ -65,7 +65,7 @@ public class InMeetingActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        meetId = intent.getStringExtra("meetId");
+        meetId = LocalPreference.get_meetId(this);
         companyId = intent.getStringExtra("companyId");
         subject = intent.getStringExtra("subject");
         startTime = intent.getStringExtra("startTime");
@@ -101,9 +101,6 @@ public class InMeetingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(InMeetingActivity.this, PantryOrderedListActivity.class);
-                intent.putExtra("meetId", meetId);
-                intent.putExtra("companyId", companyId);
-
                 startActivity(intent);
             }
         });
@@ -111,9 +108,6 @@ public class InMeetingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(InMeetingActivity.this, ChatActivity.class);
-                intent.putExtra("meetId", meetId);
-                intent.putExtra("companyId", companyId);
-
                 startActivity(intent);
             }
         });

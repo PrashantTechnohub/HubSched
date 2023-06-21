@@ -102,6 +102,24 @@ public class LocalPreference {
         editor.commit();
 
     }
+
+    public static void store_meetId(Context context,String meetId) {
+
+        sharedPref = context.getSharedPreferences("meetId",Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.putString("id", meetId);
+        editor.commit();
+
+    }
+
+    public static String get_meetId(Context context){
+
+        sharedPref = context.getSharedPreferences("meetId",Context.MODE_PRIVATE);
+        String id = sharedPref.getString("id", "");
+        return id;
+    }
+
+
     public static String getFirebaseToken(Context context){
 
         sharedPref = context.getSharedPreferences("userDetails",Context.MODE_PRIVATE);

@@ -23,10 +23,12 @@ public class ErrorHandler {
         if (error instanceof NetworkError) {
             errorTitle = "NetworkError";
             errorMessage = "Network error occurred. Please check your connection.";
+            pd.mDismiss();
         } else if (error instanceof ServerError) {
             errorTitle = "ServerError";
 
             errorMessage = "Server error occurred. Please try again later.";
+            pd.mDismiss();
             if (error.networkResponse != null) {
                 int statusCode = error.networkResponse.statusCode;
                 // Check the status code for more specific error handling
@@ -35,24 +37,30 @@ public class ErrorHandler {
                         errorTitle = "Bad request";
 
                         errorMessage = "Bad request error occurred.";
+                        pd.mDismiss();
                         break;
                     case 401:
                         errorTitle = "Unauthorized error";
 
                         errorMessage = "Unauthorized error occurred.";
+                        pd.mDismiss();
                         break;
                     case 404:
                         errorTitle = "Unauthorized error";
 
                         errorMessage = "Resource not found error occurred.";
+                        pd.mDismiss();
                         break;
                     case 500:
                         errorTitle = "Internal error";
                         errorMessage = "Internal server error occurred.";
+                        pd.mDismiss();
 
-                        try{
+                        try {
                             errorMessage = new String(error.networkResponse.data);
-                        }catch (Exception e){
+                            pd.mDismiss();
+                        } catch (Exception e) {
+                            pd.mDismiss();
                         }
 
                         break;
@@ -63,22 +71,27 @@ public class ErrorHandler {
             errorTitle = "Authentication failure";
 
             errorMessage = "Authentication failure error occurred. Please try again.";
+            pd.mDismiss();
         } else if (error instanceof ParseError) {
             errorTitle = "Parse Error";
             errorMessage = "Error occurred while parsing data. Please try again.";
+            pd.mDismiss();
         } else if (error instanceof NoConnectionError) {
             errorTitle = "No connection";
 
             errorMessage = "No connection error occurred. Please check your internet connection.";
+            pd.mDismiss();
         } else if (error instanceof TimeoutError) {
             errorTitle = "TimeoutError";
 
             errorMessage = "Request timeout error occurred. Please try again.";
+            pd.mDismiss();
         }
 
         Log.e(TAG, "Volley Error: " + errorMessage);
-
         CustomErrorDialog.mShow(context, errorTitle, errorMessage);
+        pd.mDismiss();
+
     }
 
     public static void handleException(Context context, Exception exception) {
@@ -88,30 +101,43 @@ public class ErrorHandler {
         if (exception instanceof NetworkError) {
             errorTitle = "Server Connectivity Error";
             errorMessage = "Server Connectivity error occurred. try again later.";
+            pd.mDismiss();
         } else if (exception instanceof ServerError) {
             errorTitle = "Server Error";
             errorMessage = "Server error occurred. Please try again later.";
+            pd.mDismiss();
         } else if (exception instanceof AuthFailureError) {
             errorTitle = "Authentication Failure";
             errorMessage = "Authentication failure error occurred. Please try again.";
+            pd.mDismiss();
         } else if (exception instanceof ParseError) {
             errorTitle = "Parsing Error";
             errorMessage = "Error occurred while parsing data. Please try again.";
+            pd.mDismiss();
         } else if (exception instanceof NoConnectionError) {
             errorTitle = "No Connection";
             errorMessage = "No connection error occurred. Please check your internet connection.";
+            pd.mDismiss();
         } else if (exception instanceof TimeoutError) {
             errorTitle = "Timeout Error";
             errorMessage = "Request timeout error occurred. Please try again.";
+            pd.mDismiss();
+
         } else if (exception instanceof JSONException) {
             errorTitle = "JSON Error";
             errorMessage = "JSON error occurred. Please check the data format.";
+            pd.mDismiss();
+
         } else {
             // Generic catch-all case for all other exceptions
             errorMessage = "An unexpected error occurred. Please try again later.";
+            pd.mDismiss();
+
         }
 
         Log.e(TAG, "Exception: " + errorMessage);
         CustomErrorDialog.mShow(context, errorTitle, errorMessage);
+        pd.mDismiss();
+
     }
 }

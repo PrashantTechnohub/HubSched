@@ -23,6 +23,7 @@ import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.InMeetingActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
@@ -265,6 +266,7 @@ public class MeetingFragment extends Fragment{
                 intent.putExtra("subject", subject);
                 intent.putExtra("startTime", startTime);
                 intent.putExtra("endTime", endTime);
+                LocalPreference.store_meetId(context, getMeetId);
                 context.startActivity(intent);
 
             }
