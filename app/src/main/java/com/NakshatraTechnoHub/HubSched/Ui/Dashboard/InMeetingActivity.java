@@ -45,7 +45,7 @@ public class InMeetingActivity extends BaseActivity {
     TextView timeLeft, subjectView;
     String meetId, companyId, subject, startTime, endTime, response;
 
-    //__________________________________
+    //______________________
     ImageView qrCodeView;
     RelativeLayout inMeetingLayout, qrCodeLayout , actionBar;
 
