@@ -34,6 +34,9 @@ public class ErrorHandler {
                     errorMessage += "Unexpected response code " + statusCode;
                     pd.mDismiss();
                 }
+
+
+
             }
         } else if (error instanceof AuthFailureError) {
             errorMessage = "Authentication failure error occurred. Please try again.";

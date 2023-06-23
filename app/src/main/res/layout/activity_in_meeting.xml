@@ -378,36 +378,6 @@
                     android:layout_height="0dp"/>
 
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:id="@+id/support_btn"
-                    android:layout_marginVertical="@dimen/_2sdp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/_70sdp"
-                    app:cardCornerRadius="@dimen/_14sdp">
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:layout_gravity="center_horizontal"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:src="@drawable/baseline_support_agent_24" />
-                        <TextView
-                            android:layout_marginTop="@dimen/_4sdp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Support"
-                            android:fontFamily="@font/montserrat_semibold"/>
-
-                    </LinearLayout>
-
-
-                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 

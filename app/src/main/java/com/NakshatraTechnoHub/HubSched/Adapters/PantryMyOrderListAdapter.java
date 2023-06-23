@@ -26,12 +26,16 @@ import java.util.ArrayList;
 
 public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrderListAdapter.ViewHolder> {
     Context context;
-    ArrayList<PantryModel> list = new ArrayList<>();
+    private ArrayList<PantryModel> list;
+    private ArrayList<PantryModel> filteredData;
 
     public PantryMyOrderListAdapter(Context context, ArrayList<PantryModel> list) {
         this.context = context;
         this.list = list;
+        this.filteredData = new ArrayList<>(list); // Initialize filteredData with the same data
     }
+
+
 
     @NonNull
     @Override
@@ -90,10 +94,28 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
         });
     }
 
+    public void setData(ArrayList<PantryModel> newData) {
+        list = newData;
+        filterData(""); // Apply the filter with the active filter value
+    }
+
+    public void filterData(String status) {
+        filteredData.clear();
+        if (status.isEmpty()) {
+            filteredData.addAll(list); // Display entire list if status is empty
+        } else {
+            for (PantryModel model : list) {
+                if (model.getStatus().equals(status)) {
+                    filteredData.add(model); // Add models with matching status to filteredData
+                }
+            }
+        }
+        notifyDataSetChanged(); // Notify adapter about the data change
+    }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return filteredData.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

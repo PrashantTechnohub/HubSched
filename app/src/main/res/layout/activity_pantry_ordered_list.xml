@@ -37,17 +37,100 @@
                 android:textSize="@dimen/_16sdp" />
 
 
+            <ImageView
+                android:id="@+id/filter_btn"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/baseline_filter_list_24" />
+
+
+
         </RelativeLayout>
 
 
     </LinearLayout>
 
+    <LinearLayout
+
+        android:id="@+id/filterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_below="@id/action_bar_layout"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <HorizontalScrollView
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/filter_my_order_btn"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:text="My order"
+                    android:textSize="@dimen/_6sdp"
+                    android:backgroundTint="@color/grey_font"
+                    app:cornerRadius="@dimen/_14sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/filter_accepted_btn"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:text="Accepted"
+                    android:textSize="@dimen/_6sdp"
+                    android:backgroundTint="@color/grey_font"
+                    app:cornerRadius="@dimen/_14sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/filter_cancelled_btn"
+
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:text="Cancelled"
+                    android:textSize="@dimen/_6sdp"
+                    android:backgroundTint="@color/grey_font"
+                    app:cornerRadius="@dimen/_14sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/filter_requested_btn"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="Requested"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:textSize="@dimen/_6sdp"
+                    android:backgroundTint="@color/grey_font"
+                    app:cornerRadius="@dimen/_14sdp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+
+
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/action_bar_layout"
+        android:layout_below="@id/filterLayout"
         android:layout_centerInParent="true">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -69,7 +152,6 @@
         android:layout_marginBottom="@dimen/_30sdp"
         android:backgroundTint="@color/purple_700"
         android:src="@drawable/baseline_add_24"
-        app:borderWidth="0dp"
         app:fabSize="normal" />
 
 
