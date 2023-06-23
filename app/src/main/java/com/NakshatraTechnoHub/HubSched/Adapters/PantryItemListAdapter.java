@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +53,8 @@ public class PantryItemListAdapter extends RecyclerView.Adapter<PantryItemListAd
     @Override
     public void onBindViewHolder(@NonNull PantryItemListAdapter.RoomHolder holder, @SuppressLint("RecyclerView") int position) {
 
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+        holder.itemView.startAnimation(animation);
         PantryItemModel item = itemList.get(position);
         holder.name.setText(item.getItemName());
         holder.totalQty.setText(String.valueOf(item.getQuantity()));

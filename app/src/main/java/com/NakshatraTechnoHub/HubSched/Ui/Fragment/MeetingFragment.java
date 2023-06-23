@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +74,13 @@ public class MeetingFragment extends Fragment{
 
         bind.refresh.setOnRefreshListener(this::getMeetingList);
 
-        getMeetingList();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getMeetingList();
+            }
+        },300);
+
 
 
         return bind.getRoot();
@@ -90,6 +99,9 @@ public class MeetingFragment extends Fragment{
 
                         
                         list.add(model);
+                        if (pd.isDialogShown){
+                            pd.mDismiss();
+                        }
                         if (bind.refresh.isRefreshing()) {
                             bind.refresh.setRefreshing(false);
                             Toast.makeText(getContext(), "Refreshed", Toast.LENGTH_SHORT).show();
@@ -106,6 +118,8 @@ public class MeetingFragment extends Fragment{
                     @Override
                     public void onBindHolder(MyAdapter.MyHolder holder, int position) {
 
+                        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+                        holder.itemView.startAnimation(animation);
                         TextView orgName = holder.itemView.findViewById(R.id.meet_orgName);
                         TextView meetSubject = holder.itemView.findViewById(R.id.meet_subject);
                         TextView meetTime = holder.itemView.findViewById(R.id.meet_time);

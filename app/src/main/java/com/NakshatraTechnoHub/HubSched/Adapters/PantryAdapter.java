@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +51,10 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull PantryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+        holder.itemView.startAnimation(animation);
+
         holder.room_no.setText(pantryList.get(position).getRoomAddress());
         holder.name.setText(pantryList.get(position).getOrderedBy());
         holder.orderNo.setText("#Order: "+String.valueOf(position + 1)); // Set the order number

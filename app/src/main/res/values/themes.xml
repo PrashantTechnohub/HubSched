@@ -15,6 +15,18 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="CustomMaterialAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <!-- Customize the dialog appearance as needed -->
+        <!-- For example, you can change the background color -->
+        <item name="android:windowBackground">@color/background_page</item>
+    </style>
+
+
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">@dimen/_8sdp</item>
 

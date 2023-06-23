@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PantryOrderPlaceActivity extends AppCompatActivity implements PantryItemListAdapter.OrderListener  {
+public class PantryOrderPlaceActivity extends BaseActivity implements PantryItemListAdapter.OrderListener  {
 
     private List<PantryItemModel> itemList;
     private RecyclerView recyclerView;

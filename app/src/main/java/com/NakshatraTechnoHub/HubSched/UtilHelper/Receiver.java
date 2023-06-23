@@ -10,6 +10,7 @@ import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_ROOM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_PROFILE_URL;
 
 import android.content.Context;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -64,6 +66,7 @@ public class Receiver {
             public void onErrorResponse(VolleyError error) {
                 pd.mDismiss();
                 listener.onError(error);
+                ErrorHandler.handleVolleyError(context, error);
                 try {
 
                     Log.e(TAG, new String(error.networkResponse.data));
@@ -73,7 +76,6 @@ public class Receiver {
                 } catch (Exception e) {
                     
                     Log.e(TAG, error.toString());
-                    
 //                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
 
                 }
@@ -96,26 +98,40 @@ public class Receiver {
 
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-
+                String jsonString = "";
                 try {
-                    String jsonString = new String(response.data,
+                     jsonString = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
 
                     JSONObject result = null;
 
                     if (jsonString != null && jsonString.length() > 0)
                         result = new JSONObject(jsonString);
+                    else
+                        result = new JSONObject();
 
                     return Response.success(result,
                             HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                } catch (Exception je) {
+                }  catch (Exception je) {
+                    if(response.statusCode == 200){
+                            jsonString = new String(response.data);
+                        try {
+                            if (!jsonString.equals("")){
+                                Looper.prepare();
+                                Toast.makeText(context, jsonString, Toast.LENGTH_SHORT).show();
+                            }
+                            JSONObject result = new JSONObject();
+                            result = new JSONObject();
+                            result.put("message",jsonString);
+                            return Response.success(result,
+                                    HttpHeaderParser.parseCacheHeaders(response));
+                        }catch (Exception e){
+                            return Response.error(new ParseError(je));
+                        }
+                    }
                     return Response.error(new ParseError(je));
                 }
             }
-
-
         };
 
         requestQueue.add(jsonObjectRequest);
@@ -130,6 +146,7 @@ public class Receiver {
             @Override
             public void onResponse(JSONArray array) {
                 pd.mDismiss();
+
                 Log.d(TAG, "onResponse: " + array);
                 listListener.onResponse(array);
 
@@ -139,20 +156,21 @@ public class Receiver {
             public void onErrorResponse(VolleyError error) {
 
                 pd.mDismiss();
+                if (pd.isDialogShown){
+                    pd.mDismiss();
+                }
                 listListener.onError(error);
+                ErrorHandler.handleVolleyError(context, error);
                 try {
 
                     Log.e(TAG, new String(error.networkResponse.data));
                     String err = new String(error.networkResponse.data);
-                    
-//                    Toast.makeText(context, "" + err, Toast.LENGTH_SHORT).show();
 
+                    CustomErrorDialog.mShow(context, err);
 
                 } catch (Exception e) {
                     Log.e(TAG, error.toString());
-                    
-//                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
-
+                    CustomErrorDialog.mShow(context, e.getMessage());
                 }
             }
         }) {
@@ -261,6 +279,12 @@ public class Receiver {
 
     public interface ApiListener {
         void onResponse(JSONObject object);
+
+        void onError(VolleyError error);
+    }
+
+    public interface StringListener {
+        void onResponse(String response);
 
         void onError(VolleyError error);
     }

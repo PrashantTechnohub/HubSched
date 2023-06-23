@@ -145,7 +145,7 @@ public class ProfileFragment extends Fragment {
                     bind.empMobile.setText(mobile);
 
 
-
+                    pd.mDismiss();
                 } catch (JSONException e) {
                     ErrorHandler.handleException(getActivity(), e);
                 }
@@ -216,16 +216,4 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        fetchProfile();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        fetchProfile();
-
-    }
 }

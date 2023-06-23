@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,8 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
         PantryModel model = list.get(position);
 
 
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+        holder.itemView.startAnimation(animation);
         holder.orderStatus.setVisibility(View.VISIBLE);
 
         holder.orderNo.setText("#Order: " + String.valueOf(position + 1)); // Set the order number

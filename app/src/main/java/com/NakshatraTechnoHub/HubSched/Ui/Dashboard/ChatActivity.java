@@ -31,7 +31,7 @@ import java.util.List;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends  BaseActivity {
     RecyclerView recyclerViewChat;
     private Socket socket;
     private List<MessageModel> messageList;
@@ -185,7 +185,6 @@ public class ChatActivity extends AppCompatActivity {
         new Receiver(ChatActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(ChatActivity.this,"send", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -195,7 +194,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         }).save_sms_to_server(jsonMessage);
-        
+
     }
 
     @Override

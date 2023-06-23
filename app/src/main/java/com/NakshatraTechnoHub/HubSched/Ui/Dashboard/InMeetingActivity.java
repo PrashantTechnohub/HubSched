@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class InMeetingActivity extends AppCompatActivity {
+public class InMeetingActivity extends BaseActivity {
 
     MaterialCardView showQrBtn, discussionBtn, memberBtn, pantryBtn;
 

@@ -18,80 +18,40 @@ import org.json.JSONException;
 public class ErrorHandler {
     public static void handleVolleyError(Context context, VolleyError error) {
         String errorMessage = "An error occurred. Please try again later.";
-        String errorTitle = null;
 
         if (error instanceof NetworkError) {
-            errorTitle = "NetworkError";
             errorMessage = "Network error occurred. Please check your connection.";
             pd.mDismiss();
         } else if (error instanceof ServerError) {
-            errorTitle = "ServerError";
-
-            errorMessage = "Server error occurred. Please try again later.";
-            pd.mDismiss();
+            errorMessage = "Server error occurred: ";
             if (error.networkResponse != null) {
                 int statusCode = error.networkResponse.statusCode;
-                // Check the status code for more specific error handling
-                switch (statusCode) {
-                    case 400:
-                        errorTitle = "Bad request";
-
-                        errorMessage = "Bad request error occurred.";
-                        pd.mDismiss();
-                        break;
-                    case 401:
-                        errorTitle = "Unauthorized error";
-
-                        errorMessage = "Unauthorized error occurred.";
-                        pd.mDismiss();
-                        break;
-                    case 404:
-                        errorTitle = "Unauthorized error";
-
-                        errorMessage = "Resource not found error occurred.";
-                        pd.mDismiss();
-                        break;
-                    case 500:
-                        errorTitle = "Internal error";
-                        errorMessage = "Internal server error occurred.";
-                        pd.mDismiss();
-
-                        try {
-                            errorMessage = new String(error.networkResponse.data);
-                            pd.mDismiss();
-                        } catch (Exception e) {
-                            pd.mDismiss();
-                        }
-
-                        break;
-                    // Add more status code cases as needed
+                if (statusCode == 500) {
+                    String serverErrorMessage = new String(error.networkResponse.data);
+                    errorMessage += serverErrorMessage;
+                    pd.mDismiss();
+                } else {
+                    errorMessage += "Unexpected response code " + statusCode;
+                    pd.mDismiss();
                 }
             }
         } else if (error instanceof AuthFailureError) {
-            errorTitle = "Authentication failure";
-
             errorMessage = "Authentication failure error occurred. Please try again.";
             pd.mDismiss();
         } else if (error instanceof ParseError) {
-            errorTitle = "Parse Error";
             errorMessage = "Error occurred while parsing data. Please try again.";
             pd.mDismiss();
         } else if (error instanceof NoConnectionError) {
-            errorTitle = "No connection";
-
             errorMessage = "No connection error occurred. Please check your internet connection.";
             pd.mDismiss();
         } else if (error instanceof TimeoutError) {
-            errorTitle = "TimeoutError";
-
             errorMessage = "Request timeout error occurred. Please try again.";
             pd.mDismiss();
         }
 
         Log.e(TAG, "Volley Error: " + errorMessage);
-        CustomErrorDialog.mShow(context, errorTitle, errorMessage);
+        CustomErrorDialog.mShow(context, errorMessage);
         pd.mDismiss();
-
     }
 
     public static void handleException(Context context, Exception exception) {
@@ -136,7 +96,7 @@ public class ErrorHandler {
         }
 
         Log.e(TAG, "Exception: " + errorMessage);
-        CustomErrorDialog.mShow(context, errorTitle, errorMessage);
+        CustomErrorDialog.mShow(context,  errorMessage);
         pd.mDismiss();
 
     }

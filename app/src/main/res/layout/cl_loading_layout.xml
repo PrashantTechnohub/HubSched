@@ -4,6 +4,7 @@
     android:layout_width="@dimen/_90sdp"
     android:layout_height="@dimen/_50sdp"
     android:layout_gravity="center"
+    android:id="@+id/dialog_container"
     android:backgroundTint="#FBFBFB"
     app:cardCornerRadius="@dimen/_14sdp"
     app:cardElevation="0dp">

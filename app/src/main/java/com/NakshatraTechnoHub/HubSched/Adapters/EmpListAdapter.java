@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -87,6 +89,8 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     @Override
     public void onBindViewHolder(@NonNull EmpListAdapter.EmpHolder holder, @SuppressLint("RecyclerView") int position) {
 
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+        holder.itemView.startAnimation(animation);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(holder.blockBtn.getContext(), R.style.MaterialAlertDialog_Rounded);
         LayoutInflater inflater1 = (LayoutInflater) holder.blockBtn.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -199,6 +203,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
             }
         });
+
     }
 
     private void removeEmployee(int id) {

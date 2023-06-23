@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 import io.socket.client.Socket;
 
-public class PantryOrderedListActivity extends AppCompatActivity {
+public class PantryOrderedListActivity extends BaseActivity {
 
     FloatingActionButton addOrderBtn;
     RecyclerView recyclerView;

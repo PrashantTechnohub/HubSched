@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -69,32 +70,40 @@ public class DashboardActivity extends BaseActivity {
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
-
             int id = item.getItemId();
             drawerLayout.closeDrawer(GravityCompat.START);
-            switch (id) {
 
-                case R.id.hallManagement:
-                    startActivity(new Intent(DashboardActivity.this, RoomListActivity.class));
-                    break;
+            new Handler().postDelayed(() -> {
+                Intent intent = null;
 
-                case R.id.employeeList:
-                    startActivity(new Intent(DashboardActivity.this, EmployeeListActivity.class));
-                    break;
+                switch (id) {
+                    case R.id.hallManagement:
+                        intent = new Intent(DashboardActivity.this, RoomListActivity.class);
+                        break;
 
-                case R.id.meetingList:
-                    startActivity(new Intent(DashboardActivity.this, MeetingListActivity.class));
-                    break;
+                    case R.id.employeeList:
+                        intent = new Intent(DashboardActivity.this, EmployeeListActivity.class);
+                        break;
 
-                case R.id.editContent:
-                    startActivity(new Intent(DashboardActivity.this, EditContentActivity.class));
-                    break;
+                    case R.id.meetingList:
+                        intent = new Intent(DashboardActivity.this, MeetingListActivity.class);
+                        break;
 
+                    case R.id.editContent:
+                        intent = new Intent(DashboardActivity.this, EditContentActivity.class);
+                        break;
 
-                default:
-                    return true;
+                    default:
+                        break;
+                }
 
-            }
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_enter_animation, R.anim.slide_exit_animation);
+                }
+            }, 200); // Adjust the delay duration as needed
+
             return true;
         });
 
@@ -111,6 +120,7 @@ public class DashboardActivity extends BaseActivity {
                     break;
 
                 case R.id.meeting:
+
                     selectedFragment = new MeetingFragment();
                     break;
 
@@ -129,29 +139,13 @@ public class DashboardActivity extends BaseActivity {
                 return true;
             }
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
+            transaction.replace(R.id.fragment_container, selectedFragment);
+            transaction.commitAllowingStateLoss();
+
             return true;
         }
     };
 
-    private void showFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-        // Hide all other fragments
-        for (Fragment frag : getSupportFragmentManager().getFragments()) {
-            if (frag != null && frag != fragment) {
-                transaction.hide(frag);
-            }
-        }
-
-        // Show or add the selected fragment
-        if (fragment.isAdded()) {
-            transaction.show(fragment);
-        } else {
-            transaction.add(R.id.fragment_container, fragment);
-        }
-
-        transaction.commit();
-    }
 }

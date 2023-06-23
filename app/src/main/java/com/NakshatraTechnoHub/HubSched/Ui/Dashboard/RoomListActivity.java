@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,6 +106,10 @@ public class RoomListActivity extends BaseActivity {
                     adapter = new MyAdapter<>(roomList, new MyAdapter.OnBindInterface() {
                         @Override
                         public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+
+                            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+                            holder.itemView.startAnimation(animation);
+
                             TextView roomNo = holder.itemView.findViewById(R.id.room_no);
                             TextView roomName = holder.itemView.findViewById(R.id.room_name);
                             TextView roomSeats = holder.itemView.findViewById(R.id.room_seats);

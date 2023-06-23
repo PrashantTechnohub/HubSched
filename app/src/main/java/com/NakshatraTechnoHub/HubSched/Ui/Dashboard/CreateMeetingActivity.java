@@ -162,7 +162,7 @@ public class CreateMeetingActivity extends BaseActivity {
                 stringArray.add(item);
             }
         } catch (Exception e) {
-            ErrorHandler.handleException(getApplicationContext(), e);
+            ErrorHandler.handleException(CreateMeetingActivity.this, e);
 
         }
 
@@ -248,7 +248,7 @@ public class CreateMeetingActivity extends BaseActivity {
             params.put("roomId", roomId);
             params.put("endTime", endTime);
         } catch (JSONException e) {
-            ErrorHandler.handleException(getApplicationContext(), e);
+            ErrorHandler.handleException(CreateMeetingActivity.this, e);
         }
         new Receiver(CreateMeetingActivity.this, new Receiver.ApiListener() {
             @Override
@@ -274,13 +274,13 @@ public class CreateMeetingActivity extends BaseActivity {
                     bind.bookedMeetingRecyclerview.setLayoutManager(new LinearLayoutManager(CreateMeetingActivity.this));
                     bind.bookedMeetingRecyclerview.setAdapter(bookedSlotAdapter);
                 } catch (JSONException e) {
-                    ErrorHandler.handleException(getApplicationContext(), e);
+                    ErrorHandler.handleException(CreateMeetingActivity.this, e);
                 }
             }
 
             @Override
             public void onError(VolleyError error) {
-                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+                ErrorHandler.handleVolleyError(CreateMeetingActivity.this, error);
             }
         }).getBookedSlotList(params);
 
@@ -297,7 +297,7 @@ public class CreateMeetingActivity extends BaseActivity {
             params.put("endTime", endTime);
 
         } catch (JSONException e) {
-            ErrorHandler.handleException(getApplicationContext(), e);
+            ErrorHandler.handleException(CreateMeetingActivity.this, e);
         }
 
 
@@ -312,14 +312,14 @@ public class CreateMeetingActivity extends BaseActivity {
 
                 } catch (JSONException e) {
 
-                    ErrorHandler.handleException(getApplicationContext(), e);
+                    ErrorHandler.handleException(CreateMeetingActivity.this, e);
                 }
 
             }
 
             @Override
             public void onError(VolleyError error) {
-                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+                ErrorHandler.handleVolleyError(CreateMeetingActivity.this, error);
 
             }
         }).emp_list_for_meeting(params);
@@ -343,7 +343,7 @@ public class CreateMeetingActivity extends BaseActivity {
             params.put("employee_ids", empIdList);
 
         } catch (JSONException e) {
-            ErrorHandler.handleException(getApplicationContext(), e);
+            ErrorHandler.handleException(CreateMeetingActivity.this, e);
         }
         new Receiver(CreateMeetingActivity.this, new Receiver.ApiListener() {
             @Override
@@ -356,7 +356,7 @@ public class CreateMeetingActivity extends BaseActivity {
 
             @Override
             public void onError(VolleyError error) {
-                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+                ErrorHandler.handleVolleyError(CreateMeetingActivity.this, error);
 
             }
         }).create_meeting(params);
