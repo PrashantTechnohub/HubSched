@@ -1,5 +1,6 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,20 +11,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.QRCodeGeneratorUtil;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
+import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class InMeetingActivity extends BaseActivity {
@@ -31,6 +40,7 @@ public class InMeetingActivity extends BaseActivity {
     MaterialCardView showQrBtn, discussionBtn, memberBtn, pantryBtn;
 
     MaterialButton hideQrBtn;
+    ArrayList<Integer> list = new ArrayList<Integer>();
 
     TextView timeLeft, subjectView;
     String meetId, companyId, subject, startTime, endTime, response;
@@ -97,6 +107,13 @@ public class InMeetingActivity extends BaseActivity {
             }
         });
 
+        memberBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getJoinedMember();
+            }
+        });
+
         pantryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +129,70 @@ public class InMeetingActivity extends BaseActivity {
             }
         });
     }
+
+    private void getJoinedMember() {
+        new Receiver(InMeetingActivity.this, new Receiver.ListListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                list.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject object = response.getJSONObject(i);
+                        JSONArray employeeIdsArray = object.getJSONArray("employee_ids");
+                        for (int j = 0; j < employeeIdsArray.length(); j++) {
+                            int employeeId = employeeIdsArray.getInt(j);
+                            if (!list.contains(employeeId)) {
+                                list.add(employeeId);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        ErrorHandler.handleException(InMeetingActivity.this, e);
+                    }
+                }
+
+                // Show employee IDs in Material Dialog box
+                AlertDialog.Builder builder = new AlertDialog.Builder(InMeetingActivity.this);
+                builder.setTitle("Joined Members");
+                builder.setItems(getEmployeeIdStrings(list), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle employee ID selection if needed
+                        int selectedEmployeeId = list.get(which);
+                        // TODO: Perform actions with the selected employee ID
+                    }
+                });
+
+                // Add close button
+                builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.show();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(InMeetingActivity.this, error);
+            }
+        }).getMeetingList();
+    }
+
+    private CharSequence[] getEmployeeIdStrings(List<Integer> employeeIds) {
+        CharSequence[] idStrings = new CharSequence[employeeIds.size()];
+        for (int i = 0; i < employeeIds.size(); i++) {
+            int employeeId = employeeIds.get(i);
+            idStrings[i] = "Employee ID: " + employeeId;
+        }
+        return idStrings;
+    }
+
+
+
+
+
 
 
     private void startCountdownTimer(String endTime, final TextView timeLeftTextView) {
