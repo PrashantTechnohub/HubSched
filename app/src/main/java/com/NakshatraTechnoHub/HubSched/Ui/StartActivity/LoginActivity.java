@@ -1,19 +1,27 @@
 package com.NakshatraTechnoHub.HubSched.Ui.StartActivity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.BaseActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.PantryDashboard.PantryActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityLoginBinding;
@@ -27,6 +35,8 @@ import org.json.JSONObject;
 public class LoginActivity extends BaseActivity {
 
     public ActivityLoginBinding bind;
+    private static final int PERMISSION_REQUEST_CODE = 456;
+    private String[] permissions = {Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_NOTIFICATION_POLICY};
 
     String firebaseToken;
 
@@ -37,11 +47,11 @@ public class LoginActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
+        checkPermissions();
 
         bind.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
                 if (!validateField(bind.emailId, "Email")) {
@@ -112,8 +122,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
-
     public void loginUser(String email, String password, String firebaseToken) {
 
         JSONObject params = new JSONObject();
@@ -125,7 +133,7 @@ public class LoginActivity extends BaseActivity {
 
         } catch (JSONException e) {
             pd.mDismiss();
-            ErrorHandler.handleException(getApplicationContext(),e);
+            ErrorHandler.handleException(getApplicationContext(), e);
 
         }
 
@@ -170,7 +178,7 @@ public class LoginActivity extends BaseActivity {
                         startActivity(intent);
                         pd.mDismiss();
                         finish();
-                    }else {
+                    } else {
                         pd.mDismiss();
                     }
                     pd.mDismiss();
@@ -217,4 +225,73 @@ public class LoginActivity extends BaseActivity {
         }
 
     }
+
+    private void checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            String[] permissions = {Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_NOTIFICATION_POLICY};
+
+            if (!hasPermissions(permissions)) {
+                ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+    private boolean hasPermissions(String[] permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+
+            if (!allPermissionsGranted) {
+                // Permission not granted, show dialog box
+                showPermissionDialog();
+            }
+        }
+    }
+
+    private void showPermissionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permission Required");
+        builder.setMessage("Please grant the permission to continue using the app.");
+        builder.setPositiveButton("Grant Permission", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                // Request permission again
+                ActivityCompat.requestPermissions(LoginActivity.this, permissions, PERMISSION_REQUEST_CODE);
+            }
+        });
+        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                // Exit the app
+                finish();
+            }
+        });
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
+
+
+
 }

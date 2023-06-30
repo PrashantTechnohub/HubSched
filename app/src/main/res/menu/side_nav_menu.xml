@@ -7,23 +7,23 @@
     <item
         android:id="@+id/employeeList"
         android:icon="@drawable/baseline_people_alt_24"
-        android:title="Manage Employee">
+        android:title="Employees">
     </item>
 
     <item
         android:id="@+id/meetingList"
         android:icon="@drawable/baseline_meeting_room_24"
-        android:title="Manage Meeting">
+        android:title="Meetings">
     </item>
     <item
         android:id="@+id/hallManagement"
         android:icon="@drawable/baseline_add_business_24"
-        android:title="Manage Room">
+        android:title="Rooms">
     </item>
     <item
         android:id="@+id/editContent"
         android:icon="@drawable/baseline_display_settings_24"
-        android:title="Edit Content">
+        android:title="Content">
     </item>
 
 

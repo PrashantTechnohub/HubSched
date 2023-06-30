@@ -1,17 +1,23 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.MeetingFragment;
@@ -19,9 +25,11 @@ import com.NakshatraTechnoHub.HubSched.Ui.Fragment.ProfileFragment;
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.SupportFragment;
 
 import com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityDashboardBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -36,8 +44,6 @@ public class DashboardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         bind = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
-
-
         setContentView(view);
 
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
@@ -147,5 +153,42 @@ public class DashboardActivity extends BaseActivity {
             return true;
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(DashboardActivity.this, R.style.MaterialAlertDialog_Rounded);
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View team = inflater1.inflate(R.layout.cl_alert, null);
+        builder.setView(team);
+        builder.setCancelable(false);
+
+        Button yes = team.findViewById(R.id.yes_btn);
+        Button no = team.findViewById(R.id.no_btn);
+        TextView text = team.findViewById(R.id.alert_text);
+
+        text.setText("Are you sure you want to exit?");
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        yes.setOnClickListener(v1 -> {
+            finish();
+            dialog.cancel();
+            clearFromRecentTasks();
+        });
+
+        no.setOnClickListener(v12 -> dialog.cancel());
+    }
+
+    private void clearFromRecentTasks() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            ActivityManager.AppTask appTask = getSystemService(ActivityManager.class).getAppTasks().get(0);
+            appTask.finishAndRemoveTask();
+        } else {
+            // For older Android versions
+            ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            activityManager.restartPackage(getPackageName());
+        }
+    }
+
 
 }

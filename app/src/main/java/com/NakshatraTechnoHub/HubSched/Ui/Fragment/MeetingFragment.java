@@ -74,12 +74,13 @@ public class MeetingFragment extends Fragment{
 
         bind.refresh.setOnRefreshListener(this::getMeetingList);
 
+        bind.pd.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 getMeetingList();
             }
-        },300);
+        },400);
 
 
 
@@ -88,137 +89,155 @@ public class MeetingFragment extends Fragment{
     }
 
     private void getMeetingList() {
-        new Receiver(requireContext(), new Receiver.ListListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                list.clear();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject object = response.getJSONObject(i);
-                        ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
+        if (isAdded()) {
+            // Fragment is added to the activity
+            // Access the context or perform other operations that require the fragment to be attached
+            Context context = requireContext();
+            // Rest of your code here
 
-                        
-                        list.add(model);
-                        if (pd.isDialogShown){
-                            pd.mDismiss();
+            new Receiver(context, new Receiver.ListListener() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    list.clear();
+                    if (response!=null ){
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject object = response.getJSONObject(i);
+                                ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
+
+
+                                list.add(model);
+                                bind.noResult.setVisibility(View.GONE);
+                                bind.pd.setVisibility(View.GONE);
+                                if (bind.refresh.isRefreshing()) {
+                                    bind.refresh.setRefreshing(false);
+                                    Toast.makeText(getContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                bind.pd.setVisibility(View.GONE);
+                                ErrorHandler.handleException(requireContext(), e);
+
+                            }
                         }
-                        if (bind.refresh.isRefreshing()) {
-                            bind.refresh.setRefreshing(false);
-                            Toast.makeText(getContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-                        }
 
-                    } catch (JSONException e) {
-                        
-                        ErrorHandler.handleException(requireContext(), e);
 
+                    }else {
+                        bind.pd.setVisibility(View.GONE);
+                        bind.noResult.setVisibility(View.VISIBLE);
                     }
+
+                    adapter=  new MyAdapter<ScheduleMeetingModel>(list, new MyAdapter.OnBindInterface() {
+                        @Override
+                        public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+
+                            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
+                            holder.itemView.startAnimation(animation);
+                            TextView orgName = holder.itemView.findViewById(R.id.meet_orgName);
+                            TextView meetSubject = holder.itemView.findViewById(R.id.meet_subject);
+                            TextView meetTime = holder.itemView.findViewById(R.id.meet_time);
+                            TextView meetDate = holder.itemView.findViewById(R.id.meet_date);
+                            TextView meetLocation = holder.itemView.findViewById(R.id.meet_location);
+                            MaterialButton denyBtn = holder.itemView.findViewById(R.id.meet_deny_btn);
+                            MaterialButton acptBtn = holder.itemView.findViewById(R.id.meet_accept_btn);
+                            MaterialButton joinBtn = holder.itemView.findViewById(R.id.meet_join_btn);
+                            LinearLayout llp = holder.itemView.findViewById(R.id.actionLlp);
+                            LinearLayout llp2 = holder.itemView.findViewById(R.id.actionLlp2);
+                            TextView statusView = holder.itemView.findViewById(R.id.statusView);
+                            TextView countdownTimerView = holder.itemView.findViewById(R.id.meetingCountView);
+
+
+                            String inputDate = list.get(position).getDate();
+                            SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+                            SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+
+                            try {
+                                Date date = inputFormat.parse(inputDate);
+                                String formattedDate = outputFormat.format(date);
+                                orgName.setText(list.get(position).getOrganiser_id() + "");
+                                meetSubject.setText(list.get(position).getSubject());
+                                meetDate.setText(formattedDate);
+                                meetTime.setText(list.get(position).getStartTime() + " - " + list.get(position).getEndTime());
+                                meetLocation.setText(list.get(position).getRoomId() + "");
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            if (list.get(position).getAcceptance_status() != null) {
+                                if (list.get(position).getAcceptance_status().equals("accepted")) {
+                                    llp.setVisibility(View.GONE);
+                                    llp2.setVisibility(View.VISIBLE);
+                                    statusView.setVisibility(View.VISIBLE);
+                                    statusView.setText("Accepted");
+                                    fetchMeetingTimeStatus(list.get(position).getDate() + "", list.get(position).getStartTime() + "", list.get(position).getEndTime() + "", countdownTimerView, joinBtn, context);
+
+                                }
+                                if (list.get(position).getAcceptance_status().equals("declined")) {
+                                    llp.setVisibility(View.GONE);
+                                    statusView.setVisibility(View.VISIBLE);
+                                    statusView.setText("Declined");
+
+                                }
+                                if (list.get(position).getAcceptance_status().equals("pending")) {
+                                    llp.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+
+                            acptBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    acceptDenied(list.get(position).get_id(),true, position);
+
+                                }
+                            });
+                            denyBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    acceptDenied(list.get(position).get_id(),false, position);
+
+                                }
+                            });
+
+                            joinBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    String meetId =String.valueOf(list.get(position).get_id());
+                                    String companyId =String.valueOf(list.get(position).getCompany_id());
+                                    String subject =String.valueOf(list.get(position).getSubject());
+                                    String startTime =String.valueOf(list.get(position).getStartTime());
+                                    String endTime =String.valueOf(list.get(position).getEndTime());
+                                    generateQrCode(meetId, companyId, subject, startTime, endTime);
+                                }
+                            });
+
+
+
+                        }
+                    }, R.layout.cl_scheduled_meeting);
+
+                    bind.meetingRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    bind.meetingRecyclerview.setAdapter(adapter);
+                    bind.pd.setVisibility(View.GONE);
                 }
 
-              adapter=  new MyAdapter<ScheduleMeetingModel>(list, new MyAdapter.OnBindInterface() {
-                    @Override
-                    public void onBindHolder(MyAdapter.MyHolder holder, int position) {
-
-                        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
-                        holder.itemView.startAnimation(animation);
-                        TextView orgName = holder.itemView.findViewById(R.id.meet_orgName);
-                        TextView meetSubject = holder.itemView.findViewById(R.id.meet_subject);
-                        TextView meetTime = holder.itemView.findViewById(R.id.meet_time);
-                        TextView meetDate = holder.itemView.findViewById(R.id.meet_date);
-                        TextView meetLocation = holder.itemView.findViewById(R.id.meet_location);
-                        MaterialButton denyBtn = holder.itemView.findViewById(R.id.meet_deny_btn);
-                        MaterialButton acptBtn = holder.itemView.findViewById(R.id.meet_accept_btn);
-                        MaterialButton joinBtn = holder.itemView.findViewById(R.id.meet_join_btn);
-                        LinearLayout llp = holder.itemView.findViewById(R.id.actionLlp);
-                        LinearLayout llp2 = holder.itemView.findViewById(R.id.actionLlp2);
-                        TextView statusView = holder.itemView.findViewById(R.id.statusView);
-                        TextView countdownTimerView = holder.itemView.findViewById(R.id.meetingCountView);
-
-
-                        String inputDate = list.get(position).getDate();
-                        SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
-                        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-
-                        try {
-                            Date date = inputFormat.parse(inputDate);
-                            String formattedDate = outputFormat.format(date);
-                            orgName.setText(list.get(position).getOrganiser_id() + "");
-                            meetSubject.setText(list.get(position).getSubject());
-                            meetDate.setText(formattedDate);
-                            meetTime.setText(list.get(position).getStartTime() + " - " + list.get(position).getEndTime());
-                            meetLocation.setText(list.get(position).getRoomId() + "");
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        if (list.get(position).getAcceptance_status() != null) {
-                            if (list.get(position).getAcceptance_status().equals("accepted")) {
-                                llp.setVisibility(View.GONE);
-                                llp2.setVisibility(View.VISIBLE);
-                                statusView.setVisibility(View.VISIBLE);
-                                statusView.setText("Accepted");
-                                fetchMeetingTimeStatus(list.get(position).getDate() + "", list.get(position).getStartTime() + "", list.get(position).getEndTime() + "", countdownTimerView, joinBtn, context);
-
-                            }
-                            if (list.get(position).getAcceptance_status().equals("declined")) {
-                                llp.setVisibility(View.GONE);
-                                statusView.setVisibility(View.VISIBLE);
-                                statusView.setText("Declined");
-
-                            }
-                            if (list.get(position).getAcceptance_status().equals("pending")) {
-                                llp.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-
-                        acptBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                acceptDenied(list.get(position).get_id(),true, position);
-
-                            }
-                        });
-                        denyBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                acceptDenied(list.get(position).get_id(),false, position);
-
-                            }
-                        });
-
-                        joinBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                String meetId =String.valueOf(list.get(position).get_id());
-                                String companyId =String.valueOf(list.get(position).getCompany_id());
-                                String subject =String.valueOf(list.get(position).getSubject());
-                                String startTime =String.valueOf(list.get(position).getStartTime());
-                                String endTime =String.valueOf(list.get(position).getEndTime());
-                                generateQrCode(meetId, companyId, subject, startTime, endTime);
-                            }
-                        });
-
-
-
+                @Override
+                public void onError(VolleyError error) {
+                    if (bind.refresh.isRefreshing()) {
+                        bind.refresh.setRefreshing(false);
                     }
-                }, R.layout.cl_scheduled_meeting);
-
-                bind.meetingRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-                bind.meetingRecyclerview.setAdapter(adapter);
-                
-            }
-
-            @Override
-            public void onError(VolleyError error) {
-                if (bind.refresh.isRefreshing()) {
-                    bind.refresh.setRefreshing(false);
+                    bind.pd.setVisibility(View.GONE);
+                    bind.noResult.setVisibility(View.VISIBLE);
+                    ErrorHandler.handleVolleyError(getActivity(), error);
                 }
-                
-                ErrorHandler.handleVolleyError(getActivity(), error);
-            }
-        }).getMeetingList();
+            }).getMeetingList();
+
+        }
+
+
+
     }
 
     private void acceptDenied(int meetId, Boolean ready, int pos) {
@@ -251,6 +270,7 @@ public class MeetingFragment extends Fragment{
 
             @Override
             public void onError(VolleyError error) {
+                pd.mDismiss();
                 ErrorHandler.handleVolleyError(requireActivity(), error);
 
             }

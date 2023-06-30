@@ -36,6 +36,9 @@
         <item name="android:textSize">@dimen/_10sdp</item>
     </style>
 
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#E8E8E8</item>
+    </style>
 
     <style name="MaterialAlertDialog.Rounded" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay"> @style/MaterialAlertDialog.Rounded</item>
@@ -48,9 +51,7 @@
         <item name="android:layout_height">1dp</item>
     </style>
 
-    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">#E8E8E8</item>
-    </style>
+
 
     <style name="TextStyle">
         <item name="android:textSize">@dimen/_13sdp</item></style>

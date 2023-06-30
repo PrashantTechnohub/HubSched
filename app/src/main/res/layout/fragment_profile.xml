@@ -313,18 +313,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Edit Profile"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:layout_centerVertical="true"
-                                android:textStyle="bold"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="@dimen/_15sdp"/>
                         </RelativeLayout>
 
-                        <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:src="@drawable/baseline_mode_edit_24"></ImageView>
 
 
 

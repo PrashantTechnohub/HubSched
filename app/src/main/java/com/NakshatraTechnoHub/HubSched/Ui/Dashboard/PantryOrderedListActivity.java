@@ -1,7 +1,6 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.socket.client.Socket;
+import pl.droidsonroids.gif.GifImageView;
 
 public class PantryOrderedListActivity extends BaseActivity {
 
@@ -50,11 +51,11 @@ public class PantryOrderedListActivity extends BaseActivity {
     ImageView filterBtn;
 
     private int COLOR_SELECTED;
-    private  int COLOR_DESELECTED;
-
-
-
+    private int COLOR_DESELECTED;
     private String activeFilter = ""; // Stores the active filter
+
+    MaterialCardView pd;
+    GifImageView empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,18 @@ public class PantryOrderedListActivity extends BaseActivity {
         refresh = findViewById(R.id.refresh);
         filterLayout = findViewById(R.id.filterLayout);
 
+        pd = findViewById(R.id.pd);
+        empty = findViewById(R.id.no_result);
+
         filterBtn = findViewById(R.id.filter_btn);
         acceptedBtn = findViewById(R.id.filter_accepted_btn);
         requestedBtn = findViewById(R.id.filter_requested_btn);
         myOrderBtn = findViewById(R.id.filter_my_order_btn);
         cancelledBtn = findViewById(R.id.filter_cancelled_btn);
 
-        adapter = new PantryMyOrderListAdapter(PantryOrderedListActivity.this, list);
+        pd.setVisibility(View.VISIBLE);
+
+        adapter = new PantryMyOrderListAdapter(PantryOrderedListActivity.this,this, list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(PantryOrderedListActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -86,9 +92,18 @@ public class PantryOrderedListActivity extends BaseActivity {
         orderListApi();
         socketConnection();
 
+
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                empty.setVisibility(View.GONE);
                 orderListApi();
             }
         });
@@ -108,23 +123,18 @@ public class PantryOrderedListActivity extends BaseActivity {
             public void onClick(View view) {
                 if (filterLayout.getVisibility() == View.VISIBLE) {
                     // Hide animation
-                    filterLayout.animate()
-                            .alpha(0f)
-                            .setDuration(500) // Adjust the duration as desired
+                    filterLayout.animate().alpha(0f).setDuration(500) // Adjust the duration as desired
                             .withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
                                     filterLayout.setVisibility(View.GONE);
                                 }
-                            })
-                            .start();
+                            }).start();
                 } else {
                     // Show animation
                     filterLayout.setVisibility(View.VISIBLE);
                     filterLayout.setAlpha(0f);
-                    filterLayout.animate()
-                            .alpha(1f)
-                            .setDuration(500) // Adjust the duration as desired
+                    filterLayout.animate().alpha(1f).setDuration(500) // Adjust the duration as desired
                             .start();
                 }
             }
@@ -202,6 +212,7 @@ public class PantryOrderedListActivity extends BaseActivity {
             recyclerView.scrollToPosition(lastIndex);
         }
     }
+
     // Filter the list by status
     private void filterListByStatus(String filter) {
         filteredList.clear();
@@ -233,66 +244,91 @@ public class PantryOrderedListActivity extends BaseActivity {
         }).on("pantry_list-" + companyId + "-" + meetId, args -> {
 
             JSONArray jsonArray = (JSONArray) args[0];
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    parsingOrderedList(jsonArray);
-                }
-            });
+
+            if (jsonArray != null && jsonArray.length() != 0) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        parsingOrderedList(jsonArray);
+                    }
+                });
+            } else {
+                pd.setVisibility(View.GONE);
+                empty.setVisibility(View.VISIBLE);
+            }
+
 
         });
     }
 
     private void parsingOrderedList(JSONArray jsonArray) {
-        try {
-            ArrayList<PantryModel> parsedList = new ArrayList<>();
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject dataObject = jsonArray.getJSONObject(i);
-                String orderedBy = dataObject.getString("orderBy");
-                String status = dataObject.getString("status");
-                int meetId = dataObject.getInt("meetId");
-                int _Id = dataObject.getInt("_id");
-                String roomAddress = dataObject.getString("address");
-                JSONArray itemArray = dataObject.getJSONArray("orderList");
-                PantryModel model = new PantryModel(roomAddress, orderedBy, status, meetId, _Id, itemArray);
-                parsedList.add(model);
-            }
 
-            list = parsedList;
-            adapter.setData(list);
+        if (jsonArray != null && jsonArray.length() != 0) {
+            try {
+                ArrayList<PantryModel> parsedList = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject dataObject = jsonArray.getJSONObject(i);
+                    String orderedBy = dataObject.getString("orderBy");
+                    String status = dataObject.getString("status");
+                    int meetId = dataObject.getInt("meetId");
+                    int _Id = dataObject.getInt("_id");
+                    String roomAddress = dataObject.getString("address");
+                    JSONArray itemArray = dataObject.getJSONArray("orderList");
+                    PantryModel model = new PantryModel(roomAddress, orderedBy, status, meetId, _Id, itemArray);
+                    parsedList.add(model);
+                    pd.setVisibility(View.GONE);
+                }
 
-            if (refresh.isRefreshing()) {
-                refresh.setRefreshing(false);
-                Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
-            }
+                list = parsedList;
+                adapter.setData(list);
+                pd.setVisibility(View.GONE);
+                if (refresh.isRefreshing()) {
+                    refresh.setRefreshing(false);
+                    Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                }
 
-        } catch (JSONException e) {
-            if (refresh.isRefreshing()) {
-                refresh.setRefreshing(false);
-                Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                pd.setVisibility(View.GONE);
+                empty.setVisibility(View.VISIBLE);
+                if (refresh.isRefreshing()) {
+                    refresh.setRefreshing(false);
+                    Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                }
+                ErrorHandler.handleException(getApplicationContext(), e);
             }
-            ErrorHandler.handleException(getApplicationContext(), e);
+        } else {
+            pd.setVisibility(View.GONE);
+            empty.setVisibility(View.VISIBLE);
         }
+
+
     }
 
     private void orderListApi() {
         new Receiver(PantryOrderedListActivity.this, new Receiver.ListListener() {
             @Override
             public void onResponse(JSONArray jsonArray) {
-                try {
-                    parsingOrderedList(jsonArray);
-                    adapter.notifyDataSetChanged(); // Notify adapter about the data change
+                if (refresh.isRefreshing()){ refresh.setRefreshing(false);}
 
-                    if (refresh.isRefreshing())
-                        refresh.setRefreshing(false);
 
-                } catch (Exception e) {
-                    ErrorHandler.handleException(getApplicationContext(), e);
+                if (jsonArray != null && jsonArray.length() != 0) {
+                    try {
+                        parsingOrderedList(jsonArray);
+                        adapter.notifyDataSetChanged(); // Notify adapter about the data change
+                    } catch (Exception e) {
+                        ErrorHandler.handleException(getApplicationContext(), e);
+                    }
+                } else {
+                    pd.setVisibility(View.GONE);
+                    empty.setVisibility(View.VISIBLE);
                 }
+
             }
 
             @Override
             public void onError(VolleyError error) {
+                empty.setVisibility(View.VISIBLE);
+                pd.setVisibility(View.GONE);
                 ErrorHandler.handleVolleyError(PantryOrderedListActivity.this, error);
             }
         }).getMyOrderList(Integer.parseInt(meetId));

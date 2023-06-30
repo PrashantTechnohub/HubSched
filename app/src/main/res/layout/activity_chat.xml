@@ -7,29 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".Ui.Dashboard.ChatActivity">
 
-    <RelativeLayout
-        android:id="@+id/rl1"
+    <LinearLayout
+        android:id="@+id/action_bar_layout"
+        android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp">
-
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/back"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_centerVertical="true"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:src="@drawable/baseline_arrow_back_ios_new_24" />
 
         <RelativeLayout
             android:id="@+id/actionBar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_toEndOf="@id/back"
+            android:layout_height="wrap_content"
             android:visibility="visible">
 
             <TextView
@@ -38,17 +34,17 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
-                android:text="Discussion"
+                android:text="Group Discussion"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_17sdp" />
+                android:textSize="@dimen/_16sdp" />
 
 
         </RelativeLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
     <RelativeLayout
-        android:layout_below="@id/rl1"
+        android:layout_below="@id/action_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -98,5 +94,35 @@
 
     </RelativeLayout>
 
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/no_result"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_250sdp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/no_result"
+        android:visibility="gone" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pd"
+        android:visibility="gone"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="center"
+        android:backgroundTint="#FBFBFB"
+        app:cardCornerRadius="@dimen/_14sdp"
+        android:layout_centerInParent="true"
+        app:cardElevation="50dp">
+        <RelativeLayout
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_50sdp">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/loader" />
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

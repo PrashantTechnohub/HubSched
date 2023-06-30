@@ -25,7 +25,7 @@ import com.google.android.material.card.MaterialCardView;
 
 public class pd {
     private static Dialog dialog;
-    private static final int ANIMATION_DURATION = 300;
+    private static final int ANIMATION_DURATION = 600;
     public static boolean isDialogShown = false;
 
     public static void mShow(Context context) {

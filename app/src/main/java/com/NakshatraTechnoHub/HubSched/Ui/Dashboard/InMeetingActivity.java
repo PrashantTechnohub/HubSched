@@ -90,6 +90,9 @@ public class InMeetingActivity extends BaseActivity {
 
         startCountdownTimer(endTime, timeLeft);
 
+        findViewById(R.id.back).setOnClickListener(view -> finish());
+
+
         showQrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

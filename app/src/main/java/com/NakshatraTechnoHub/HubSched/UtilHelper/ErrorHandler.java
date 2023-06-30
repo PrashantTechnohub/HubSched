@@ -17,90 +17,116 @@ import org.json.JSONException;
 
 public class ErrorHandler {
     public static void handleVolleyError(Context context, VolleyError error) {
-        String errorMessage = "An error occurred. Please try again later.";
+        if (context != null) {
+            try {
+                String errorMessage = "An error occurred. Please try again later.";
 
-        if (error instanceof NetworkError) {
-            errorMessage = "Network error occurred. Please check your connection.";
-            pd.mDismiss();
-        } else if (error instanceof ServerError) {
-            errorMessage = "Server error occurred: ";
-            if (error.networkResponse != null) {
-                int statusCode = error.networkResponse.statusCode;
-                if (statusCode == 500) {
-                    String serverErrorMessage = new String(error.networkResponse.data);
-                    errorMessage += serverErrorMessage;
+                if (error instanceof NetworkError) {
+                    errorMessage = "Network error occurred. Please check your connection.";
                     pd.mDismiss();
-                } else {
-                    errorMessage += "Unexpected response code " + statusCode;
+                } else if (error instanceof ServerError) {
+                    errorMessage = "Server error occurred: ";
+                    if (error.networkResponse != null) {
+                        int statusCode = error.networkResponse.statusCode;
+                        if (statusCode == 500) {
+                            String serverErrorMessage = new String(error.networkResponse.data);
+                            errorMessage += serverErrorMessage;
+                            pd.mDismiss();
+                        } else {
+                            errorMessage += "Unexpected response code " + statusCode;
+                            pd.mDismiss();
+                        }
+
+
+                    }
+                } else if (error instanceof AuthFailureError) {
+                    errorMessage = "Authentication failure error occurred. Please try again.";
+                    pd.mDismiss();
+                } else if (error instanceof ParseError) {
+                    errorMessage = "Error occurred while parsing data. Please try again.";
+                    pd.mDismiss();
+                } else if (error instanceof NoConnectionError) {
+                    errorMessage = "No connection error occurred. Please check your internet connection.";
+                    pd.mDismiss();
+                } else if (error instanceof TimeoutError) {
+                    errorMessage = "Request timeout error occurred. Please try again.";
                     pd.mDismiss();
                 }
 
-
+                Log.e(TAG, "Volley Error: " + errorMessage);
+                CustomErrorDialog.mShow(context, errorMessage);
+                pd.mDismiss();
+            } catch (Exception e) {
+                Log.e("MyUtilityClass", e.toString());
 
             }
-        } else if (error instanceof AuthFailureError) {
-            errorMessage = "Authentication failure error occurred. Please try again.";
-            pd.mDismiss();
-        } else if (error instanceof ParseError) {
-            errorMessage = "Error occurred while parsing data. Please try again.";
-            pd.mDismiss();
-        } else if (error instanceof NoConnectionError) {
-            errorMessage = "No connection error occurred. Please check your internet connection.";
-            pd.mDismiss();
-        } else if (error instanceof TimeoutError) {
-            errorMessage = "Request timeout error occurred. Please try again.";
-            pd.mDismiss();
+
+        } else {
+            Log.e("MyUtilityClass", "Context is null");
         }
 
-        Log.e(TAG, "Volley Error: " + errorMessage);
-        CustomErrorDialog.mShow(context, errorMessage);
-        pd.mDismiss();
     }
 
     public static void handleException(Context context, Exception exception) {
-        String errorMessage = "An error occurred. Please try again later.";
-        String errorTitle = "Error";
+        if (context != null) {
 
-        if (exception instanceof NetworkError) {
-            errorTitle = "Server Connectivity Error";
-            errorMessage = "Server Connectivity error occurred. try again later.";
-            pd.mDismiss();
-        } else if (exception instanceof ServerError) {
-            errorTitle = "Server Error";
-            errorMessage = "Server error occurred. Please try again later.";
-            pd.mDismiss();
-        } else if (exception instanceof AuthFailureError) {
-            errorTitle = "Authentication Failure";
-            errorMessage = "Authentication failure error occurred. Please try again.";
-            pd.mDismiss();
-        } else if (exception instanceof ParseError) {
-            errorTitle = "Parsing Error";
-            errorMessage = "Error occurred while parsing data. Please try again.";
-            pd.mDismiss();
-        } else if (exception instanceof NoConnectionError) {
-            errorTitle = "No Connection";
-            errorMessage = "No connection error occurred. Please check your internet connection.";
-            pd.mDismiss();
-        } else if (exception instanceof TimeoutError) {
-            errorTitle = "Timeout Error";
-            errorMessage = "Request timeout error occurred. Please try again.";
-            pd.mDismiss();
+            try {
 
-        } else if (exception instanceof JSONException) {
-            errorTitle = "JSON Error";
-            errorMessage = "JSON error occurred. Please check the data format.";
-            pd.mDismiss();
+                String errorMessage = "An error occurred. Please try again later.";
+                String errorTitle = "Error";
+
+                if (exception instanceof NetworkError) {
+                    errorTitle = "Server Connectivity Error";
+                    errorMessage = "Server Connectivity error occurred. try again later.";
+                    pd.mDismiss();
+                } else if (exception instanceof ServerError) {
+                    errorTitle = "Server Error";
+                    errorMessage = "Server error occurred. Please try again later.";
+                    pd.mDismiss();
+                } else if (exception instanceof AuthFailureError) {
+                    errorTitle = "Authentication Failure";
+                    errorMessage = "Authentication failure error occurred. Please try again.";
+                    pd.mDismiss();
+                } else if (exception instanceof ParseError) {
+                    errorTitle = "Parsing Error";
+                    errorMessage = "Error occurred while parsing data. Please try again.";
+                    pd.mDismiss();
+                } else if (exception instanceof NoConnectionError) {
+                    errorTitle = "No Connection";
+                    errorMessage = "No connection error occurred. Please check your internet connection.";
+                    pd.mDismiss();
+                } else if (exception instanceof TimeoutError) {
+                    errorTitle = "Timeout Error";
+                    errorMessage = "Request timeout error occurred. Please try again.";
+                    pd.mDismiss();
+
+                } else if (exception instanceof JSONException) {
+                    errorTitle = "JSON Error";
+                    errorMessage = "JSON error occurred. Please check the data format.";
+                    pd.mDismiss();
+
+                } else {
+                    // Generic catch-all case for all other exceptions
+                    errorMessage = "An unexpected error occurred. Please try again later.";
+                    pd.mDismiss();
+
+                }
+
+                Log.e(TAG, "Exception: " + errorMessage);
+                CustomErrorDialog.mShow(context, errorMessage);
+                pd.mDismiss();
+
+            } catch (Exception e) {
+                Log.e("MyUtilityClass", e.toString());
+
+            }
+
 
         } else {
-            // Generic catch-all case for all other exceptions
-            errorMessage = "An unexpected error occurred. Please try again later.";
-            pd.mDismiss();
+            Log.e("MyUtilityClass", "Context is null");
 
         }
 
-        Log.e(TAG, "Exception: " + errorMessage);
-        CustomErrorDialog.mShow(context,  errorMessage);
-        pd.mDismiss();
 
     }
 }

@@ -1,6 +1,7 @@
 package com.NakshatraTechnoHub.HubSched.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +27,14 @@ import java.util.ArrayList;
 
 public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrderListAdapter.ViewHolder> {
     Context context;
+
+    Activity activity;
     private ArrayList<PantryModel> list;
     private ArrayList<PantryModel> filteredData;
 
-    public PantryMyOrderListAdapter(Context context, ArrayList<PantryModel> list) {
+    public PantryMyOrderListAdapter(Context context, Activity activity, ArrayList<PantryModel> list) {
         this.context = context;
+        this.activity = activity;
         this.list = list;
         this.filteredData = new ArrayList<>(list); // Initialize filteredData with the same data
     }
@@ -96,13 +100,14 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
 
     public void setData(ArrayList<PantryModel> newData) {
         list = newData;
-        filterData(""); // Apply the filter with the active filter value
+        filterData(""); // Apply the filter with the active filter value and pass the activity reference
     }
+
 
     public void filterData(String status) {
         filteredData.clear();
         if (status.isEmpty()) {
-            filteredData.addAll(list); // Display entire list if status is empty
+            filteredData.addAll(list); // Display the entire list if the status is empty
         } else {
             for (PantryModel model : list) {
                 if (model.getStatus().equals(status)) {
@@ -110,8 +115,20 @@ public class PantryMyOrderListAdapter extends RecyclerView.Adapter<PantryMyOrder
                 }
             }
         }
-        notifyDataSetChanged(); // Notify adapter about the data change
+
+        // Check if the filteredData is empty
+        if (filteredData.isEmpty()) {
+            // Show empty state
+            activity.findViewById(R.id.pd).setVisibility(View.GONE);
+            activity.findViewById(R.id.no_result).setVisibility(View.VISIBLE);
+        } else {
+            activity.findViewById(R.id.no_result).setVisibility(View.GONE);
+
+        }
+
+        notifyDataSetChanged(); // Notify the adapter about the data change
     }
+
 
     @Override
     public int getItemCount() {

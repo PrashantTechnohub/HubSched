@@ -39,7 +39,7 @@ import org.json.JSONArray;
 
 public class RoomListActivity extends BaseActivity {
 
-    private ActivityRoomListBinding bind;
+    ActivityRoomListBinding bind;
     String start;
     MyAdapter<RoomListModel> adapter;
     ArrayList<RoomListModel> roomList = new ArrayList<>();
@@ -50,30 +50,19 @@ public class RoomListActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
-        
+        bind.pd.setVisibility(View.VISIBLE);
 
-        bind.addRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RoomListActivity.this, CreateRoomActivity.class));
-            }
-        });
+        bind.addRoom.setOnClickListener(v -> startActivity(new Intent(RoomListActivity.this, CreateRoomActivity.class)));
 
-        bind.back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
+        bind.back.setOnClickListener(v -> finish());
 
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                bind.noResult.setVisibility(View.GONE);
                 getRoomList();
             }
         });
-
 
         getRoomList();
 
@@ -91,6 +80,7 @@ public class RoomListActivity extends BaseActivity {
                             JSONObject object = response.getJSONObject(i);
                             RoomListModel model = new Gson().fromJson(object.toString(),RoomListModel.class);
                             roomList.add(model);
+                            bind.pd.setVisibility(View.GONE);
 
                             if (bind.refresh.isRefreshing()){
                                 bind.refresh.setRefreshing(false);
@@ -98,11 +88,10 @@ public class RoomListActivity extends BaseActivity {
                             }
 
                         } catch (JSONException e) {
-
+                            bind.pd.setVisibility(View.GONE);
                             ErrorHandler.handleException(getApplicationContext(), e);
                         }
                     }
-
                     adapter = new MyAdapter<>(roomList, new MyAdapter.OnBindInterface() {
                         @Override
                         public void onBindHolder(MyAdapter.MyHolder holder, int position) {
@@ -228,11 +217,11 @@ public class RoomListActivity extends BaseActivity {
                         }
                     }, R.layout.cl_room_list);
                     bind.roomListRecyclerView.setLayoutManager(new LinearLayoutManager(RoomListActivity.this));
-
                     bind.roomListRecyclerView.setAdapter(adapter);
+                    bind.pd.setVisibility(View.GONE);
 
                 }else{
-                    bind.roomListRecyclerView.setVisibility(View.GONE);
+                    bind.pd.setVisibility(View.GONE);
                     bind.noResult.setVisibility(View.VISIBLE);
                 }
 
@@ -240,6 +229,8 @@ public class RoomListActivity extends BaseActivity {
 
             @Override
             public void onError(VolleyError error) {
+                bind.pd.setVisibility(View.GONE);
+                bind.noResult.setVisibility(View.VISIBLE);
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 
             }

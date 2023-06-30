@@ -1,6 +1,7 @@
 package com.NakshatraTechnoHub.HubSched.UtilHelper;
 
 
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.BANNER_LIST;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CHAT_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_ROOM_URL;
@@ -53,7 +54,10 @@ public class Receiver {
     }
 
     private void getdata(int method, String url, JSONObject object) {
-        pd.mShow(context);
+        if (!url.equals( Constant.withToken(Constant.EMP_LIST_URL, context))){
+            pd.mShow(context);
+        }
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(method, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -140,13 +144,10 @@ public class Receiver {
 
     private void getList(int method, String url, JSONObject object) {
 
-        pd.mShow(context);
         
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(method, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray array) {
-                pd.mDismiss();
-
                 Log.d(TAG, "onResponse: " + array);
                 listListener.onResponse(array);
 
@@ -155,22 +156,18 @@ public class Receiver {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                pd.mDismiss();
-                if (pd.isDialogShown){
-                    pd.mDismiss();
-                }
                 listListener.onError(error);
-                ErrorHandler.handleVolleyError(context, error);
+
                 try {
 
                     Log.e(TAG, new String(error.networkResponse.data));
                     String err = new String(error.networkResponse.data);
 
-                    CustomErrorDialog.mShow(context, err);
+
+                    Toast.makeText(context, err, Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
                     Log.e(TAG, error.toString());
-                    CustomErrorDialog.mShow(context, e.getMessage());
                 }
             }
         }) {
@@ -234,6 +231,15 @@ public class Receiver {
     public void remove_room(Integer id ) {
         getdata(Request.Method.DELETE, Constant.withToken(REMOVE_ROOM_URL+(id+""), context), new JSONObject());
     }
+
+    public void banner_list(JSONObject object ) {
+        getdata(Request.Method.POST, Constant.withToken(BANNER_LIST, context), object);
+    }
+
+    public void get_banner() {
+        getdata(Request.Method.GET, Constant.withToken(BANNER_LIST, context), new JSONObject());
+    }
+
 
     public void remove_emp(Integer id ) {
         getdata(Request.Method.DELETE, Constant.withToken(REMOVE_EMP_URL+(id+""), context), new JSONObject());

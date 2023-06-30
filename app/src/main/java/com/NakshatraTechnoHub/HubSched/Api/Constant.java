@@ -8,8 +8,9 @@ public class Constant {
 
     //public static final String BASE_URL = "http://192.168.0.120:5000/meet"; //Jab Sir nahi rhange
 
-    public static final String domain = "http://192.168.0.242:5000/";
-    //public static final String domain = "http://192.168.0.182:5000";
+//    public static final String domain = "http://192.168.0.242:5000/";
+//    public static final String domain = "https://3423-182-48-252-114.ngrok-free.app/";
+    public static final String domain = "http://192.168.0.183:5000";
     public static final String BASE_URL = domain + "/meet";
     public static final String CHAT_URL = BASE_URL + "/send_message";
     public static final String GET_CHAT_URL = BASE_URL + "/get_chats/";
@@ -39,6 +40,7 @@ public class Constant {
     public static final String PANTRY_REQUEST_URL = BASE_URL + "/request_pantry";
     public static final String TRIGGER_PANTRY = BASE_URL + "/trigger_pantry";
     public static final String GET_TRIGGER_PANTRY = BASE_URL + "/get_pantry_orders";
+    public static final String BANNER_LIST = BASE_URL + "/bannerList";
 
     public static String withToken(String url, Context context) {
         String token = LocalPreference.getToken(context);

@@ -117,12 +117,6 @@ public class CreateMeetingActivity extends BaseActivity {
                         selectedTime.set(Calendar.HOUR_OF_DAY, selectedHour);
                         selectedTime.set(Calendar.MINUTE, selectedMinute);
 
-                        // Check if the selected time is in the past
-                        if (selectedTime.before(currentTime)) {
-                            // Display a message to the user or perform any desired action
-                            Toast.makeText(CreateMeetingActivity.this, "Invalid time selection", Toast.LENGTH_SHORT).show();
-                            return; // Exit the method
-                        }
 
                         int adjustedHour = selectedHour % 12;
                         if (adjustedHour == 0) {

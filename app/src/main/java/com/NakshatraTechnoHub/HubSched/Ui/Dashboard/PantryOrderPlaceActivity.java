@@ -55,6 +55,7 @@ public class PantryOrderPlaceActivity extends BaseActivity implements PantryItem
 
         meetId = LocalPreference.get_meetId(this);
 
+        findViewById(R.id.back).setOnClickListener(view -> finish());
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

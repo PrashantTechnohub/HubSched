@@ -1,10 +1,10 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
@@ -24,13 +24,14 @@ public class MeetingListActivity extends BaseActivity {
     ActivityMeetingListBinding bind;
 
     ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind = ActivityMeetingListBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
+        bind.pd.setVisibility(View.VISIBLE);
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +43,7 @@ public class MeetingListActivity extends BaseActivity {
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                bind.pd.setVisibility(View.GONE);
                 getMeetingList();
             }
         });
@@ -55,28 +57,40 @@ public class MeetingListActivity extends BaseActivity {
             @Override
             public void onResponse(JSONArray response) {
                 list.clear();
-                for (int i = 0; i<response.length(); i++){
-                    try {
-                        JSONObject object = response.getJSONObject(i);
-                        ScheduleMeetingModel model = new Gson().fromJson(object.toString(),ScheduleMeetingModel.class);
 
-                        list.add(model);
+                if (response !=null){
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject object = response.getJSONObject(i);
+                            ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
 
-                    } catch (JSONException e) {
+                            list.add(model);
+                            bind.pd.setVisibility(View.GONE);
 
-                        bind.refresh.setRefreshing(false);
-                        ErrorHandler.handleException(getApplicationContext(), e);
+                        } catch (JSONException e) {
 
+                            bind.refresh.setRefreshing(false);
+                            bind.pd.setVisibility(View.GONE);
+                            ErrorHandler.handleException(getApplicationContext(), e);
+
+                        }
                     }
+
+                    bind.meetingListRecyclerview.setLayoutManager(new LinearLayoutManager(MeetingListActivity.this));
+                    bind.refresh.setRefreshing(false);
+                    bind.pd.setVisibility(View.GONE);
+                }else {
+                    bind.pd.setVisibility(View.GONE);
+                    bind.noResult.setVisibility(View.VISIBLE);
                 }
 
-                bind.meetingListRecyclerview.setLayoutManager(new LinearLayoutManager(MeetingListActivity.this));
-                bind.refresh.setRefreshing(false);
 
             }
 
             @Override
             public void onError(VolleyError error) {
+                bind.pd.setVisibility(View.GONE);
+                bind.noResult.setVisibility(View.VISIBLE);
                 bind.refresh.setRefreshing(false);
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
 

@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -41,6 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.socket.client.Socket;
+import pl.droidsonroids.gif.GifImageView;
 
 public class PantryActivity extends AppCompatActivity implements ApiInterface {
     RecyclerView recyclerView;
@@ -52,20 +54,26 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
     SwipeRefreshLayout refresh;
     ImageView logoutBtn;
     String companyId;
+    MaterialCardView pd;
+    GifImageView empty;
 
-    Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantry);
-        pd.mShow(this);
 
         recyclerView = findViewById(R.id.get_order_recyclerview);
         addItemBtn = findViewById(R.id.addItem_btn);
         logoutBtn = findViewById(R.id.logoutBtn);
         refresh = findViewById(R.id.refresh);
         companyId = LocalPreference.get_company_Id(PantryActivity.this);
+
+        pd = findViewById(R.id.pd);
+        empty = findViewById(R.id.no_result);
+
+        pd.setVisibility(View.VISIBLE);
+
 
         getData();
         socketConnection();
@@ -82,6 +90,8 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                empty.setVisibility(View.VISIBLE);
+
                 getData();
             }
         });
@@ -125,18 +135,27 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.TRIGGER_PANTRY + "/" + companyId, PantryActivity.this), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                parsingOrderedList(response);
-                pd.mDismiss();
-                if (refresh.isRefreshing()) {
-                    refresh.setRefreshing(false);
-                    Toast.makeText(PantryActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+
+                if (response!=null){
+                    parsingOrderedList(response);
+                    pd.setVisibility(View.VISIBLE);
+                    if (refresh.isRefreshing()) {
+                        refresh.setRefreshing(false);
+                        Toast.makeText(PantryActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    pd.setVisibility(View.GONE);
+                    empty.setVisibility(View.VISIBLE);
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pd.mDismiss();
+                pd.setVisibility(View.VISIBLE);
                 refresh.setRefreshing(false);
+                empty.setVisibility(View.VISIBLE);
+
                 ErrorHandler.handleException(PantryActivity.this, error);
 
 
@@ -195,7 +214,6 @@ public class PantryActivity extends AppCompatActivity implements ApiInterface {
                         refresh.setRefreshing(false);
                         Toast.makeText(PantryActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
                     }
-                    pd.mDismiss();
                     int lastIndex = list.size() - 1;
                     if (lastIndex >= 0) {
                         recyclerView.scrollToPosition(lastIndex);

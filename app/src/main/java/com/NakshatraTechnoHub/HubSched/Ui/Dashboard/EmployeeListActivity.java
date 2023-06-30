@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Fade;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Models.EmpListModel;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityEmployeeListBinding;
@@ -43,6 +46,7 @@ public class EmployeeListActivity extends BaseActivity {
         setContentView(view);
 
 
+        bind.pd.setVisibility(View.VISIBLE);
 
 
         bind.empListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -55,16 +59,17 @@ public class EmployeeListActivity extends BaseActivity {
         bind.searchEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TransitionManager.beginDelayedTransition(bind.getRoot(), new Fade());
                 bind.actionBarLayout.setVisibility(View.GONE);
                 bind.searchBarLayout.setVisibility(View.VISIBLE);
                 bind.searchBar.requestFocus();
-
             }
         });
 
         bind.closeSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TransitionManager.beginDelayedTransition(bind.getRoot(), new Fade());
                 bind.actionBarLayout.setVisibility(View.VISIBLE);
                 bind.searchBarLayout.setVisibility(View.GONE);
             }
@@ -72,7 +77,10 @@ public class EmployeeListActivity extends BaseActivity {
         bind.addEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EmployeeListActivity.this, CreateEmployeeActivity.class));
+                Intent intent = new Intent(EmployeeListActivity.this, CreateEmployeeActivity.class);
+                intent.putExtra("actionType", "add");
+                startActivity(intent);
+
             }
         });
 
@@ -86,6 +94,8 @@ public class EmployeeListActivity extends BaseActivity {
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                bind.noResult.setVisibility(View.GONE);
+
                 getEmpList();
             }
         });
@@ -129,37 +139,45 @@ public class EmployeeListActivity extends BaseActivity {
         new Receiver(this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
-                try {
-                    JSONArray emp_details =object.getJSONArray("emp_details");
-                    list.clear();
+                if (object!=null){
+                    try {
+                        JSONArray emp_details =object.getJSONArray("emp_details");
+                        list.clear();
 
 
-                    for (int i=0;i<emp_details.length();i++){
-                        JSONObject jobj=emp_details.getJSONObject(i);
-                        EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
-                        list.add(model);
-                        bind.refresh.setRefreshing(false);
+                        for (int i=0;i<emp_details.length();i++){
+                            JSONObject jobj=emp_details.getJSONObject(i);
+                            EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
+                            list.add(model);
+                            bind.refresh.setRefreshing(false);
+                            bind.pd.setVisibility(View.GONE);
+                        }
 
+
+                    } catch (JSONException e) {
+                        bind.pd.setVisibility(View.GONE);
+                        ErrorHandler.handleException(getApplicationContext(), e);
                     }
 
+                    int totalEmployees= list.size();
+                    LocalPreference.store_total_employees(EmployeeListActivity.this,String.valueOf(totalEmployees));
+                    adapter = new EmpListAdapter(getApplicationContext(), list);
+                    bind.empListRecyclerView.setAdapter(adapter);
+                    bind.empListRecyclerView.invalidate();
+                    bind.empListRecyclerView.removeAllViews();
 
-                } catch (JSONException e) {
-                    ErrorHandler.handleException(getApplicationContext(), e);
 
+                    if (bind.refresh.isRefreshing()){
+                        bind.refresh.setRefreshing(false);
+                        Toast.makeText(EmployeeListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
 
+                    }
+                }else {
+                    bind.pd.setVisibility(View.GONE);
+                    bind.noResult.setVisibility(View.VISIBLE);
                 }
 
-                adapter = new EmpListAdapter(getApplicationContext(), list);
-                bind.empListRecyclerView.setAdapter(adapter);
-                bind.empListRecyclerView.invalidate();
-                bind.empListRecyclerView.removeAllViews();
 
-
-                if (bind.refresh.isRefreshing()){
-                    bind.refresh.setRefreshing(false);
-                    Toast.makeText(EmployeeListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
-
-                }
             }
 
             @Override
@@ -169,7 +187,7 @@ public class EmployeeListActivity extends BaseActivity {
                 }
                 Log.d("TAG", "onError: " +error.getMessage());
                 bind.noResult.setVisibility(View.VISIBLE);
-                bind.empListRecyclerView.setVisibility(View.GONE);
+                bind.pd.setVisibility(View.GONE);
             }
         }).getEmpList();
 

@@ -1,480 +1,493 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:id="@+id/refresh"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment">
 
 
     <RelativeLayout
         android:id="@+id/llt2"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_7sdp"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/_7sdp">
 
-        <RelativeLayout
-            android:layout_centerHorizontal="true"
-            android:id="@+id/user_view_layout"
-            android:visibility="visible"
+        <LinearLayout
+            android:id="@+id/ll3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/showAdminViewMeeting"
-                android:layout_width="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_18sdp"
-                android:text="Show Over view >>"
-                android:textSize="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                android:fontFamily="@font/montserrat_semibold"
-                android:textColor="@color/black"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_8sdp">
 
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_below="@+id/showAdminViewMeeting"
-                android:id="@+id/cardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
-                app:cardCornerRadius="@dimen/_11sdp">
-
-                <com.denzcoskun.imageslider.ImageSlider
-                    android:id="@+id/image_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_110sdp"
-                    app:iss_auto_cycle="true"
-                    app:iss_delay="0"
-                    app:iss_period="2000" />
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/cardView"
+            <RelativeLayout
+                android:id="@+id/user_view_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/schedule_meeting_recyclerView"/>
-        </RelativeLayout>
-
-
-
-
-        <RelativeLayout
-            android:id="@+id/admin_view_layout"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_width="match_parent"
                 android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:visibility="visible">
+
+
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_11sdp">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/image_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_110sdp" />
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/admin_view_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="@dimen/_14sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
 
                     <RelativeLayout
+                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:id="@+id/ov1"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <TextView
-                                    android:layout_alignParentStart="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Over View"
-                                    android:textSize="@dimen/_15sdp"
-                                    android:layout_marginBottom="@dimen/_4sdp"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/purple_700"/>
-
-                                <TextView
-                                    android:id="@+id/showCurrentMeeting"
-                                    android:layout_marginEnd="@dimen/_12sdp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_height="wrap_content"
-                                    android:text="Show schedule meetings >>"
-                                    android:textSize="@dimen/_8sdp"
-                                    android:layout_marginBottom="@dimen/_4sdp"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/black"/>
-
-                            </RelativeLayout>
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/background_page"/>
-
-
-                            <RelativeLayout
-
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <LinearLayout
-                                    android:layout_alignParentStart="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/black"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Total Employee"/>
-                                    </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalTrialUser"
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:textColor="@color/black"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-
-                                        android:text=""/>
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:textColor="@color/black"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Total Meeting"/>
-                                    </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalPrimeUser"
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:textColor="@color/black"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-
-
-                                        android:text=""/>
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <LinearLayout
-                                    android:layout_alignParentStart="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:textColor="@color/black"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Future Meeting"/>
-                                    </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalTrialTips"
-
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-                                        android:textColor="@color/black"
-
-                                        android:text=""/>
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:textColor="@color/black"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Schedule Meeting"/>
-                                    </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalPrimeTip"
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-                                        android:textColor="@color/black"
-
-                                        android:text=""/>
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_marginBottom="@dimen/_10sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <LinearLayout
-                                    android:layout_alignParentStart="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:singleLine="true"
-                                            android:textColor="@color/black"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Total Rooms"/>
-                                    </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalPerformance"
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:textColor="@color/black"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-
-
-                                        android:text=""/>
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:textColor="#F44336"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Trash Meeting"/>
-                                    </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalTipGen"
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-
-                                        android:textColor="@color/black"
-                                        android:text=""/>
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
-
-
-
-
-
-
-                        </LinearLayout>
-
-
+                            android:layout_alignParentStart="true"
+                            android:layout_marginBottom="@dimen/_4sdp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="Overview"
+                            android:textColor="@color/purple_700"
+                            android:textSize="@dimen/_14sdp" />
 
 
                     </RelativeLayout>
 
-                </com.google.android.material.card.MaterialCardView>
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="@dimen/_14sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
 
-                    <RelativeLayout
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_height="wrap_content">
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_14sdp">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp">
 
-
-                            <RelativeLayout
-
-                                android:layout_marginBottom="@dimen/_10sdp"
+                            <LinearLayout
+                                android:id="@+id/ov1"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <LinearLayout
-                                    android:layout_alignParentStart="true"
-                                    android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+
+
+                                <RelativeLayout
+
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:layout_marginTop="@dimen/_10sdp">
 
                                     <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
                                         android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
                                             android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/total_employees"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Total Employee"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalTrialUser"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
                                             android:textColor="@color/black"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="Reported Bugs"/>
+
+                                            android:textSize="@dimen/_10sdp" />
                                     </LinearLayout>
-
-
-
-
-                                    <TextView
-                                        android:id="@+id/totalBug"
-                                        android:layout_width="@dimen/_35sdp"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
-
-
-                                        android:text=""/>
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:orientation="horizontal">
 
                                     <LinearLayout
-                                        android:layout_width="@dimen/_85sdp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="@dimen/_8sdp"
                                         android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
                                             android:layout_height="wrap_content"
-                                            android:textSize="@dimen/_10sdp"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Total Meeting"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalPrimeUser"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
                                             android:textColor="@color/black"
-                                            android:layout_marginEnd="@dimen/_4sdp"
-                                            android:text="App Crashes"/>
+
+
+                                            android:textSize="@dimen/_10sdp" />
                                     </LinearLayout>
 
+                                </RelativeLayout>
 
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp">
 
-
-                                    <TextView
-                                        android:id="@+id/totalAppCrash"
-                                        android:layout_width="@dimen/_35sdp"
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_10sdp"
+                                        android:layout_alignParentStart="true"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Future Meeting"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
 
 
-                                        android:text="0"/>
-                                </LinearLayout>
+                                        <TextView
+                                            android:id="@+id/totalTrialTips"
 
-                            </RelativeLayout>
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
+                                            android:textColor="@color/black"
+
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Schedule Meeting"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalPrimeTip"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
+                                            android:textColor="@color/black"
+
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginBottom="@dimen/_10sdp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:singleLine="true"
+                                                android:text="Total Rooms"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalPerformance"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
+                                            android:textColor="@color/black"
+
+
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Trash Meeting"
+                                                android:textColor="#F44336"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalTipGen"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
+
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_14sdp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+
+                                <RelativeLayout
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/_10sdp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Reported Bugs"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalBug"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
+
+
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="App Crashes"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_10sdp" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/totalAppCrash"
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="wrap_content"
+                                            android:text="0"
+
+
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textUp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll3"
+            android:textSize="@dimen/_14sdp"
+            android:text="Upcoming Meetings"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/purple_700"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/upcoming_meeting_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/textUp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/no_meeting_found"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_below="@id/textUp"
+            app:cardCornerRadius="@dimen/_14sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_110sdp"
+                    android:scaleType="center"
+                    android:src="@drawable/no_upcoming_meeting"/>
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
 
 
-                        </LinearLayout>
 
-
-
-
-                    </RelativeLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-            </LinearLayout>
-
-        </RelativeLayout>
     </RelativeLayout>
-
 
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

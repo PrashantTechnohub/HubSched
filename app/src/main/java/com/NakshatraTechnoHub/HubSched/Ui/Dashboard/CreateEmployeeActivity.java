@@ -46,9 +46,16 @@ public class CreateEmployeeActivity extends BaseActivity {
 
         _id = String.valueOf(getIntent().getStringExtra("id"));
 
-        if (action != null) {
-            bind.actionBar.setText("Update Profile");
-            bind.addEmpBtn.setText("Update Now");
+        if (action != null && userType!=null || action.equals("add") ) {
+
+            if (action.equals("add")){
+                bind.actionBar.setText("Create Employee");
+                bind.addEmpBtn.setText("Add Employee");
+            }else{
+                bind.actionBar.setText("Update Profile");
+                bind.addEmpBtn.setText("Update Now");
+            }
+
             if (action.equals("update") || action.equals("selfAdmin")) {
                 String empId = getIntent().getStringExtra("empId");
                 String name = getIntent().getStringExtra("name");
@@ -78,6 +85,9 @@ public class CreateEmployeeActivity extends BaseActivity {
                     bind.userType.setText("Admin");
                 }
             }
+        }else {
+            finish();
+            Toast.makeText(this, "Something went wrong please try again later !", Toast.LENGTH_SHORT).show();
         }
 
 

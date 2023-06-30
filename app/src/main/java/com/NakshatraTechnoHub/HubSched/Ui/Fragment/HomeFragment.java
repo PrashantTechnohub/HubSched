@@ -1,61 +1,73 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.NakshatraTechnoHub.HubSched.Api.Constant;
-import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
+import com.NakshatraTechnoHub.HubSched.Adapters.ImageSliderAdapter;
+import com.NakshatraTechnoHub.HubSched.Models.FilteredMeetingModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
+    ArrayList<FilteredMeetingModel> filteredMeetings = new ArrayList<>();
 
+    MyAdapter<FilteredMeetingModel> UpAdapter;
 
-
-    ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
-    ArrayList<RoomListModel> roomList = new ArrayList<>();
-    FragmentHomeBinding bind;
-
-    NavigationView navigationView;
-    MaterialToolbar toolbar;
-
+    private ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
+    private ArrayList<RoomListModel> roomList = new ArrayList<>();
+    private FragmentHomeBinding bind;
+    private NavigationView navigationView;
+    private MaterialToolbar toolbar;
+    private ArrayList<Bitmap> bitmapList = new ArrayList<>();
+    private ImageSliderAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        bind = FragmentHomeBinding.inflate(inflater);
+        bind = FragmentHomeBinding.inflate(inflater, container, false);
+        View rootView = bind.getRoot();
 
-        toolbar = (MaterialToolbar) requireActivity().findViewById(R.id.topAppBar);
-        navigationView = requireActivity().findViewById(R.id.navigation_view);
-        String type = LocalPreference.getType(requireContext());
+        toolbar = getActivity().findViewById(R.id.topAppBar);
+        navigationView = getActivity().findViewById(R.id.navigation_view);
+        String type = LocalPreference.getType(getContext());
+
+
+        getBanners();
+        autoScrollViewPager();
+        upComingMeetings();
 
         if (type.equals("admin")) {
             adminFunction();
@@ -68,176 +80,218 @@ public class HomeFragment extends Fragment {
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
+
                 if (type.equals("admin")) {
                     adminFunction();
                 } else if (type.equals("employee")) {
                     employeeFunction();
-                } else if (type.equals("organiser")) {
-                    getRoomList();
                 }
             }
         });
 
 
-        bind.showCurrentMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bind.adminViewLayout.setVisibility(View.GONE);
-                bind.userViewLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        bind.showAdminViewMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bind.adminViewLayout.setVisibility(View.VISIBLE);
-                bind.userViewLayout.setVisibility(View.GONE);
-            }
-        });
 
 
-        ImageSlider imageSlider = bind.imageSlider;
-        List<SlideModel> slideModels = new ArrayList<>();
-        slideModels.add(new SlideModel("https://img.freepik.com/free-photo/group-diverse-people-having-business-meeting_53876-25060.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://lh5.googleusercontent.com/p/AF1QipO0SKciR6pZlUgKDdQWiuLohTbmdw76jP5-dOQ_=w630-h240-k-no", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://www.incimages.com/uploaded_files/image/1920x1080/getty_473909426_129584.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://lexpeeps.in/wp-content/uploads/2020/05/1024px-Secretary_Kerry_Hosts_the_Quarterly_Millennium_Challenge_Corp_MCC_Board_of_Directors_Meeting-1024x425.jpg", ScaleTypes.FIT));
-        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+
+        return rootView;
+    }
+
+    private void upComingMeetings() {
+        if (isAdded()) {
+            Context context = requireContext();
+            new Receiver(context, new Receiver.ListListener() {
+                @Override
+                public void onResponse(JSONArray array) {
+
+                    // Get the current date
+                    filteredMeetings.clear();
+                    Calendar currentDate = Calendar.getInstance();
+
+                    for (int i = 0; i < array.length(); i++) {
+                        try {
+                            JSONObject meeting = array.getJSONObject(i);
+                            JSONArray acceptedArray = meeting.getJSONArray("accepted");
+
+                            // Check if "accepted" array contains your _id
+                            boolean containsId = false;
+                            for (int j = 0; j < acceptedArray.length(); j++) {
+                                if (acceptedArray.getInt(j) == Integer.parseInt(LocalPreference.get_Id(context))) {
+                                    containsId = true;
+                                    break;
+                                }
+                            }
+
+                            // Check if "date" is greater than or equal to the current date
+                            String dateString = meeting.getString("date");
+                            SimpleDateFormat format = new SimpleDateFormat("M/dd/yyyy", Locale.US);
+                            Date meetingDate = format.parse(dateString);
+
+                            if (containsId && meetingDate != null && meetingDate.compareTo(currentDate.getTime()) >= 0) {
+                                // Get subject, location, and time as strings
+                                String subject = meeting.getString("subject");
+                                String location = meeting.getString("status");
+                                String startTime = meeting.getString("startTime");
+                                String endTime = meeting.getString("endTime");
+                                String time = startTime + " - " + endTime;
+
+                                // Create a new FilteredMeetingModel instance and add it to the filteredMeetings list
+                                FilteredMeetingModel filteredMeeting = new FilteredMeetingModel(subject, location, time);
+                                filteredMeetings.add(filteredMeeting);
+
+                            }
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Use the filteredMeetings list as needed
+                    if (filteredMeetings != null && !filteredMeetings.isEmpty()) {
+                        UpAdapter=   new MyAdapter<FilteredMeetingModel>(filteredMeetings, new MyAdapter.OnBindInterface() {
+                            @Override
+                            public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+
+                                TextView subject = holder.itemView.findViewById(R.id.up_subject);
+                                TextView time = holder.itemView.findViewById(R.id.up_time);
+                                TextView location = holder.itemView.findViewById(R.id.up_address);
+
+                                time.setText(filteredMeetings.get(position).getTime());
+                                location.setText(filteredMeetings.get(position).getLocation());
+                                subject.setText(filteredMeetings.get(position).getSubject());
 
 
-        return bind.getRoot();
+                            }
+                        }, R.layout.cl_upcoming_meetings);
 
+
+                        bind.upcomingMeetingRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
+                        bind.upcomingMeetingRecyclerview.setAdapter(UpAdapter);
+                    } else {
+
+                        bind.upcomingMeetingRecyclerview.setVisibility(View.GONE);
+                        bind.noMeetingFound.setVisibility(View.VISIBLE);
+
+                    }
+
+
+
+
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    // Handle error here
+                }
+            }).getMeetingList();
+        }
     }
 
 
-    private void adminFunction() {
+    private void autoScrollViewPager() {
+        // Check if the adapter is null
+        if (adapter == null) {
+            // Handle the null adapter case
+            return;
+        }
+
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            // Check if the imageSlider is null or the adapter is not set
+            if (bind.imageSlider != null && bind.imageSlider.getAdapter() != null) {
+                bind.imageSlider.setCurrentItem((bind.imageSlider.getCurrentItem() + 1) % adapter.getCount());
+            }
+            autoScrollViewPager();
+        }, 3000); // Auto-scroll interval in milliseconds
+    }
+
+
+    private void getBanners() {
+        if (isAdded()) {
+            Context context = requireContext();
+            new Receiver(context, new Receiver.ApiListener() {
+                @Override
+                public void onResponse(JSONObject object) {
+                    try {
+                        List<String> containList = new ArrayList<>();
+
+                        JSONArray banners = object.getJSONArray("banners");
+                        for (int i = 0; i < banners.length(); i++) {
+                            JSONObject banner = banners.getJSONObject(i);
+
+                            String contain = banner.getString("contain");
+                            containList.add(contain);
+
+                        }
+
+
+                        bitmapList.clear();
+                        bitmapList = decodeBase64ToBitmapList(containList);
+
+                        adapter = new ImageSliderAdapter(bitmapList, context);
+                        bind.imageSlider.setAdapter(adapter);
+
+
+                        adapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    // Handle error here
+                }
+            }).banner_list(new JSONObject());
+        }
+    }
+
+    private ArrayList<Bitmap> decodeBase64ToBitmapList(List<String> base64StringList) {
+        ArrayList<Bitmap> bitmapList = new ArrayList<>();
+
+        for (String base64String : base64StringList) {
+            try {
+                byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                bitmapList.add(bitmap);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return bitmapList;
+    }
+
+
+    public void adminFunction() {
         toolbar.setTitle("Admin Dashboard");
-        bind.userViewLayout.setVisibility(View.GONE);
-        bind.adminViewLayout.setVisibility(View.VISIBLE);
+
+        bind.totalEmployees.setText("Employees " + LocalPreference.get_total_employees(requireContext()));
 
         if (bind.refresh.isRefreshing()) {
             bind.refresh.setRefreshing(false);
             Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    private void organizerFunction() {
-
-        bind.imageSlider.setVisibility(View.GONE);
+    public void organizerFunction() {
+        bind.adminViewLayout.setVisibility(View.GONE);
         toolbar.setTitle("Organizer Dashboard");
         toolbar.setNavigationIcon(null);
-        bind.scheduleMeetingRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        bind.showAdminViewMeeting.setVisibility(View.GONE);
-
-        getRoomList();
-
     }
 
-    private void getRoomList() {
-
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, Constant.withToken(Constant.MEET_ROOMS_URL, requireContext()), null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject object = response.getJSONObject(i);
-                        RoomListModel model = new Gson().fromJson(object.toString(), RoomListModel.class);
-
-                        roomList.add(model);
-
-                        if (bind.refresh.isRefreshing()) {
-                            bind.refresh.setRefreshing(false);
-                            Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Room List Error", "onErrorResponse: " + error);
-            }
-        });
-
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(arrayRequest);
-
-    }
-
-    private void employeeFunction() {
+    public void employeeFunction() {
         toolbar.setTitle("Employee Dashboard");
         toolbar.setNavigationIcon(null);
         navigationView.setVisibility(View.GONE);
-
-        bind.scheduleMeetingRecyclerView.setVisibility(View.VISIBLE);
-        bind.userViewLayout.setVisibility(View.VISIBLE);
-
-
-        bind.showAdminViewMeeting.setVisibility(View.GONE);
-        bind.scheduleMeetingRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        getScheduleMeetings();
+        bind.adminViewLayout.setVisibility(View.GONE);
 
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getScheduleMeetings();
-
+                // Do something for employee refresh
             }
         });
-
     }
-
-    private void getScheduleMeetings() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constant.MEETING_LIST_URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.d("res", "onResponse: " + response);
-
-                try {
-                    JSONArray meeting = response.getJSONArray("scheduleMeeting");
-                    list.clear();
-
-
-                    for (int i = 0; i < meeting.length(); i++) {
-                        JSONObject object = meeting.getJSONObject(i);
-                        ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
-                        list.add(model);
-                        bind.refresh.setRefreshing(false);
-
-
-                    }
-
-                    if (bind.refresh.isRefreshing()) {
-                        bind.refresh.setRefreshing(false);
-                    }
-
-
-
-
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
-
-    }
-
-
 }
