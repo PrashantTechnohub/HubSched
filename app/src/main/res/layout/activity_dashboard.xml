@@ -66,18 +66,15 @@
             app:cardCornerRadius="@dimen/_14sdp"
             app:cardElevation="@dimen/_1sdp">
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
+            <!-- layout.xml -->
+            <com.ismaeldivita.chipnavigation.ChipNavigationBar
                 android:id="@+id/bottom_nav"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
-                android:layout_marginEnd="0dp"
-
-                android:backgroundTint="@color/white"
-                app:itemIconSize="@dimen/_26sdp"
-                app:labelVisibilityMode="labeled"
-                app:menu="@menu/dashboard_menu">
-
-            </com.google.android.material.bottomnavigation.BottomNavigationView>
+                android:layout_gravity="bottom"
+                app:cnb_iconSize="@dimen/_23sdp"
+                 app:cnb_menuResource="@menu/dashboard_menu"
+              />
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -56,11 +56,52 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/queries_recycler_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/custom_action_bar"/>
+        android:id="@+id/refresh"
+        android:layout_below="@id/custom_action_bar"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/queries_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/no_result"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_250sdp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/no_result"
+        android:visibility="gone" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pd"
+        android:visibility="gone"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="center"
+        android:backgroundTint="#FBFBFB"
+        app:cardCornerRadius="@dimen/_14sdp"
+        android:layout_centerInParent="true"
+        app:cardElevation="50dp">
+        <RelativeLayout
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_50sdp">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/loader" />
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 
 
 
