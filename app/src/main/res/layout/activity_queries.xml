@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_page"
-    tools:context=".Ui.Dashboard.MeetingListActivity">
+    tools:context=".Ui.Dashboard.QueriesActivity">
 
     <LinearLayout
         android:id="@+id/custom_action_bar"
@@ -26,7 +26,7 @@
 
         <RelativeLayout
             android:id="@+id/custom_action_bar_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
             android:visibility="visible">
@@ -37,72 +37,31 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
-                android:text="Meetings"
+                android:text="Queries"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp" />
 
 
             <ImageView
-                android:id="@+id/add_meeting"
+                android:id="@+id/filter"
                 android:layout_width="@dimen/_23sdp"
                 android:layout_height="@dimen/_23sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/baseline_add_circle_outline_24" />
+                android:src="@drawable/baseline_filter_list_24" />
 
 
         </RelativeLayout>
 
     </LinearLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/queries_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/custom_action_bar"
-        android:layout_centerInParent="true">
+        android:layout_below="@id/custom_action_bar"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/meeting_list_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/no_result"
-        android:layout_width="@dimen/_250sdp"
-        android:layout_height="@dimen/_250sdp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="13dp"
-        android:src="@drawable/no_result"
-        android:visibility="gone" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/pd"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:backgroundTint="#FBFBFB"
-        app:cardCornerRadius="@dimen/_14sdp"
-        android:visibility="gone"
-        app:cardElevation="50dp">
-
-        <RelativeLayout
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_50sdp">
-
-            <pl.droidsonroids.gif.GifImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/loader" />
-        </RelativeLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
 
 </RelativeLayout>

@@ -47,6 +47,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_below="@id/text2"
+                    android:id="@+id/having_issue_btn"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="@dimen/_120sdp"
                     android:layout_marginEnd="@dimen/_15sdp"

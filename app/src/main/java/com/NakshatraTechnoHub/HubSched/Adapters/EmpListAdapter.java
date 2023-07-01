@@ -11,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +32,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,20 +42,18 @@ import java.util.Locale;
 public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolder> {
 
     Context context;
-    ArrayList<EmpListModel> data= null;
+    ArrayList<EmpListModel> data = null;
     ArrayList<EmpListModel> empList;
 
 
-
-
-    public void registerListner(SwitchCompat switchCompat , EmpListModel model){
+    public void registerListner(SwitchCompat switchCompat, EmpListModel model) {
         CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+                if (b) {
 
                     EmpStatusChanger("active", compoundButton.getContext(), (SwitchCompat) compoundButton, model);
-                }else {
+                } else {
 
                     EmpStatusChanger("blocked", compoundButton.getContext(), (SwitchCompat) compoundButton, model);
                 }
@@ -69,20 +64,19 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     }
 
 
-
     public EmpListAdapter(Context context, ArrayList<EmpListModel> empList1) {
         this.context = context;
         this.empList = empList1;
 
-        data= empList;
-        empList=new ArrayList<EmpListModel>();
+        data = empList;
+        empList = new ArrayList<EmpListModel>();
         empList.addAll(data);
     }
 
     @NonNull
     @Override
     public EmpListAdapter.EmpHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.cl_emp_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cl_emp_list, parent, false);
         return new EmpHolder(view);
     }
 
@@ -91,76 +85,48 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
         Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_animation);
         holder.itemView.startAnimation(animation);
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(holder.blockBtn.getContext(), R.style.MaterialAlertDialog_Rounded);
-        LayoutInflater inflater1 = (LayoutInflater) holder.blockBtn.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View team = inflater1.inflate(R.layout.cl_alert, null);
+        EmpListModel model = empList.get(position);
 
-        View editProfileLayout = inflater1.inflate(R.layout.cl_edit_profile, null);
-        EditText userType = editProfileLayout.findViewById(R.id.userType_ed);
-        EditText userName = editProfileLayout.findViewById(R.id.user_name);
-        EditText userEmpId = editProfileLayout.findViewById(R.id.user_EmpId);
-        EditText userEmail = editProfileLayout.findViewById(R.id.user_email);
-        EditText userMobile = editProfileLayout.findViewById(R.id.user_mobile);
-        EditText userGender = editProfileLayout.findViewById(R.id.user_gender);
-        EditText userPosition = editProfileLayout.findViewById(R.id.user_position);
-        EditText userPassword = editProfileLayout.findViewById(R.id.user_password);
-        Button updateProfileBtn = editProfileLayout.findViewById(R.id.update_profile_ed);
-
-        userType.setText(String.valueOf(empList.get(position).getUserType()));
-        userName.setText(empList.get(position).getName());
-        userEmpId.setText(String.valueOf(empList.get(position).getEmpId()));
-        userEmail.setText(empList.get(position).getEmail());
-        userMobile.setText(empList.get(position).getMobile());
-        userGender.setText(empList.get(position).getGender());
-        userPosition.setText(empList.get(position).getPosition());
-        userPassword.setText(empList.get(position).getPassword());
-
-        Button yes = team.findViewById(R.id.yes_btn);
-        Button no = team.findViewById(R.id.no_btn);
-        TextView text = team.findViewById(R.id.alert_text);
-
-
-        holder.empId.setText(empList.get(position).getEmpId()+"");
+        holder.empId.setText(empList.get(position).getEmpId() + "");
         holder.empName.setText(empList.get(position).getName());
         holder.empPost.setText(empList.get(position).getPosition());
-
-        String status =    empList.get(position).getStatus();
+        String status = empList.get(position).getStatus();
         holder.blockBtn.setSelected(true);
 
 
-        if (status.equals("active")){
+        if (status.equals("active")) {
             holder.blockBtn.setText("Active");
             holder.blockBtn.setChecked(true);
             holder.blockBtn.setTextColor(Color.parseColor("#149519"));
-        }else{
+        } else {
 
             holder.blockBtn.setText("Blocked");
             holder.blockBtn.setChecked(false);
             holder.blockBtn.setTextColor(Color.parseColor("#BF3D33"));
         }
 
-       String type =  LocalPreference.getType(context);
+        String type = LocalPreference.getType(context);
 
-        if (type.equals("organiser")){
+        if (type.equals("organiser")) {
             holder.editBtn.setVisibility(View.GONE);
         }
 
 
-        registerListner(holder.blockBtn,empList.get(position));
+        registerListner(holder.blockBtn, empList.get(position));
 
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage("Are you sure to remove "+empList.get(position).getName() + " !!");
+                builder.setMessage("Are you sure to remove " + empList.get(position).getName() + " !!");
 
-                builder.setTitle("Confirm" +    empList.get(position).get_id());
+                builder.setTitle("Confirm" + empList.get(position).get_id());
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        removeEmployee( empList.get(position).get_id());
+                        removeEmployee(empList.get(position).get_id());
 
                     }
                 });
@@ -179,40 +145,33 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = String.valueOf(empList.get(position).get_id());
-                Toast.makeText(view.getContext(), id, Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(context, CreateEmployeeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("userType", userType.getText().toString());
-                intent.putExtra("actionType","update");
-                intent.putExtra("id",id);
-                intent.putExtra("empId",userEmpId.getText().toString());
-                intent.putExtra("name",userName.getText().toString());
-                intent.putExtra("gender",userGender.getText().toString());
-                intent.putExtra("mobile",userMobile.getText().toString());
-                intent.putExtra("email",userEmail.getText().toString());
-                intent.putExtra("position",userPosition.getText().toString());
-                intent.putExtra("password",userPassword.getText().toString());
+                intent.putExtra("actionType", "update");
+                intent.putExtra("userType", model.getUserType()+"");
+                intent.putExtra("id", model.get_id()+"");
+                intent.putExtra("empId", model.getEmpId()+"");
+                intent.putExtra("name", model.getName());
+                intent.putExtra("gender",model.getGender());
+                intent.putExtra("mobile", model.getMobile());
+                intent.putExtra("email",model.getEmail());
+                intent.putExtra("position",model.getPosition());
+                intent.putExtra("password", model.getPassword());
                 context.startActivity(intent);
             }
         });
 
-        updateProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
     }
 
     private void removeEmployee(int id) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.DELETE, Constant.withToken(Constant.REMOVE_EMP_URL+(id+""),context), null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.DELETE, Constant.withToken(Constant.REMOVE_EMP_URL + (id + ""), context), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    String status=    response.getString("message");
+                    String status = response.getString("message");
                     Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
 
 
@@ -227,12 +186,12 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
                 notifyDataSetChanged();
                 try {
-                    if(error.networkResponse.statusCode == 500){
+                    if (error.networkResponse.statusCode == 500) {
                         String errorString = new String(error.networkResponse.data);
                         Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                     Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -247,7 +206,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     private void EmpStatusChanger(String active, Context context, SwitchCompat switchCompat, EmpListModel model) {
         JSONObject params = new JSONObject();
 
-        if (active.equals("active")){
+        if (active.equals("active")) {
             try {
                 params.put("status", true);
                 params.put("empId", model.getEmpId());
@@ -255,7 +214,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             try {
                 params.put("status", false);
                 params.put("empId", model.getEmpId());
@@ -267,18 +226,17 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         }
 
 
-
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.EMP_STATUS_URL,context),params, new Response.Listener<JSONObject>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.EMP_STATUS_URL, context), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    String status=    response.getString("status");
+                    String status = response.getString("status");
                     Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
-                    Log.d("aa", "onResponse: " +status);
+                    Log.d("aa", "onResponse: " + status);
 
-                    EmpListAdapter adapter = new EmpListAdapter(context,empList);
+                    EmpListAdapter adapter = new EmpListAdapter(context, empList);
 
                     model.setStatus(status);
                     notifyDataSetChanged();
@@ -294,7 +252,6 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 //                    }
 
 
-
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -306,12 +263,12 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
                 notifyDataSetChanged();
                 try {
-                    if(error.networkResponse.statusCode == 500){
+                    if (error.networkResponse.statusCode == 500) {
                         String errorString = new String(error.networkResponse.data);
                         Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                     Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -334,10 +291,8 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         if (charText.length() == 0) {
             data.addAll(empList);
         } else {
-            for (EmpListModel emp : empList)
-            {
-                if (String.valueOf(emp.getEmpId()).toLowerCase(Locale.getDefault()).contains(charText)  || emp.getName().toLowerCase(Locale.getDefault()).contains(charText))
-                {
+            for (EmpListModel emp : empList) {
+                if (String.valueOf(emp.getEmpId()).toLowerCase(Locale.getDefault()).contains(charText) || emp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     data.add(emp);
                 }
             }
@@ -349,8 +304,8 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
     public static class EmpHolder extends RecyclerView.ViewHolder {
 
-        TextView empId,empName,empPost;
-        MaterialButton  removeBtn, editBtn;
+        TextView empId, empName, empPost;
+        MaterialButton removeBtn, editBtn;
 
         SwitchCompat blockBtn;
 

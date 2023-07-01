@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_14sdp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/member_image"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/baseline_account_circle_24" />
+
+        <TextView
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_toEndOf="@id/member_image"
+            android:fontFamily="@font/montserrat_semibold"
+            android:maxWidth="@dimen/_150sdp"
+            android:text="Prashant Deshmukh"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            tools:ignore="TextSizeCheck" />
+
+        <TextView
+            android:id="@+id/query_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textStyle="italic"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="CLOSED" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/action_query_btn"
+            android:layout_toStartOf="@id/query_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:thumbTint="@color/red"
+            app:trackTint="@color/red"
+            tools:ignore="TextSizeCheck" />
+        <TextView
+            android:id="@+id/query_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/member_name"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_toEndOf="@id/member_image"
+            android:fontFamily="@font/montserrat_regular"
+            android:maxWidth="@dimen/_150sdp"
+            android:text="7/2/2023"
+            android:textSize="@dimen/_10sdp"
+            tools:ignore="TextSizeCheck" />
+
+        <TextView
+            android:id="@+id/detail_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/member_image"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:maxLines="2"
+            android:text=""/>
+
+
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

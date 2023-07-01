@@ -272,6 +272,8 @@ public class EditContentActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject object) {
 
+                Toast.makeText(EditContentActivity.this, "Images Successfully Uploaded", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

@@ -99,6 +99,10 @@ public class DashboardActivity extends BaseActivity {
                         intent = new Intent(DashboardActivity.this, EditContentActivity.class);
                         break;
 
+                    case R.id.queries:
+                        intent = new Intent(DashboardActivity.this, QueriesActivity.class);
+                        break;
+
                     default:
                         break;
                 }

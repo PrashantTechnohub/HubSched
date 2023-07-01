@@ -6,24 +6,23 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ImageSliderAdapter;
+import com.NakshatraTechnoHub.HubSched.Adapters.UpComingAdapter;
 import com.NakshatraTechnoHub.HubSched.Models.FilteredMeetingModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
-import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
 import com.android.volley.VolleyError;
@@ -45,7 +44,6 @@ import java.util.Locale;
 public class HomeFragment extends Fragment {
     ArrayList<FilteredMeetingModel> filteredMeetings = new ArrayList<>();
 
-    MyAdapter<FilteredMeetingModel> UpAdapter;
 
     private ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
     private ArrayList<RoomListModel> roomList = new ArrayList<>();
@@ -54,6 +52,7 @@ public class HomeFragment extends Fragment {
     private MaterialToolbar toolbar;
     private ArrayList<Bitmap> bitmapList = new ArrayList<>();
     private ImageSliderAdapter adapter;
+    UpComingAdapter UpAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +63,28 @@ public class HomeFragment extends Fragment {
         navigationView = getActivity().findViewById(R.id.navigation_view);
         String type = LocalPreference.getType(getContext());
 
+        UpAdapter = new UpComingAdapter(filteredMeetings);
 
+        bind.showMore.setOnClickListener(v -> {
+            if (UpAdapter.areAllItemsVisible()) {
+                bind.showMore.setText("Show More");
+                UpAdapter.hideAdditionalItems();
+            } else {
+                bind.showMore.setText("Hide");
+
+                UpAdapter.showAllItems();
+                // Scroll to the last item in the NestedScrollView
+                new Handler().postDelayed(() -> {
+                    bind.srollView.fullScroll(View.FOCUS_DOWN);
+                }, 200);
+            }
+        });
+
+
+
+
+        bind.upcomingMeetingRecyclerview.setNestedScrollingEnabled(false);
+        bind.refresh.setDistanceToTriggerSync(700);
         getBanners();
         autoScrollViewPager();
         upComingMeetings();
@@ -80,7 +100,9 @@ public class HomeFragment extends Fragment {
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                getBanners();
+                autoScrollViewPager();
+                upComingMeetings();
 
                 if (type.equals("admin")) {
                     adminFunction();
@@ -130,13 +152,13 @@ public class HomeFragment extends Fragment {
                             if (containsId && meetingDate != null && meetingDate.compareTo(currentDate.getTime()) >= 0) {
                                 // Get subject, location, and time as strings
                                 String subject = meeting.getString("subject");
-                                String location = meeting.getString("status");
+                                String date = meeting.getString("date");
                                 String startTime = meeting.getString("startTime");
                                 String endTime = meeting.getString("endTime");
                                 String time = startTime + " - " + endTime;
 
                                 // Create a new FilteredMeetingModel instance and add it to the filteredMeetings list
-                                FilteredMeetingModel filteredMeeting = new FilteredMeetingModel(subject, location, time);
+                                FilteredMeetingModel filteredMeeting = new FilteredMeetingModel(subject, date, time);
                                 filteredMeetings.add(filteredMeeting);
 
                             }
@@ -147,29 +169,19 @@ public class HomeFragment extends Fragment {
 
                     // Use the filteredMeetings list as needed
                     if (filteredMeetings != null && !filteredMeetings.isEmpty()) {
-                        UpAdapter=   new MyAdapter<FilteredMeetingModel>(filteredMeetings, new MyAdapter.OnBindInterface() {
-                            @Override
-                            public void onBindHolder(MyAdapter.MyHolder holder, int position) {
 
-                                TextView subject = holder.itemView.findViewById(R.id.up_subject);
-                                TextView time = holder.itemView.findViewById(R.id.up_time);
-                                TextView location = holder.itemView.findViewById(R.id.up_address);
+                        // Set the number of spans (2 in your case)
 
-                                time.setText(filteredMeetings.get(position).getTime());
-                                location.setText(filteredMeetings.get(position).getLocation());
-                                subject.setText(filteredMeetings.get(position).getSubject());
-
-
-                            }
-                        }, R.layout.cl_upcoming_meetings);
-
-
-                        bind.upcomingMeetingRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
+                        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+                        bind.upcomingMeetingRecyclerview.setLayoutManager(layoutManager);
                         bind.upcomingMeetingRecyclerview.setAdapter(UpAdapter);
+
+
+
                     } else {
 
                         bind.upcomingMeetingRecyclerview.setVisibility(View.GONE);
-                        bind.noMeetingFound.setVisibility(View.VISIBLE);
+                        bind.textUp.setVisibility(View.GONE);
 
                     }
 
@@ -201,7 +213,7 @@ public class HomeFragment extends Fragment {
                 bind.imageSlider.setCurrentItem((bind.imageSlider.getCurrentItem() + 1) % adapter.getCount());
             }
             autoScrollViewPager();
-        }, 3000); // Auto-scroll interval in milliseconds
+        }, 2500); // Auto-scroll interval in milliseconds
     }
 
 
@@ -267,7 +279,9 @@ public class HomeFragment extends Fragment {
     public void adminFunction() {
         toolbar.setTitle("Admin Dashboard");
 
-        bind.totalEmployees.setText("Employees " + LocalPreference.get_total_employees(requireContext()));
+        bind.totalEmployees.setText(LocalPreference.get_total_employees(requireContext()));
+        bind.totalMeetings.setText(LocalPreference.get_total_meetings(requireContext()));
+        bind.totalRooms.setText(LocalPreference.get_total_rooms(requireContext()));
 
         if (bind.refresh.isRefreshing()) {
             bind.refresh.setRefreshing(false);

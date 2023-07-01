@@ -13,14 +13,13 @@ import androidx.appcompat.app.AlertDialog;
 
 public class NetworkReceiver extends BroadcastReceiver {
     AlertDialog alertDialog;
+
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
-        try
-        {
+    public void onReceive(Context context, Intent intent) {
+        try {
             if (isOnline(context)) {
                 Log.e("net", "Online Connect Intenet ");
-                if(alertDialog != null && alertDialog.isShowing())
+                if (alertDialog != null && alertDialog.isShowing())
                     alertDialog.dismiss();
             } else {
                 dialog(false, context);
@@ -43,7 +42,7 @@ public class NetworkReceiver extends BroadcastReceiver {
         }
     }
 
-    public void dialog(Boolean value, Context context){
+    public void dialog(Boolean value, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setMessage("Make sure you turned on Wifi or Data connection");
@@ -64,10 +63,15 @@ public class NetworkReceiver extends BroadcastReceiver {
             }
         });
 
-         alertDialog = builder.create();
-        alertDialog.show();
+        alertDialog = builder.create();
+        try {
+            alertDialog.show();
+        }catch (Exception e){
+            Log.d("dialog", "dialog: " +e);
+        }
 
-        if (value.equals(true)){
+
+        if (value.equals(true)) {
             alertDialog.dismiss();
         }
     }

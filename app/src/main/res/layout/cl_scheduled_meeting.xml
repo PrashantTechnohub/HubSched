@@ -47,6 +47,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_6sdp" />
 
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -178,6 +179,32 @@
                 android:backgroundTint="#FB0909"
                 android:text="Deny"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/actionLlp3"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="@dimen/_70sdp"
+                android:id="@+id/meet_cancel_btn"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_height="@dimen/_25sdp"
+                app:cornerRadius="@dimen/_14sdp"
+                android:textSize="@dimen/_7sdp"
+                android:text="Cancel"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="@dimen/_70sdp"
+                android:id="@+id/meet_delete_btn"
+
+                android:layout_height="@dimen/_25sdp"
+                app:cornerRadius="@dimen/_14sdp"
+                android:textSize="@dimen/_7sdp"
+                android:backgroundTint="#FB0909"
+                android:text="Delete"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/actionLlp2"

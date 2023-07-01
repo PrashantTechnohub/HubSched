@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -23,11 +22,12 @@
         android:theme="@style/Theme.MeetHall"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Ui.Dashboard.QueriesActivity"
+            android:exported="false" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".Ui.Dashboard.PantryOrderedListActivity"
             android:exported="false" />

@@ -1,493 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refresh"
     android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/_10sdp"
     android:layout_height="match_parent"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment">
 
-
-    <RelativeLayout
-        android:id="@+id/llt2"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_7sdp">
-
-        <LinearLayout
-            android:id="@+id/ll3"
+        android:id="@+id/refresh"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:id="@+id/srollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_8sdp">
+            android:layout_height="match_parent">
 
             <RelativeLayout
-                android:id="@+id/user_view_layout"
+                android:id="@+id/llt2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:visibility="visible">
-
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-                    app:cardCornerRadius="@dimen/_11sdp">
-
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/image_slider"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_110sdp" />
-                </com.google.android.material.card.MaterialCardView>
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/admin_view_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true">
+                android:layout_marginTop="@dimen/_7sdp">
 
                 <LinearLayout
-
+                    android:id="@+id/ll3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_8sdp">
 
                     <RelativeLayout
-                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:id="@+id/user_view_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="visible">
 
-                        <TextView
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginBottom="@dimen/_4sdp"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="Overview"
-                            android:textColor="@color/purple_700"
-                            android:textSize="@dimen/_14sdp" />
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_3sdp"
+                            app:cardCornerRadius="@dimen/_11sdp">
+
+                            <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/image_slider"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_110sdp" />
+                        </com.google.android.material.card.MaterialCardView>
 
 
                     </RelativeLayout>
 
-
-                    <com.google.android.material.card.MaterialCardView
+                    <RelativeLayout
+                        android:id="@+id/admin_view_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        app:cardCornerRadius="@dimen/_14sdp">
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true">
 
-                        <RelativeLayout
+                        <LinearLayout
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_10sdp">
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:id="@+id/ov1"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_marginHorizontal="@dimen/_10sdp">
 
-
-
-                                <RelativeLayout
-
-                                    android:layout_width="match_parent"
+                                <TextView
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp">
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentStart="true"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:id="@+id/total_employees"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="Total Employee"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
+                                    android:layout_alignParentStart="true"
+                                    android:layout_marginBottom="@dimen/_4sdp"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:text="Overview"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
 
 
-                                        <TextView
-                                            android:id="@+id/totalTrialUser"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-                                            android:textColor="@color/black"
-
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="@dimen/_8sdp"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="Total Meeting"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
+                            </RelativeLayout>
 
 
-                                        <TextView
-                                            android:id="@+id/totalPrimeUser"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-                                            android:textColor="@color/black"
-
-
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp">
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentStart="true"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="Future Meeting"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
-
-
-                                        <TextView
-                                            android:id="@+id/totalTrialTips"
-
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-                                            android:textColor="@color/black"
-
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="@dimen/_8sdp"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="Schedule Meeting"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
-
-
-                                        <TextView
-                                            android:id="@+id/totalPrimeTip"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-                                            android:textColor="@color/black"
-
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    android:layout_marginBottom="@dimen/_10sdp">
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentStart="true"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:singleLine="true"
-                                                android:text="Total Rooms"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
-
-
-                                        <TextView
-                                            android:id="@+id/totalPerformance"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-                                            android:textColor="@color/black"
-
-
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="@dimen/_8sdp"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="Trash Meeting"
-                                                android:textColor="#F44336"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
-
-
-                                        <TextView
-                                            android:id="@+id/totalTipGen"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-
-                                            android:textColor="@color/black"
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                </RelativeLayout>
-
-
-                            </LinearLayout>
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        app:cardCornerRadius="@dimen/_14sdp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_10sdp">
-
-                            <LinearLayout
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginBottom="@dimen/_3sdp"
+                                app:cardCornerRadius="@dimen/_14sdp">
 
                                 <RelativeLayout
-
+                                    android:layout_margin="@dimen/_10sdp"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="@dimen/_10sdp">
+                                    android:layout_height="wrap_content">
 
                                     <LinearLayout
-                                        android:layout_width="wrap_content"
+                                        android:id="@+id/ov1"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_alignParentStart="true"
-                                        android:orientation="horizontal">
+                                        android:orientation="vertical">
+
+
 
                                         <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
+                                            android:weightSum="2">
 
-                                            <TextView
-                                                android:layout_width="wrap_content"
+                                            <LinearLayout
+                                                android:layout_width="0dp"
                                                 android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="Reported Bugs"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <!-- First LinearLayout content here -->
+
+                                                <TextView
+                                                    android:layout_width="@dimen/_70sdp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="@dimen/_4sdp"
+                                                    android:text="Total Members"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/total_employees"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="@dimen/_4sdp"
+                                                    android:textStyle="bold"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_marginStart="@dimen/_5sdp"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:layout_marginEnd="@dimen/_8sdp"
+                                                android:orientation="horizontal">
+
+                                                <!-- Second LinearLayout content here -->
+
+                                                <LinearLayout
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+
+                                                    <TextView
+                                                        android:layout_width="@dimen/_70sdp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginEnd="@dimen/_4sdp"
+                                                        android:text="Total Meeting"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_10sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/total_meetings"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginEnd="@dimen/_4sdp"
+
+                                                        android:textStyle="bold"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_10sdp" />
+
+                                                </LinearLayout>
+
+                                            </LinearLayout>
+
                                         </LinearLayout>
 
 
-                                        <TextView
-                                            android:id="@+id/totalBug"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text=""
-
-
-                                            android:textSize="@dimen/_10sdp" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="@dimen/_8sdp"
-                                        android:orientation="horizontal">
-
                                         <LinearLayout
-                                            android:layout_width="@dimen/_85sdp"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:weightSum="2">
 
-                                            <TextView
-                                                android:layout_width="wrap_content"
+                                            <LinearLayout
+                                                android:layout_width="0dp"
                                                 android:layout_height="wrap_content"
-                                                android:layout_marginEnd="@dimen/_4sdp"
-                                                android:text="App Crashes"
-                                                android:textColor="@color/black"
-                                                android:textSize="@dimen/_10sdp" />
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <!-- First LinearLayout content here -->
+
+                                                <TextView
+                                                    android:layout_width="@dimen/_70sdp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="@dimen/_4sdp"
+                                                    android:text="Total Rooms"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/total_rooms"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="@dimen/_4sdp"
+
+                                                    android:textStyle="bold"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_marginStart="@dimen/_5sdp"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:layout_marginEnd="@dimen/_8sdp"
+                                                android:orientation="horizontal">
+
+                                                <!-- Second LinearLayout content here -->
+
+                                                <LinearLayout
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+
+                                                    <TextView
+
+                                                        android:layout_width="@dimen/_70sdp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginEnd="@dimen/_4sdp"
+                                                        android:text="Total Bug's"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_10sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/total_bugs"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginEnd="@dimen/_4sdp"
+
+                                                        android:textStyle="bold"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_10sdp" />
+
+                                                </LinearLayout>
+
+                                            </LinearLayout>
+
                                         </LinearLayout>
 
 
-                                        <TextView
-                                            android:id="@+id/totalAppCrash"
-                                            android:layout_width="@dimen/_35sdp"
-                                            android:layout_height="wrap_content"
-                                            android:text="0"
-
-
-                                            android:textSize="@dimen/_10sdp" />
                                     </LinearLayout>
+
 
                                 </RelativeLayout>
 
+                            </com.google.android.material.card.MaterialCardView>
 
-                            </LinearLayout>
 
+                        </LinearLayout>
 
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
+                    </RelativeLayout>
 
                 </LinearLayout>
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/textUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll3"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Upcoming Meetings"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textUp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll3"
-            android:textSize="@dimen/_14sdp"
-            android:text="Upcoming Meetings"
-            android:fontFamily="@font/montserrat_semibold"
-            android:textColor="@color/purple_700"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/upcoming_meeting_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/textUp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2" />
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/no_meeting_found"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/_5sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_below="@id/textUp"
-            app:cardCornerRadius="@dimen/_14sdp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <pl.droidsonroids.gif.GifImageView
+                <androidx.recyclerview.widget.RecyclerView
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    android:foregroundGravity="center_horizontal"
+                    android:id="@+id/upcoming_meeting_recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_110sdp"
-                    android:scaleType="center"
-                    android:src="@drawable/no_upcoming_meeting"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    tools:listitem="@layout/cl_upcoming_meetings"
+                    android:layout_below="@id/textUp"
+                    />
+
+
 
             </RelativeLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="@dimen/_90sdp"
+        android:id="@+id/show_more"
+        android:layout_height="wrap_content"
+        android:text="Show More"
+        android:textSize="@dimen/_8sdp"
+        android:elevation="@dimen/_10sdp"
+        app:cornerRadius="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_6sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
 
 
-
-    </RelativeLayout>
-
-
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</RelativeLayout>

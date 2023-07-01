@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
@@ -35,7 +36,7 @@ public class ProfileFragment extends Fragment {
 
     FragmentProfileBinding bind;
 
-    String _id, name,empId,position,gender,email,mobile, password, userType;
+    String _id, name, empId, position, gender, email, mobile, password, userType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,8 +44,14 @@ public class ProfileFragment extends Fragment {
         bind = FragmentProfileBinding.inflate(inflater);
         MaterialToolbar toolbar = getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle("Account");
-        
 
+
+        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchProfile();
+            }
+        });
         bind.logOutBtn.setOnClickListener(v -> {
 
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialog_Rounded);
@@ -71,7 +78,7 @@ public class ProfileFragment extends Fragment {
         bind.editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[]profileDetail = fetchProfile();
+                String[] profileDetail = fetchProfile();
                 _id = profileDetail[0];
                 empId = profileDetail[1];
                 name = profileDetail[2];
@@ -82,17 +89,23 @@ public class ProfileFragment extends Fragment {
                 password = profileDetail[7];
                 userType = profileDetail[8];
 
+                String action = "";
+                if (userType.equals("2")) {
+                    action = "SelfAdmin";
+                } else {
+                    action = "selfEmployeeUpdate";
+                }
                 Intent intent = new Intent(requireContext(), CreateEmployeeActivity.class);
-                intent.putExtra("actionType","selfAdmin");
-                intent.putExtra("id",_id);
-                intent.putExtra("empId",empId);
-                intent.putExtra("name",name);
-                intent.putExtra("gender",gender);
-                intent.putExtra("mobile",mobile);
-                intent.putExtra("email",email);
-                intent.putExtra("position",position);
-                intent.putExtra("password",password);
-                intent.putExtra("userType",userType);
+                intent.putExtra("actionType", action);
+                intent.putExtra("id", _id);
+                intent.putExtra("empId", empId);
+                intent.putExtra("name", name);
+                intent.putExtra("gender", gender);
+                intent.putExtra("mobile", mobile);
+                intent.putExtra("email", email);
+                intent.putExtra("position", position);
+                intent.putExtra("password", password);
+                intent.putExtra("userType", userType);
                 startActivity(intent);
 
             }
@@ -121,57 +134,63 @@ public class ProfileFragment extends Fragment {
 
         return bind.getRoot();
     }
-    private String[] fetchProfile() {
-        
-        new Receiver(getContext(), new Receiver.ApiListener() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    _id = response.getString("_id");
-                    name = response.getString("name");
-                    empId = response.getString("empId");
-                    position = response.getString("position");
-                    gender = response.getString("gender");
-                    email = response.getString("email");
-                    mobile = response.getString("mobile");
-                    password = response.getString("password");
-                    userType = response.getString("userType");
 
-                    bind.empName.setText(name);
-                    bind.empId.setText(empId);
-                    bind.empPost.setText(position);
-                    bind.empGender.setText(gender);
-                    bind.empMail.setText(email);
-                    bind.empMobile.setText(mobile);
+    public String[] fetchProfile() {
 
+        if (isAdded()) {
+            Context context = getContext();
+            new Receiver(context, new Receiver.ApiListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        _id = response.getString("_id");
+                        name = response.getString("name");
+                        empId = response.getString("empId");
+                        position = response.getString("position");
+                        gender = response.getString("gender");
+                        email = response.getString("email");
+                        mobile = response.getString("mobile");
+                        password = response.getString("password");
+                        userType = response.getString("userType");
 
-                    pd.mDismiss();
-                } catch (JSONException e) {
-                    ErrorHandler.handleException(getActivity(), e);
+                        bind.empName.setText(name);
+                        bind.empId.setText(empId);
+                        bind.empPost.setText(position);
+                        bind.empGender.setText(gender);
+                        bind.empMail.setText(email);
+                        bind.empMobile.setText(mobile);
+
+                        if (bind.refresh.isRefreshing()) {
+                            bind.refresh.setRefreshing(false);
+                        }
+
+                        pd.mDismiss();
+                    } catch (JSONException e) {
+                        ErrorHandler.handleException(context, e);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(VolleyError error) {
-                ErrorHandler.handleVolleyError(getActivity(), error);
-                pd.mDismiss();
-            }
-        }).getProfileDetail();
-
+                @Override
+                public void onError(VolleyError error) {
+                    ErrorHandler.handleVolleyError(context, error);
+                    pd.mDismiss();
+                }
+            }).getProfileDetail();
 
 
-
-        String[]profileDetail = new String[9];
-        profileDetail[0] =_id;
-        profileDetail[1] =empId;
-        profileDetail[2] =name;
-        profileDetail[3] =gender;
-        profileDetail[4] =position;
-        profileDetail[5] =email;
-        profileDetail[6] =mobile;
-        profileDetail[7] =password;
-        profileDetail[8] =userType;
+        }
+        String[] profileDetail = new String[9];
+        profileDetail[0] = _id;
+        profileDetail[1] = empId;
+        profileDetail[2] = name;
+        profileDetail[3] = gender;
+        profileDetail[4] = position;
+        profileDetail[5] = email;
+        profileDetail[6] = mobile;
+        profileDetail[7] = password;
+        profileDetail[8] = userType;
         pd.mDismiss();
+
         return profileDetail;
 
     }
@@ -182,10 +201,10 @@ public class ProfileFragment extends Fragment {
 
         if (resultCode == RESULT_OK) {
 
-            if (requestCode ==0  ) {
+            if (requestCode == 0) {
 
                 Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri) { 
+                if (null != selectedImageUri) {
 
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_Rounded);
                     LayoutInflater inflater1 = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

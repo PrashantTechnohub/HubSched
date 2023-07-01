@@ -1,5 +1,6 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +21,7 @@ public class CreateEmployeeActivity extends BaseActivity {
 
 
     ArrayAdapter<String> positionAdapter;
-    String[] positionItem = {"Organizer", "HR", "Manager", "Designer", "Tester", "Sales Manager", "Software Engineer", "Android Developer", "Web Developer", "Accountant", "Digital Marketer", "Panetry", "Scanner Device"};
+    String[] positionItem = {"Organizer", "HR", "Manager", "Designer", "Tester", "Sales Manager", "Software Engineer", "Android Developer", "Web Developer", "Accountant", "Digital Marketer", "Pantry", "Scanner Device"};
 
     ArrayAdapter<String> genderAdapter;
     String[] genderItem = {"Male", "Female"};
@@ -41,51 +42,66 @@ public class CreateEmployeeActivity extends BaseActivity {
         setContentView(view);
 
         dropDownAdapter();
-        action = getIntent().getStringExtra("actionType");
-        userType = getIntent().getStringExtra("userType");
+        Intent intent = getIntent();
+        action = intent.getStringExtra("actionType");
+        _id = String.valueOf(intent.getStringExtra("id"));
+        userType = String.valueOf(intent.getStringExtra("userType"));
 
-        _id = String.valueOf(getIntent().getStringExtra("id"));
+        if (action != null) {
 
-        if (action != null && userType!=null || action.equals("add") ) {
-
-            if (action.equals("add")){
+            if (action.equals("add")) {
                 bind.actionBar.setText("Create Employee");
                 bind.addEmpBtn.setText("Add Employee");
-            }else{
+            } else {
                 bind.actionBar.setText("Update Profile");
                 bind.addEmpBtn.setText("Update Now");
             }
 
-            if (action.equals("update") || action.equals("selfAdmin")) {
-                String empId = getIntent().getStringExtra("empId");
-                String name = getIntent().getStringExtra("name");
-                String gender = getIntent().getStringExtra("gender");
-                String email = getIntent().getStringExtra("email");
-                String mobile = getIntent().getStringExtra("mobile");
-                String userPosition = getIntent().getStringExtra("position");
-                String password = getIntent().getStringExtra("password");
+            String userType = intent.getStringExtra("userType");
+            String empId = intent.getStringExtra("empId");
+            String name = intent.getStringExtra("name");
+            String gender = intent.getStringExtra("gender");
+            String email = intent.getStringExtra("email");
+            String mobile = intent.getStringExtra("mobile");
+            String userPosition = intent.getStringExtra("position");
+            String password = intent.getStringExtra("password");
 
-                bind.addEmpName.setText(name);
-                bind.addEmpId.setText(_id);
-                bind.addEmpId.setText(empId);
-                bind.addEmpGender.setText(gender);
-                bind.addEmpEmail.setText(email);
-                bind.addEmpMobile.setText(mobile);
-                bind.addEmpPosition.setText(userPosition);
-                bind.addEmpPassword.setText(password);
-                bind.addEmpCPassword.setText(password);
-
+            if (userType!= null){
                 if (userType.equals("0")) {
                     bind.userType.setText("Employee");
-                }
-                if (userType.equals("1")) {
+                }  if (userType.equals("1")) {
                     bind.userType.setText("Organizer");
-                }
-                if (userType.equals("2")) {
+                }  if (userType.equals("2")) {
                     bind.userType.setText("Admin");
+                }  if (userType.equals("-1")) {
+                    bind.userType.setText("Scanner Device");
+                }  if (userType.equals("-2")) {
+                    bind.userType.setText("Pantry");
                 }
             }
-        }else {
+
+
+            bind.addEmpName.setText(name);
+            bind.addEmpId.setText(empId);
+
+            bind.addEmpGender.setText(gender);
+            bind.addEmpEmail.setText(email);
+            bind.addEmpMobile.setText(mobile);
+            bind.addEmpPosition.setText(userPosition);
+            bind.addEmpPassword.setText(password);
+            bind.addEmpCPassword.setText(password);
+            dropDownAdapter();
+            if (action.equals("selfEmployeeUpdate")) {
+
+
+                bind.addEmpId.setEnabled(false);
+                bind.addEmpName.setEnabled(false);
+                bind.addEmpEmail.setEnabled(false);
+                bind.userPositionLayout.setEnabled(false);
+                bind.userTypeLayout.setEnabled(false);
+                dropDownAdapter();
+            }
+        } else {
             finish();
             Toast.makeText(this, "Something went wrong please try again later !", Toast.LENGTH_SHORT).show();
         }
@@ -102,64 +118,41 @@ public class CreateEmployeeActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                String empId = bind.addEmpId.getText().toString();
-                String name = bind.addEmpName.getText().toString();
-                String email = bind.addEmpEmail.getText().toString();
-                String mobile = bind.addEmpMobile.getText().toString();
-                String gender = bind.addEmpGender.getText().toString();
-                String position = bind.addEmpPosition.getText().toString();
-                String password = bind.addEmpPassword.getText().toString();
-                String confirmPassword = bind.addEmpCPassword.getText().toString();
-                String userType = bind.userType.getText().toString();
+                String empId_x = bind.addEmpId.getText().toString();
+                String name_x = bind.addEmpName.getText().toString();
+                String email_x = bind.addEmpEmail.getText().toString();
+                String mobile_x = bind.addEmpMobile.getText().toString();
+                String gender_x = bind.addEmpGender.getText().toString();
+                String position_x = bind.addEmpPosition.getText().toString();
+                String password_x = bind.addEmpPassword.getText().toString();
+                String confirmPassword_x = bind.addEmpCPassword.getText().toString();
+                String user_type_x = bind.userType.getText().toString();
 
-                boolean isValid = validateInput(empId, name, email, mobile, gender, position, userType, password, confirmPassword);
+
+                boolean isValid = validateInput(empId_x, name_x, email_x, mobile_x, gender_x, position_x, user_type_x, password_x, confirmPassword_x);
+
+
                 if (isValid) {
-                    if (action != null) {
-                        if (action.equals("update")) {
 
-                            String user_type = bind.userType.getText().toString();
+                    if (user_type_x.equals("Employee")) {
+                        user_type_x = "0";
+                    } else if (user_type_x.equals("Organizer")) {
+                        user_type_x = "1";
+                    } else if (user_type_x.equals("Admin")) {
+                        user_type_x = "2";
+                    } else if (user_type_x.equals("Scanner Device")) {
+                        user_type_x = "-1";
+                    } else if (user_type_x.equals("Pantry")) {
+                        user_type_x = "-2";
+                    }
 
-                            if (user_type.isEmpty()) {
-                                Toast.makeText(CreateEmployeeActivity.this, "Please Select User Type", Toast.LENGTH_SHORT).show();
-                            } else {
-                                if (user_type.equals("Employee")) {
-                                    user_type = "0";
-                                }
-                                if (user_type.equals("Organizer")) {
-                                    user_type = "1";
-                                }
-                                updateEmployee(user_type, _id, empId, name, email, mobile, gender, position, password);
-                            }
-                        }
 
-                        if (action.equals("selfAdmin")) {
-                            updateAdmin(userType, _id, empId, name, email, mobile, gender, position, password);
-
-                        }
-
+                    if (action != null && action.equals("update")) {
+                        updateEmployee(user_type_x, _id, empId_x, name_x, email_x, mobile_x, gender_x, position_x, password_x);
+                    } else if (action != null && action.equals("SelfAdmin") || action.equals("selfEmployeeUpdate")) {
+                        updateAdmin(user_type_x, _id, empId_x, name_x, email_x, mobile_x, gender_x, position_x, password_x);
                     } else {
-                        String user_type = bind.userType.getText().toString();
-
-                        if (user_type.equals("Employee")) {
-                            user_type = "0";
-                        }
-                        if (user_type.equals("Organizer")) {
-                            user_type = "1";
-                        }
-                        if (user_type.equals("Admin")) {
-                            user_type = "2";
-                        }
-
-
-                        if (user_type.equals("Scanner Device")) {
-                            user_type = "-1";
-                        }
-
-                        if (user_type.equals("Pantry")) {
-                            user_type = "-2";
-                        }
-
-                        addEmployee(empId, name, email, mobile, gender, position, password, user_type);
+                        addEmployee(user_type_x, empId_x, name_x, email_x, mobile_x, gender_x, position_x, password_x);
                     }
 
                 }
@@ -182,71 +175,68 @@ public class CreateEmployeeActivity extends BaseActivity {
     }
 
     private void updateAdmin(String userType, String id, String empId, String name, String email, String mobile, String gender, String position, String password) {
-        
-        JSONObject params = new JSONObject();
+
+        JSONObject selfUpdate = new JSONObject();
         try {
-            params.put("userType", userType);
-            params.put("_id", id);
-            params.put("empId", empId);
-            params.put("name", name);
-            params.put("gender", gender);
-            params.put("mobile", mobile);
-            params.put("email", email);
-            params.put("position", position);
-            params.put("password", password);
+            selfUpdate.put("userType", userType);
+            selfUpdate.put("_id", id);
+            selfUpdate.put("empId", empId);
+            selfUpdate.put("name", name);
+            selfUpdate.put("gender", gender);
+            selfUpdate.put("mobile", mobile);
+            selfUpdate.put("email", email);
+            selfUpdate.put("position", position);
+            selfUpdate.put("password", password);
 
         } catch (JSONException e) {
 
             ErrorHandler.handleException(getApplicationContext(), e);
 
         }
-        
-        finalUpdate(params);
+
+        finalUpdate(selfUpdate);
     }
 
-    private void updateEmployee(String userType, String id, String empId, String name, String email, String mobile, String gender, String position, String password) {
-        JSONObject params = new JSONObject();
+
+    private void updateEmployee(String user_type_x, String _id, String empId_x, String name_x, String email_x, String mobile_x, String gender_x, String position_x, String password_x) {
+        JSONObject updateObject = new JSONObject();
         try {
-            params.put("userType", userType);
-            params.put("_id", id);
-            params.put("empId", empId);
-            params.put("name", name);
-            params.put("gender", gender);
-            params.put("mobile", mobile);
-            params.put("email", email);
-            params.put("position", position);
-            params.put("password", password);
+            updateObject.put("userType", user_type_x);
+            updateObject.put("_id", _id);
+            updateObject.put("empId", empId_x);
+            updateObject.put("name", name_x);
+            updateObject.put("gender", gender_x);
+            updateObject.put("mobile", mobile_x);
+            updateObject.put("email", email_x);
+            updateObject.put("position", position_x);
+            updateObject.put("password", password_x);
 
         } catch (JSONException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
-        finalUpdate(params);
+        finalUpdate(updateObject);
     }
-    
-    private void addEmployee(String empId, String name, String email, String mobile, String gender, String position, String password, String userType) {
 
-        
+
+    private void addEmployee(String user_type_x, String empId_x, String name_x, String email_x, String mobile_x, String gender_x, String position_x, String password_x) {
+
+
         JSONObject params = new JSONObject();
         try {
-            params.put("userType", userType);
-            params.put("empId", empId);
-            params.put("name", name);
-            params.put("email", email);
-            params.put("mobile", mobile);
-            params.put("gender", gender);
-            params.put("position", position);
-            params.put("password", password);
+            params.put("userType", user_type_x);
+            params.put("empId", empId_x);
+            params.put("name", name_x);
+            params.put("email", email_x);
+            params.put("mobile", mobile_x);
+            params.put("gender", gender_x);
+            params.put("position", position_x);
+            params.put("password", password_x);
 
         } catch (JSONException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
 
 
-        addEmp(params);
-
-    }
-
-    private void addEmp(JSONObject params) {
         new Receiver(CreateEmployeeActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject response) {
@@ -269,7 +259,9 @@ public class CreateEmployeeActivity extends BaseActivity {
             }
         }).add_emp(params);
 
+
     }
+
 
     private void finalUpdate(JSONObject params) {
         new Receiver(CreateEmployeeActivity.this, new Receiver.ApiListener() {
@@ -277,7 +269,6 @@ public class CreateEmployeeActivity extends BaseActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String msg = response.getString("message");
-
                     Toast.makeText(CreateEmployeeActivity.this, msg, Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (JSONException e) {
@@ -359,9 +350,8 @@ public class CreateEmployeeActivity extends BaseActivity {
             return false;
         }
 
-        // Add more validation checks here if needed
 
-        return true; // All validation passed
+        return true;
     }
 
     private boolean isValidEmail(CharSequence email) {
@@ -372,7 +362,6 @@ public class CreateEmployeeActivity extends BaseActivity {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.+[a-z]+";
         return email.toString().matches(emailPattern);
     }
-
 
 
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/_135sdp"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_3sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/_14sdp">
 
@@ -32,13 +33,13 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
           <ImageView
-              android:layout_width="@dimen/_15sdp"
-              android:layout_height="@dimen/_15sdp"
+              android:layout_width="@dimen/_10sdp"
+              android:layout_height="@dimen/_10sdp"
               android:src="@drawable/baseline_access_time_24"/>
 
             <TextView
@@ -47,7 +48,7 @@
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_8sdp"
                 android:text="27 Aug 2023"/>
 
         </LinearLayout>
@@ -57,17 +58,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:src="@drawable/baseline_event_seat_24"/>
 
             <TextView
-                android:id="@+id/up_address"
+                android:id="@+id/up_date"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_8sdp"
                 android:text="27 Aug 2023"/>
 
         </LinearLayout>

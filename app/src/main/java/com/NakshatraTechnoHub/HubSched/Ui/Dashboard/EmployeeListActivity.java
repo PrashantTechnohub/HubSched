@@ -139,43 +139,52 @@ public class EmployeeListActivity extends BaseActivity {
         new Receiver(this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
-                if (object!=null){
+
+                if (bind.refresh.isRefreshing()) {
+                    bind.refresh.setRefreshing(false);
+                    Toast.makeText(EmployeeListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                }
+                if (object != null) {
                     try {
-                        JSONArray emp_details =object.getJSONArray("emp_details");
-                        list.clear();
+                        if (object.has("emp_details")) {
+                            JSONArray emp_details = object.getJSONArray("emp_details");
+                            list.clear();
+
+                            if (emp_details.length() > 0) {
+                                for (int i = 0; i < emp_details.length(); i++) {
+                                    JSONObject jobj = emp_details.getJSONObject(i);
+                                    EmpListModel model = new Gson().fromJson(jobj.toString(), EmpListModel.class);
+                                    list.add(model);
+                                }
+                                bind.refresh.setRefreshing(false);
+                                bind.pd.setVisibility(View.GONE);
+
+                                int total = list.size();
+                                LocalPreference.store_total_employees(EmployeeListActivity.this, String.valueOf(total));
+
+                                adapter = new EmpListAdapter(getApplicationContext(), list);
+                                bind.empListRecyclerView.setAdapter(adapter);
+                                bind.empListRecyclerView.invalidate();
+                                bind.empListRecyclerView.removeAllViews();
 
 
-                        for (int i=0;i<emp_details.length();i++){
-                            JSONObject jobj=emp_details.getJSONObject(i);
-                            EmpListModel model = new Gson().fromJson(jobj.toString(),EmpListModel.class);
-                            list.add(model);
-                            bind.refresh.setRefreshing(false);
+                            } else {
+                                bind.pd.setVisibility(View.GONE);
+                                bind.noResult.setVisibility(View.VISIBLE);
+                            }
+                        } else {
                             bind.pd.setVisibility(View.GONE);
+                            bind.noResult.setVisibility(View.VISIBLE);
                         }
-
-
                     } catch (JSONException e) {
                         bind.pd.setVisibility(View.GONE);
                         ErrorHandler.handleException(getApplicationContext(), e);
                     }
-
-                    int totalEmployees= list.size();
-                    LocalPreference.store_total_employees(EmployeeListActivity.this,String.valueOf(totalEmployees));
-                    adapter = new EmpListAdapter(getApplicationContext(), list);
-                    bind.empListRecyclerView.setAdapter(adapter);
-                    bind.empListRecyclerView.invalidate();
-                    bind.empListRecyclerView.removeAllViews();
-
-
-                    if (bind.refresh.isRefreshing()){
-                        bind.refresh.setRefreshing(false);
-                        Toast.makeText(EmployeeListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
-
-                    }
-                }else {
+                } else {
                     bind.pd.setVisibility(View.GONE);
                     bind.noResult.setVisibility(View.VISIBLE);
                 }
+
 
 
             }

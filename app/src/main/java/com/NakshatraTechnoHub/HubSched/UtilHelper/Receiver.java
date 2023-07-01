@@ -5,9 +5,12 @@ import static com.NakshatraTechnoHub.HubSched.Api.Constant.BANNER_LIST;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CHAT_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_ROOM_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.DELETE_MEETING_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEET_REQUEST_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_ROOM_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_LIST_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_PROFILE_URL;
 
 import android.content.Context;
@@ -54,7 +57,7 @@ public class Receiver {
     }
 
     private void getdata(int method, String url, JSONObject object) {
-        if (!url.equals( Constant.withToken(Constant.EMP_LIST_URL, context))){
+        if (!url.equals(Constant.withToken(Constant.EMP_LIST_URL, context))) {
             pd.mShow(context);
         }
 
@@ -72,40 +75,34 @@ public class Receiver {
                 listener.onError(error);
                 ErrorHandler.handleVolleyError(context, error);
                 try {
-
                     Log.e(TAG, new String(error.networkResponse.data));
-
-//                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
-
                 } catch (Exception e) {
-                    
                     Log.e(TAG, error.toString());
-//                    Toast.makeText(context, "something went wrong " + error, Toast.LENGTH_SHORT).show();
-
                 }
             }
         }) {
+            // Overridden getBodyContentType method to set the content type
             @Override
             public String getBodyContentType() {
-                return "application/json; charset=utf-8";
+                return "application/json";
             }
 
+            // Overridden getBody method to convert the JSON object to bytes
             @Override
             public byte[] getBody() {
                 try {
                     return object == null ? null : object.toString().getBytes("utf-8");
                 } catch (UnsupportedEncodingException uee) {
-
                     return null;
                 }
             }
 
+            // Overridden parseNetworkResponse method to handle the response
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 String jsonString = "";
                 try {
-                     jsonString = new String(response.data,
-                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                    jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
 
                     JSONObject result = null;
 
@@ -114,22 +111,20 @@ public class Receiver {
                     else
                         result = new JSONObject();
 
-                    return Response.success(result,
-                            HttpHeaderParser.parseCacheHeaders(response));
-                }  catch (Exception je) {
-                    if(response.statusCode == 200){
-                            jsonString = new String(response.data);
+                    return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (Exception je) {
+                    if (response.statusCode == 200) {
+                        jsonString = new String(response.data);
                         try {
-                            if (!jsonString.equals("")){
+                            if (!jsonString.equals("")) {
                                 Looper.prepare();
                                 Toast.makeText(context, jsonString, Toast.LENGTH_SHORT).show();
                             }
                             JSONObject result = new JSONObject();
                             result = new JSONObject();
-                            result.put("message",jsonString);
-                            return Response.success(result,
-                                    HttpHeaderParser.parseCacheHeaders(response));
-                        }catch (Exception e){
+                            result.put("message", jsonString);
+                            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                        } catch (Exception e) {
                             return Response.error(new ParseError(je));
                         }
                     }
@@ -228,6 +223,22 @@ public class Receiver {
         getdata(Request.Method.POST, Constant.withToken(MEET_REQUEST_URL, context), params);
     }
 
+    public void delete_meeting(JSONObject params ) {
+        getdata(Request.Method.DELETE, Constant.withToken(DELETE_MEETING_URL, context), params);
+    }
+
+    public void post_ticket(JSONObject params ) {
+        getdata(Request.Method.POST, Constant.withToken(SUPPORT_URL, context), params);
+    }
+
+    public void ticket_list() {
+        getdata(Request.Method.GET, Constant.withToken(SUPPORT_LIST_URL, context), new JSONObject());
+    }
+
+
+    public void ticket_status(JSONObject object) {
+        getdata(Request.Method.PUT, Constant.withToken(SUPPORT_LIST_URL, context), object);
+    }
     public void remove_room(Integer id ) {
         getdata(Request.Method.DELETE, Constant.withToken(REMOVE_ROOM_URL+(id+""), context), new JSONObject());
     }

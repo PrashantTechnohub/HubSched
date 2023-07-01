@@ -99,7 +99,10 @@ public class MeetingFragment extends Fragment{
                 @Override
                 public void onResponse(JSONArray response) {
                     list.clear();
-                    if (response!=null ){
+                    if (bind.refresh.isRefreshing()){
+                        bind.refresh.setRefreshing(false);
+                    }
+                    if (response!=null && response.length() > 0){
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject object = response.getJSONObject(i);

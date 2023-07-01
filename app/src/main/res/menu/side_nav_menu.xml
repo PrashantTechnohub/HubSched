@@ -26,6 +26,12 @@
         android:title="Content">
     </item>
 
+    <item
+        android:id="@+id/queries"
+        android:icon="@drawable/baseline_chat_24"
+        android:title="Queries">
+    </item>
+
 
 
 

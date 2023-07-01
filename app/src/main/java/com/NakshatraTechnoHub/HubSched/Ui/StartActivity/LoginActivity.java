@@ -226,15 +226,21 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+
+
     private void checkPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            String[] permissions = {Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_NOTIFICATION_POLICY};
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.S) {
+            String[] permissions = new String[0];
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_NOTIFICATION_POLICY};
+            }
 
             if (!hasPermissions(permissions)) {
                 ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
             }
         }
     }
+
 
     private boolean hasPermissions(String[] permissions) {
         for (String permission : permissions) {

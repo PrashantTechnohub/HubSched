@@ -186,6 +186,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
                 android:hint="User Type"
+                android:id="@+id/user_type_layout"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"
@@ -209,6 +210,8 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
                 android:hint="Position"
+                android:id="@+id/user_position_layout"
+
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
                 app:boxCornerRadiusTopStart="@dimen/_11sdp"

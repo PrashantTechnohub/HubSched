@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_page"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.ProfileFragment">
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -18,585 +18,594 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
 
-
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5">
 
-            <RelativeLayout
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_margin="@dimen/_8sdp"
-                    android:id="@+id/v2"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    app:cardCornerRadius="@dimen/_10sdp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/user_img"
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:src="@drawable/demo_img" />
-                        <LinearLayout
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_toEndOf="@+id/user_img"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/name_view"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_width="@dimen/_50sdp"
-                                    android:layout_height="wrap_content"
-                                    android:text="Name"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/purple_500"
-                                    android:textSize="@dimen/_10sdp"/>
-
-
-                                <TextView
-                                    android:id="@+id/emp_name"
-                                    android:layout_toEndOf="@+id/name_view"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/black"
-                                    android:textSize="@dimen/_10sdp"/>
-
-                            </RelativeLayout>
-                            <RelativeLayout
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/id_view"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_width="@dimen/_50sdp"
-                                    android:layout_height="wrap_content"
-                                    android:text="Emp ID"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/purple_500"
-                                    android:textSize="@dimen/_10sdp"/>
-
-
-                                <TextView
-                                    android:id="@+id/emp_id"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:layout_toEndOf="@+id/id_view"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/black"
-                                    android:textSize="@dimen/_10sdp" />
-
-                            </RelativeLayout>
-                            <RelativeLayout
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/post_view"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_width="@dimen/_50sdp"
-                                    android:layout_height="wrap_content"
-                                    android:text="Post"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/purple_500"
-                                    android:textSize="@dimen/_10sdp"/>
-
-
-                                <TextView
-                                    android:id="@+id/emp_post"
-                                    android:layout_toEndOf="@+id/post_view"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/black"
-                                    android:textSize="@dimen/_10sdp"/>
-
-                            </RelativeLayout>
-
-
-
-
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/v1"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_below="@id/user_img"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#D8D8D8"/>
-
-                        <LinearLayout
-                            android:id="@+id/ov"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_below="@+id/v1"
-                            android:gravity="center"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="@dimen/_78sdp"
-                                android:backgroundTint="#FDDBD9"
-                                android:layout_height="@dimen/_40sdp"
-                                app:cardCornerRadius="@dimen/_14sdp">
-
-                                <LinearLayout
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="4"
-                                        android:textSize="@dimen/_10sdp"
-                                        android:fontFamily="@font/montserrat_semibold"
-                                        android:textColor="@color/black"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Not Attend"
-                                        android:textSize="@dimen/_8sdp"
-                                        android:fontFamily="@font/montserrat_semibold"
-                                        android:textColor="@color/black"/>
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="@dimen/_78sdp"
-                                android:backgroundTint="#B0FFB3"
-                                android:layout_marginStart="@dimen/_15sdp"
-
-                                android:layout_height="@dimen/_40sdp"
-                                app:cardCornerRadius="@dimen/_14sdp">
-
-                                <LinearLayout
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="20"
-                                        android:textSize="@dimen/_10sdp"
-                                        android:fontFamily="@font/montserrat_semibold"
-                                        android:textColor="@color/black"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Attend"
-                                        android:textSize="@dimen/_8sdp"
-                                        android:fontFamily="@font/montserrat_semibold"
-                                        android:textColor="@color/black"/>
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="@dimen/_78sdp"
-                                android:backgroundTint="#CDDC39"
-                                android:layout_marginStart="@dimen/_15sdp"
-                                android:layout_height="@dimen/_40sdp"
-                                app:cardCornerRadius="@dimen/_14sdp">
-
-                                <LinearLayout
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="24"
-                                        android:textSize="@dimen/_10sdp"
-                                        android:fontFamily="@font/montserrat_semibold"
-                                        android:textColor="@color/black"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Total Meeting"
-                                        android:textSize="@dimen/_8sdp"
-                                        android:fontFamily="@font/montserrat_semibold"
-                                        android:textColor="@color/black"/>
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_below="@id/ov"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#D8D8D8"/>
-
-                    </RelativeLayout>
-
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-
-
-
-                <LinearLayout
-                    android:layout_below="@+id/v2"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:layout_gravity="center"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/v2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:id="@+id/user_plan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="Account Info"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_15sdp" />
+                        android:layout_margin="@dimen/_8sdp"
+                        app:cardCornerRadius="@dimen/_10sdp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-                            <TextView
-                                android:id="@+id/edit_profile_btn"
-                                android:layout_width="wrap_content"
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/user_img"
+                                android:layout_width="@dimen/_70sdp"
+                                android:layout_height="@dimen/_70sdp"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:src="@drawable/demo_img" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Edit Profile"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="@dimen/_15sdp"/>
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_toEndOf="@+id/user_img"
+                                android:orientation="vertical">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:id="@+id/name_view"
+                                        android:layout_width="@dimen/_50sdp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:text="Name"
+                                        android:textColor="@color/purple_500"
+                                        android:textSize="@dimen/_10sdp" />
+
+
+                                    <TextView
+                                        android:id="@+id/emp_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:layout_toEndOf="@+id/name_view"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_10sdp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp">
+
+                                    <TextView
+                                        android:id="@+id/id_view"
+                                        android:layout_width="@dimen/_50sdp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:text="Emp ID"
+                                        android:textColor="@color/purple_500"
+                                        android:textSize="@dimen/_10sdp" />
+
+
+                                    <TextView
+                                        android:id="@+id/emp_id"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:layout_toEndOf="@+id/id_view"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_10sdp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp">
+
+                                    <TextView
+                                        android:id="@+id/post_view"
+                                        android:layout_width="@dimen/_50sdp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:text="Post"
+                                        android:textColor="@color/purple_500"
+                                        android:textSize="@dimen/_10sdp" />
+
+
+                                    <TextView
+                                        android:id="@+id/emp_post"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:layout_toEndOf="@+id/post_view"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_10sdp" />
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:id="@+id/v1"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@id/user_img"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="#D8D8D8" />
+
+                            <LinearLayout
+                                android:id="@+id/ov"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/v1"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_78sdp"
+                                    android:layout_height="@dimen/_40sdp"
+                                    android:backgroundTint="#FDDBD9"
+                                    app:cardCornerRadius="@dimen/_14sdp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="4"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="Not Attend"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_8sdp" />
+
+                                    </LinearLayout>
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_78sdp"
+                                    android:layout_height="@dimen/_40sdp"
+                                    android:layout_marginStart="@dimen/_15sdp"
+
+                                    android:backgroundTint="#B0FFB3"
+                                    app:cardCornerRadius="@dimen/_14sdp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="20"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="Attend"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_8sdp" />
+
+                                    </LinearLayout>
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_78sdp"
+                                    android:layout_height="@dimen/_40sdp"
+                                    android:layout_marginStart="@dimen/_15sdp"
+                                    android:backgroundTint="#CDDC39"
+                                    app:cardCornerRadius="@dimen/_14sdp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="24"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="Total Meeting"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/_8sdp" />
+
+                                    </LinearLayout>
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@id/ov"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="#D8D8D8" />
+
                         </RelativeLayout>
 
 
+                    </com.google.android.material.card.MaterialCardView>
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/v2"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/user_plan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="Account Info"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/edit_profile_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="@dimen/_15sdp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="Edit Profile" />
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_8sdp"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/_250sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginLeft="@dimen/_7sdp">
+
+                                <ImageView
+                                    android:id="@+id/gender_icon"
+                                    android:layout_width="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:src="@drawable/baseline_people_24"></ImageView>
+
+                                <TextView
+
+                                    android:id="@+id/genderView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_toEndOf="@+id/gender_icon"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:text="Gender"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/emp_gender"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/genderView"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_toEndOf="@+id/gender_icon"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold"></TextView>
+
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_8sdp"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/_250sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginLeft="@dimen/_7sdp">
+
+                                <ImageView
+                                    android:id="@+id/call_icon"
+                                    android:layout_width="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:src="@drawable/baseline_phone_24"></ImageView>
+
+                                <TextView
+
+                                    android:id="@+id/callView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_toEndOf="@+id/call_icon"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:text="Mobile No"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/emp_mobile"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/callView"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_toEndOf="@+id/call_icon"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold"></TextView>
+
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_8sdp"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/_250sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginLeft="@dimen/_7sdp">
+
+                                <ImageView
+                                    android:id="@+id/email_icon"
+                                    android:layout_width="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:src="@drawable/baseline_email_24"></ImageView>
+
+                                <TextView
+
+                                    android:id="@+id/emailView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_toEndOf="@+id/email_icon"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:text="Email"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/emp_mail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/emailView"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_toEndOf="@+id/email_icon"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold"></TextView>
+
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_8sdp"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/_250sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_7sdp"
+                                android:layout_marginBottom="@dimen/_5sdp">
+
+                                <ImageView
+                                    android:id="@+id/icon_three"
+                                    android:layout_width="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:src="@drawable/baseline_app_shortcut_24"></ImageView>
+
+                                <TextView
+
+                                    android:id="@+id/threeView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_toEndOf="@+id/icon_three"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:text="Beta Version 1.0"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/threeView"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_toEndOf="@+id/icon_three"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="No new version available"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold"></TextView>
+
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/log_out_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_8sdp"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/_250sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginLeft="@dimen/_7sdp"
+                                android:layout_marginBottom="@dimen/_5sdp">
+
+                                <ImageView
+                                    android:id="@+id/logout_icon"
+                                    android:layout_width="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:src="@drawable/baseline_exit_to_app_24" />
+
+                                <TextView
+
+                                    android:id="@+id/logoutView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_toEndOf="@+id/logout_icon"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:text="Log out"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/logoutView"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:layout_toEndOf="@+id/logout_icon"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="Credential will be remove from the device"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold"></TextView>
+
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
 
+                </RelativeLayout>
+
+            </ScrollView>
 
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_margin="@dimen/_8sdp"
-                        android:layout_width="match_parent"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_height="wrap_content">
+        </LinearLayout>
 
-                        <RelativeLayout
-                            android:layout_marginLeft="@dimen/_7sdp"
-                            android:layout_width="@dimen/_250sdp"
-                            android:layout_height="@dimen/_40sdp">
-
-                            <ImageView
-                                android:id="@+id/gender_icon"
-                                android:layout_width="@dimen/_30sdp"
-                                android:layout_height="@dimen/_30sdp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:src="@drawable/baseline_people_24"></ImageView>
-
-                            <TextView
-
-                                android:id="@+id/genderView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/gender_icon"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:text="Gender"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <TextView
-                                android:id="@+id/emp_gender"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/genderView"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/gender_icon"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"></TextView>
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_margin="@dimen/_8sdp"
-                        android:layout_width="match_parent"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:layout_marginLeft="@dimen/_7sdp"
-                            android:layout_width="@dimen/_250sdp"
-                            android:layout_height="@dimen/_40sdp">
-
-                            <ImageView
-                                android:id="@+id/call_icon"
-                                android:layout_width="@dimen/_30sdp"
-                                android:layout_height="@dimen/_30sdp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:src="@drawable/baseline_phone_24"></ImageView>
-
-                            <TextView
-
-                                android:id="@+id/callView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/call_icon"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:text="Mobile No"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <TextView
-                                android:id="@+id/emp_mobile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/callView"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/call_icon"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"></TextView>
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_margin="@dimen/_8sdp"
-                        android:layout_width="match_parent"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:layout_marginLeft="@dimen/_7sdp"
-                            android:layout_width="@dimen/_250sdp"
-                            android:layout_height="@dimen/_40sdp">
-
-                            <ImageView
-                                android:id="@+id/email_icon"
-                                android:layout_width="@dimen/_30sdp"
-                                android:layout_height="@dimen/_30sdp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:src="@drawable/baseline_email_24"></ImageView>
-
-                            <TextView
-
-                                android:id="@+id/emailView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/email_icon"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:text="Email"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <TextView
-                                android:id="@+id/emp_mail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/emailView"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/email_icon"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"></TextView>
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_margin="@dimen/_8sdp"
-                        android:layout_width="match_parent"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:layout_marginStart="@dimen/_7sdp"
-                            android:layout_width="@dimen/_250sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:layout_height="@dimen/_40sdp">
-
-                            <ImageView
-                                android:id="@+id/icon_three"
-                                android:layout_width="@dimen/_30sdp"
-                                android:layout_height="@dimen/_30sdp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:src="@drawable/baseline_app_shortcut_24"></ImageView>
-
-                            <TextView
-
-                                android:id="@+id/threeView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/icon_three"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:text="Beta Version 1.0"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/threeView"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/icon_three"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:text="No new version available"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"></TextView>
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_margin="@dimen/_8sdp"
-                        android:id="@+id/log_out_btn"
-                        android:layout_width="match_parent"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:layout_marginLeft="@dimen/_7sdp"
-                            android:layout_width="@dimen/_250sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:layout_height="@dimen/_40sdp">
-
-                            <ImageView
-                                android:id="@+id/logout_icon"
-                                android:layout_width="@dimen/_30sdp"
-                                android:layout_height="@dimen/_30sdp"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/baseline_exit_to_app_24"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_5sdp" />
-
-                            <TextView
-
-                                android:id="@+id/logoutView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/logout_icon"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:text="Log out"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/logoutView"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_toEndOf="@+id/logout_icon"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:text="Credential will be remove from the device"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"></TextView>
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </LinearLayout>
-
-
-
-
-            </RelativeLayout>
-
-        </ScrollView>
-
-
-
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

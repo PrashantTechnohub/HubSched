@@ -2,12 +2,12 @@ package com.NakshatraTechnoHub.HubSched.Models;
 
 public class FilteredMeetingModel {
     private String subject;
-    private String location;
+    private String date;
     private String time;
 
-    public FilteredMeetingModel(String subject, String location, String time) {
+    public FilteredMeetingModel(String subject, String date, String time) {
         this.subject = subject;
-        this.location = location;
+        this.date = date;
         this.time = time;
     }
 
@@ -15,12 +15,24 @@ public class FilteredMeetingModel {
         return subject;
     }
 
-    public String getLocation() {
-        return location;
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTime() {
         return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
 

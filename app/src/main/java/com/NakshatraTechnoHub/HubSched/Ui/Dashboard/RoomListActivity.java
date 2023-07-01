@@ -19,6 +19,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 
@@ -74,7 +76,11 @@ public class RoomListActivity extends BaseActivity {
             public void onResponse(JSONArray response) {
                 roomList.clear();
 
-                if (response != null){
+                if (bind.refresh.isRefreshing()){
+                    bind.refresh.setRefreshing(false);
+                }
+
+                if (response != null && response.length() > 0){
                     for (int i = 0; i<response.length(); i++){
                         try {
                             JSONObject object = response.getJSONObject(i);
@@ -92,6 +98,9 @@ public class RoomListActivity extends BaseActivity {
                             ErrorHandler.handleException(getApplicationContext(), e);
                         }
                     }
+
+                    int total = roomList.size();
+                    LocalPreference.store_total_rooms(RoomListActivity.this, String.valueOf(total));
                     adapter = new MyAdapter<>(roomList, new MyAdapter.OnBindInterface() {
                         @Override
                         public void onBindHolder(MyAdapter.MyHolder holder, int position) {
@@ -241,7 +250,7 @@ public class RoomListActivity extends BaseActivity {
         new Receiver(RoomListActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
-                finish();
+                pd.mDismiss();
                 getRoomList();
                 Toast.makeText(RoomListActivity.this, "Removed", Toast.LENGTH_SHORT).show();
             }
