@@ -22,7 +22,6 @@
                 android:id="@+id/up_subject"
                 android:singleLine="true"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
                 android:maxWidth="@dimen/_110sdp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"

@@ -3,11 +3,15 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.NetworkReceiver;
@@ -30,6 +34,9 @@ public class BaseActivity extends AppCompatActivity {
 
         // Apply the animation when starting a new activity
         overridePendingTransition(0, R.anim.activity_close_animation);
+
+
+
     }
     @Override
     public void finish() {

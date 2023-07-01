@@ -10,6 +10,7 @@ import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEET_REQUEST_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_ROOM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_LIST_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_STATUS_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_PROFILE_URL;
 
@@ -237,7 +238,7 @@ public class Receiver {
 
 
     public void ticket_status(JSONObject object) {
-        getdata(Request.Method.PUT, Constant.withToken(SUPPORT_LIST_URL, context), object);
+        getdata(Request.Method.PUT, Constant.withToken(SUPPORT_STATUS_URL, context), object);
     }
     public void remove_room(Integer id ) {
         getdata(Request.Method.DELETE, Constant.withToken(REMOVE_ROOM_URL+(id+""), context), new JSONObject());

@@ -2,6 +2,7 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -11,11 +12,14 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,9 +32,9 @@ import com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityDashboardBinding;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
@@ -46,32 +50,67 @@ public class DashboardActivity extends BaseActivity {
         View view = bind.getRoot();
         setContentView(view);
 
+
+
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        ChipNavigationBar chipNavigationBar = findViewById(R.id.bottom_nav);
+        chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int id) {
+                Fragment selectedFragment = null;
+                switch (id) {
+                    case R.id.home:
+                        selectedFragment = new HomeFragment();
+                        break;
 
-        bottomNavigationView.setBackground(null);
+                    case R.id.meeting:
+                        selectedFragment = new MeetingFragment();
+                        break;
+
+                    case R.id.account:
+                        selectedFragment = new ProfileFragment();
+                        break;
+
+                    case R.id.support:
+                        selectedFragment = new SupportFragment();
+                        break;
+                }
+
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (currentFragment != null && currentFragment.getClass().equals(selectedFragment.getClass())) {
+                    // Selected fragment is already visible, no need to replace
+                    return;
+                }
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
+                transaction.replace(R.id.fragment_container, selectedFragment);
+                transaction.commitAllowingStateLoss();
+            }
+        });
+
+        chipNavigationBar.setBackground(null);
+        chipNavigationBar.setItemSelected(R.id.home, true);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
         KeyboardVisibilityEvent.setEventListener(
                 this,
                 isOpen -> {
                     if(isOpen){
-                        bottomNavigationView.setVisibility(View.GONE);
+                        chipNavigationBar.setVisibility(View.GONE);
                     }else{
-                        bottomNavigationView.setVisibility(View.VISIBLE);
+                        chipNavigationBar.setVisibility(View.VISIBLE);
                     }
                 });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 drawerLayout.openDrawer(GravityCompat.START);
-
             }
         });
 
@@ -116,47 +155,7 @@ public class DashboardActivity extends BaseActivity {
 
             return true;
         });
-
     }
-
-    private final BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @SuppressLint("NonConstantResourceId")
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-            switch (item.getItemId()) {
-                case R.id.home:
-                    selectedFragment = new HomeFragment();
-                    break;
-
-                case R.id.meeting:
-
-                    selectedFragment = new MeetingFragment();
-                    break;
-
-                case R.id.account:
-                    selectedFragment = new ProfileFragment();
-                    break;
-
-                case R.id.support:
-                    selectedFragment = new SupportFragment();
-                    break;
-            }
-
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (currentFragment != null && currentFragment.getClass().equals(selectedFragment.getClass())) {
-                // Selected fragment is already visible, no need to replace
-                return true;
-            }
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
-            transaction.replace(R.id.fragment_container, selectedFragment);
-            transaction.commitAllowingStateLoss();
-
-            return true;
-        }
-    };
 
     @Override
     public void onBackPressed() {
@@ -193,6 +192,4 @@ public class DashboardActivity extends BaseActivity {
             activityManager.restartPackage(getPackageName());
         }
     }
-
-
 }

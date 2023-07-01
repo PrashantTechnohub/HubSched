@@ -327,8 +327,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_centerVertical="true"
+                                    android:textColor="@color/purple_700"
                                     android:layout_marginEnd="@dimen/_15sdp"
-                                    android:fontFamily="@font/montserrat_regular"
+                                    android:fontFamily="@font/montserrat_semibold"
                                     android:text="Edit Profile" />
                             </RelativeLayout>
 

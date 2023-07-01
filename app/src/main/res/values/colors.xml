@@ -12,5 +12,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orderedColor">#EEFAFF</color>
-    <color name="background_page">#F5F7F8</color>
+    <color name="background_page">#FFFFFF</color>
+<!--    <color name="background_page">#F5F7F8</color>-->
 </resources>

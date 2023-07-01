@@ -53,8 +53,6 @@
             android:layout_marginTop="@dimen/_7sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:thumbTint="@color/red"
-            app:trackTint="@color/red"
             tools:ignore="TextSizeCheck" />
         <TextView
             android:id="@+id/query_date"
