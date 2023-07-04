@@ -99,7 +99,6 @@ public class HomeFragment extends Fragment {
         getBanners();
         autoScrollViewPager();
         upComingMeetings();
-        readContacts();
 
         if (type.equals("admin")) {
             adminFunction();
@@ -128,63 +127,6 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    private void readContacts() {
-        List<ContactModel> contactList = new ArrayList<>();
-
-        ContentResolver contentResolver =requireContext().getContentResolver();
-        Cursor cursor = contentResolver.query(
-                ContactsContract.Contacts.CONTENT_URI,
-                null,
-                null,
-                null,
-                ContactsContract.Contacts.DISPLAY_NAME + " ASC"
-        );
-
-        if (cursor != null && cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
-                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                @SuppressLint("Range")  String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                @SuppressLint("Range")  String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI));
-
-                contactList.add(new ContactModel(id, name, photoUri));
-            }
-            cursor.close();
-        }
-
-        MyAdapter contactAdapter = new MyAdapter<ContactModel>(contactList, new MyAdapter.OnBindInterface() {
-            @Override
-            public void onBindHolder(MyAdapter.MyHolder holder, int position) {
-
-                ContactModel contact = contactList.get(position);
-
-                TextView name = holder.itemView.findViewById(R.id.contact_name);
-                ImageView image = holder.itemView.findViewById(R.id.contact_img);
-
-                name.setText(contact.getName());
-
-                if (!TextUtils.isEmpty(contact.getPhotoUri())) {
-                    Drawable photo = Drawable.createFromPath(contact.getPhotoUri());
-                    image.setImageDrawable(photo);
-                } else {
-                    // Set the first letter of the contact name as a placeholder image
-                    char firstLetter = contact.getName().charAt(0);
-                    image.setImageResource(getDrawableId(firstLetter));
-                }
-            }
-
-            private int getDrawableId(char letter) {
-                return requireContext().getResources().getIdentifier("ic_" + Character.toLowerCase(letter), "drawable", requireContext().getPackageName());
-            }
-
-
-        },R.layout.cl_contact);
-
-        bind.inviteMemberRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        bind.inviteMemberRecyclerview.setAdapter(contactAdapter);
-
-
-
-    }
     private void upComingMeetings() {
         if (isAdded()) {
             Context context = requireContext();
