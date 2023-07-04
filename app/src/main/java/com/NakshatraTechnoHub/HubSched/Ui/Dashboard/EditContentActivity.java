@@ -83,47 +83,52 @@ public class EditContentActivity extends AppCompatActivity {
                 Toast.makeText(EditContentActivity.this, "Please select at least one image", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        findViewById(R.id.back).setOnClickListener(view -> {
+          finish();
+        });
     }
 
     private void getBanners() {
         new Receiver(EditContentActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
-                try {
-                    List<String> containList = new ArrayList<>();
+                List<String> containList = new ArrayList<>();
 
-                    JSONArray banners = object.getJSONArray("banners");
-                    for (int i = 0; i < banners.length(); i++) {
-                        JSONObject banner = banners.getJSONObject(i);
-
-                        String contain = banner.getString("contain");
-                        containList.add(contain);
-
-                    }
-
-                    bitmapList.clear();
-                    bitmapList = decodeBase64ToBitmapList(containList);
-                    // Set bitmaps to ImageView instances
-                    for (int i = 0; i < bitmapList.size(); i++) {
-                        if (i < imageViewsList.size()) {
-                            ImageView imageView = imageViewsList.get(i);
-                            Bitmap bitmap = bitmapList.get(i);
-                            Glide.with(EditContentActivity.this)
-                                    .asBitmap()
-                                    .centerCrop()
-                                    .load(bitmap)
-                                    .into(new BitmapImageViewTarget(imageView));
-                            base64Images.add(convertBitmapToBase64(bitmap));
-                        } else {
-                            // Handle case where the number of ImageView instances is less than the number of bitmaps
+                JSONObject bannerList = object.optJSONObject("bannerList");
+                if (bannerList != null) {
+                    JSONArray banners = bannerList.optJSONArray("banners");
+                    if (banners != null) {
+                        for (int i = 0; i < banners.length(); i++) {
+                            JSONObject banner = banners.optJSONObject(i);
+                            if (banner != null) {
+                                String contain = banner.optString("contain");
+                                containList.add(contain);
+                            }
                         }
                     }
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
+
+                bitmapList.clear();
+                bitmapList = decodeBase64ToBitmapList(containList);
+                // Set bitmaps to ImageView instances
+                for (int i = 0; i < bitmapList.size(); i++) {
+                    if (i < imageViewsList.size()) {
+                        ImageView imageView = imageViewsList.get(i);
+                        Bitmap bitmap = bitmapList.get(i);
+                        Glide.with(EditContentActivity.this)
+                                .asBitmap()
+                                .centerCrop()
+                                .load(bitmap)
+                                .into(new BitmapImageViewTarget(imageView));
+                        base64Images.add(convertBitmapToBase64(bitmap));
+                    } else {
+                        // Handle case where the number of ImageView instances is less than the number of bitmaps
+                    }
+                }
+
 
             }
 

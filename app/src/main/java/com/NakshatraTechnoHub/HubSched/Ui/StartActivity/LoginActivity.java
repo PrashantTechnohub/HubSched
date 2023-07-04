@@ -36,7 +36,7 @@ public class LoginActivity extends BaseActivity {
 
     public ActivityLoginBinding bind;
     private static final int PERMISSION_REQUEST_CODE = 456;
-    private String[] permissions = {Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_NOTIFICATION_POLICY};
+    private String[] permissions = {Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_NOTIFICATION_POLICY, Manifest.permission.READ_CONTACTS};
 
     String firebaseToken;
 

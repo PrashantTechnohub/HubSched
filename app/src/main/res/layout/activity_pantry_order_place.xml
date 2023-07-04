@@ -12,10 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+      android:layout_margin="@dimen/_10sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -37,7 +34,7 @@
             android:id="@+id/actionBar"
             android:text="Pantry "
             android:textColor="@color/black"
-            android:textSize="@dimen/_17sdp" />
+            android:textSize="@dimen/_14sdp" />
 
     </RelativeLayout>
 

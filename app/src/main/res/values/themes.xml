@@ -13,7 +13,17 @@
         <item name="android:statusBarColor">@color/background_page</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
+
     </style>
+
+    <style name="SwitchCompatThemeOverlay" parent="">
+        <!-- Customize the colors for the SwitchCompat widget -->
+        <item name="colorControlActivated">@color/purple_700</item> <!-- Color for the thumb when switched on -->
+        <item name="colorControlNormal">#808080</item> <!-- Color for the thumb when switched off -->
+        <item name="colorSurface">@color/fadeBlue</item> <!-- Color for the track when switched on -->
+        <item name="colorButtonNormal">@color/grey</item> <!-- Color for the track when switched off -->
+    </style>
+
 
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>

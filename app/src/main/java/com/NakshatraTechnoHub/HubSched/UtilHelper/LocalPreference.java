@@ -120,55 +120,7 @@ public class LocalPreference {
         return id;
     }
 
-    public static void store_total_employees(Context context,String total) {
 
-        sharedPref = context.getSharedPreferences("admin",Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
-        editor.putString("totalEmployees", total);
-        editor.commit();
-
-    }
-
-    public static String get_total_employees(Context context){
-
-        sharedPref = context.getSharedPreferences("admin",Context.MODE_PRIVATE);
-        String total = sharedPref.getString("totalEmployees", "");
-        return total;
-    }
-
-    public static void store_total_meetings(Context context,String total) {
-
-        sharedPref = context.getSharedPreferences("admin",Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
-        editor.putString("totalMeetings", total);
-        editor.commit();
-
-    }
-
-    public static String get_total_meetings(Context context){
-
-        sharedPref = context.getSharedPreferences("admin",Context.MODE_PRIVATE);
-        String total = sharedPref.getString("totalMeetings", "");
-        return total;
-    }
-
-
-
-    public static void store_total_rooms(Context context,String total) {
-
-        sharedPref = context.getSharedPreferences("admin",Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
-        editor.putString("totalRooms", total);
-        editor.commit();
-
-    }
-
-    public static String get_total_rooms(Context context){
-
-        sharedPref = context.getSharedPreferences("admin",Context.MODE_PRIVATE);
-        String total = sharedPref.getString("totalRooms", "");
-        return total;
-    }
 
     public static String getFirebaseToken(Context context){
 

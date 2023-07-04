@@ -66,16 +66,20 @@ public class CreateEmployeeActivity extends BaseActivity {
             String userPosition = intent.getStringExtra("position");
             String password = intent.getStringExtra("password");
 
-            if (userType!= null){
+            if (userType != null) {
                 if (userType.equals("0")) {
                     bind.userType.setText("Employee");
-                }  if (userType.equals("1")) {
+                }
+                if (userType.equals("1")) {
                     bind.userType.setText("Organizer");
-                }  if (userType.equals("2")) {
+                }
+                if (userType.equals("2")) {
                     bind.userType.setText("Admin");
-                }  if (userType.equals("-1")) {
+                }
+                if (userType.equals("-1")) {
                     bind.userType.setText("Scanner Device");
-                }  if (userType.equals("-2")) {
+                }
+                if (userType.equals("-2")) {
                     bind.userType.setText("Pantry");
                 }
             }

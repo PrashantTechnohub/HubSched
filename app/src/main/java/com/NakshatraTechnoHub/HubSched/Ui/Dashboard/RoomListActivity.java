@@ -99,8 +99,6 @@ public class RoomListActivity extends BaseActivity {
                         }
                     }
 
-                    int total = roomList.size();
-                    LocalPreference.store_total_rooms(RoomListActivity.this, String.valueOf(total));
                     adapter = new MyAdapter<>(roomList, new MyAdapter.OnBindInterface() {
                         @Override
                         public void onBindHolder(MyAdapter.MyHolder holder, int position) {

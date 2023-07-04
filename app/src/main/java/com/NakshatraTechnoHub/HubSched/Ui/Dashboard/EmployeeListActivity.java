@@ -159,8 +159,6 @@ public class EmployeeListActivity extends BaseActivity {
                                 bind.refresh.setRefreshing(false);
                                 bind.pd.setVisibility(View.GONE);
 
-                                int total = list.size();
-                                LocalPreference.store_total_employees(EmployeeListActivity.this, String.valueOf(total));
 
                                 adapter = new EmpListAdapter(getApplicationContext(), list);
                                 bind.empListRecyclerView.setAdapter(adapter);

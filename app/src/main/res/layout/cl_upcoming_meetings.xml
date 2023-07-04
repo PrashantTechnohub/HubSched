@@ -4,7 +4,8 @@
     android:layout_width="@dimen/_135sdp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/_10sdp"
-    android:layout_marginVertical="@dimen/_3sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    app:cardElevation="@dimen/_2sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/_14sdp">
 
@@ -23,16 +24,23 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:maxWidth="@dimen/_110sdp"
-                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Testing meeting"
+                android:textColor="@color/fontBlack"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
-                android:text=""/>
+                android:textSize="@dimen/_10sdp" />
 
 
         </LinearLayout>
 
+        <View
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"/>
+
         <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -52,7 +60,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

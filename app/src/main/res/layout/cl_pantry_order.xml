@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_2sdp"
     android:id="@+id/order_layout"
+    app:cardElevation="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_14sdp">
 
     <LinearLayout
@@ -36,9 +36,9 @@
                 android:layout_centerVertical="true"
                 android:text="TEA"
                 android:fontFamily="@font/montserrat_semibold"
-                android:textColor="@color/black"
+                android:textColor="@color/fontBlack"
                 android:textSize="@dimen/_14sdp"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_toEndOf="@+id/item_image"/>
 
 
@@ -84,13 +84,13 @@
         <EditText
             android:padding="@dimen/_8sdp"
             android:id="@+id/description_ed"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginVertical="@dimen/_10sdp"
+           android:layout_margin="@dimen/_10sdp"
             android:gravity="center"
+            android:textSize="@dimen/_10sdp"
             android:background="@drawable/edittext_bg"
             android:layout_width="match_parent"
             android:textColorHint="@color/grey_font"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_26sdp"
             android:hint="Additional Information"/>
     </LinearLayout>
 

@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.SupportFragment">
 
+
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
@@ -13,10 +14,10 @@
         android:orientation="vertical">
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardElevation="@dimen/_4sdp"
             android:layout_height="@dimen/_120sdp"
-            app:cardCornerRadius="@dimen/_11sdp">
-
+            app:cardCornerRadius="@dimen/_14sdp">
 
             <RelativeLayout
                 android:layout_margin="@dimen/_10sdp"
@@ -69,9 +70,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_4sdp"
+            app:cardCornerRadius="@dimen/_14sdp"
             android:layout_height="wrap_content">
 
             <RelativeLayout
@@ -120,9 +122,11 @@
 
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_4sdp"
+
+            app:cardCornerRadius="@dimen/_14sdp"
             android:layout_height="wrap_content">
 
             <RelativeLayout
@@ -171,9 +175,11 @@
 
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_14sdp"
+            app:cardElevation="@dimen/_4sdp"
+
             android:layout_height="wrap_content">
 
             <RelativeLayout
@@ -245,7 +251,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_3sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_14sdp"
                     app:cardElevation="@dimen/_2sdp">
 
                     <LinearLayout
@@ -284,7 +290,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_3sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_14sdp"
                     app:cardElevation="@dimen/_2sdp">
 
                     <LinearLayout
@@ -327,7 +333,7 @@
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_3sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_14sdp"
                     app:cardElevation="@dimen/_2sdp">
 
                     <LinearLayout
@@ -366,7 +372,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_3sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_14sdp"
                     app:cardElevation="@dimen/_2sdp">
 
                     <LinearLayout

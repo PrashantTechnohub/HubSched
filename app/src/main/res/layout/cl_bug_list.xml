@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardElevation="@dimen/_4sdp"
     android:layout_marginHorizontal="@dimen/_10sdp"
-    android:layout_marginVertical="@dimen/_5sdp"
+    android:layout_marginVertical="@dimen/_2sdp"
     app:cardCornerRadius="@dimen/_14sdp">
 
 
@@ -13,25 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/member_image"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/baseline_account_circle_24" />
 
         <TextView
             android:id="@+id/member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:layout_toEndOf="@id/member_image"
             android:fontFamily="@font/montserrat_semibold"
             android:maxWidth="@dimen/_150sdp"
             android:text="Prashant Deshmukh"
-            android:textColor="@color/black"
+            android:textColor="@color/fontBlack"
             android:textSize="@dimen/_10sdp"
             tools:ignore="TextSizeCheck" />
 
@@ -40,16 +33,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:textStyle="italic"
+            android:textSize="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:text="CLOSED" />
+            android:layout_marginEnd="@dimen/_10sdp" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/action_query_btn"
             android:layout_toStartOf="@id/query_status_text"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_10sdp"
+            android:theme="@style/SwitchCompatThemeOverlay"
             android:layout_marginTop="@dimen/_7sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
@@ -59,9 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/member_name"
-            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_toEndOf="@id/member_image"
             android:fontFamily="@font/montserrat_regular"
             android:maxWidth="@dimen/_150sdp"
             android:text="7/2/2023"
@@ -72,7 +64,7 @@
             android:id="@+id/detail_query"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/member_image"
+            android:layout_below="@id/query_date"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_8sdp"
             android:maxLines="2"

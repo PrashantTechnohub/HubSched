@@ -96,8 +96,7 @@ public class MeetingListActivity extends BaseActivity {
 
                         }
                     }
-                    int total = list.size();
-                    LocalPreference.store_total_meetings(MeetingListActivity.this, String.valueOf(total));
+
 
                     adapter = new MyAdapter<ScheduleMeetingModel>(list, new MyAdapter.OnBindInterface() {
                         @Override

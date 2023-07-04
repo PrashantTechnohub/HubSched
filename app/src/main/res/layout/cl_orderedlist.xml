@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_10sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/_14sdp">
+    app:cardCornerRadius="@dimen/_14sdp"
+    app:cardElevation="@dimen/_4sdp">
 
     <LinearLayout
-        android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/order_no"
             android:layout_width="wrap_content"
@@ -19,32 +20,34 @@
             android:text="#Order: " />
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="@dimen/_70sdp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
-                android:text="Room No  "/>
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Room No  "
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/room_no"
-                android:fontFamily="@font/montserrat_semibold"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
-                android:text="Discusse New Project "/>
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Discusse New Project "
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
             android:orientation="horizontal">
 
             <TextView
@@ -53,76 +56,77 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Ordered By  "
-                android:textColor="@color/black"
+                android:textColor="@color/fontBlack"
                 android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/name"
-                android:fontFamily="@font/montserrat_semibold"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
-                android:text="27 Aug 2023"/>
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="27 Aug 2023"
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/show_order"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
+                android:backgroundTint="@color/fadeBlue"
                 android:text="Show Order"
-                android:textSize="@dimen/_7sdp"
+                android:textColor="@color/purple_700"
+                android:textSize="@dimen/_8sdp"
                 app:cornerRadius="@dimen/_14sdp" />
 
             <LinearLayout
                 android:id="@+id/ad_layout"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/accept_order"
-                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_25sdp"
-                    android:backgroundTint="@color/green"
-
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:backgroundTint="@color/fadeGreen"
+                    android:textColor="@color/green"
                     android:text="Accept"
-                    android:textSize="@dimen/_7sdp"
+                    android:textSize="@dimen/_8sdp"
                     app:cornerRadius="@dimen/_14sdp" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/deny_order"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:text="Diny"
-                    android:backgroundTint="#F44336"
-                    android:textSize="@dimen/_7sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:backgroundTint="@color/fadeRed"
+                    android:textColor="@color/red"                    android:text="Reject"
+                    android:textSize="@dimen/_8sdp"
                     app:cornerRadius="@dimen/_14sdp" />
             </LinearLayout>
+
             <TextView
-                android:visibility="gone"
                 android:id="@+id/order_status"
-                android:layout_marginStart="@dimen/_15sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:text="STATUS"
                 android:textStyle="italic"
-                android:text="STATUS"/>
+                android:visibility="gone" />
 
         </LinearLayout>
 
 
-
-
-
-
-
     </LinearLayout>
-
 
 
 </com.google.android.material.card.MaterialCardView>

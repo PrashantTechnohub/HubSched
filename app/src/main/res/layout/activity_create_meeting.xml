@@ -34,7 +34,7 @@
             android:id="@+id/actionBar"
             android:text="Create Meeting"
             android:textColor="@color/black"
-            android:textSize="@dimen/_16sdp" />
+            android:textSize="@dimen/_14sdp" />
 
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView

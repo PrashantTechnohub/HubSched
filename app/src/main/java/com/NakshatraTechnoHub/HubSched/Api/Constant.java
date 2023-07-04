@@ -9,8 +9,7 @@ public class Constant {
     //public static final String BASE_URL = "http://192.168.0.120:5000/meet"; //Jab Sir nahi rhange
 
     public static final String domain = "http://192.168.0.242:5000";
-//    public static final String domain = "https://3423-182-48-252-114.ngrok-free.app/";
-//    public static final String domain = "http://192.168.0.183:5000";
+    //public static final String domain = "https://3423-182-48-252-114.ngrok-free.app/";
     public static final String BASE_URL = domain + "/meet";
     public static final String CHAT_URL = BASE_URL + "/send_message";
     public static final String GET_CHAT_URL = BASE_URL + "/get_chats/";
@@ -27,6 +26,8 @@ public class Constant {
     public static final String SUPPORT_STATUS_URL = BASE_URL + "/support_status";
     public static final String EMP_LIST_URL = BASE_URL + "/employees";
     public static final String UPDATE_PROFILE_URL = BASE_URL + "/update_profile";
+
+    public static final String UPDATE_EMP_BY_ADMIN_URL = BASE_URL + "/update_employee";
     public static final String EMP_PROFILE_URL = BASE_URL + "/profile";
     public static final String CREATE_ROOM_URL = BASE_URL + "/create_room";
     public static final String CREATE_EMP_URL = BASE_URL + "/create_employee";

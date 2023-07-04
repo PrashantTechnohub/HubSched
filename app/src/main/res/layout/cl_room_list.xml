@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_2sdp"
+    app:cardElevation="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_14sdp">
 
     <LinearLayout
@@ -26,7 +26,7 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Room No  "
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/room_no"
@@ -35,8 +35,8 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="MAK889845"
-                android:textColor="@color/purple_500"
-                android:textSize="@dimen/_11sdp" />
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
 
         </LinearLayout>
@@ -44,7 +44,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:orientation="horizontal">
 
             <TextView
@@ -53,7 +53,7 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Name  "
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/room_name"
@@ -62,8 +62,8 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Prashant Deshmukh"
-                android:textColor="@color/purple_500"
-                android:textSize="@dimen/_11sdp" />
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
 
         </LinearLayout>
@@ -71,7 +71,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:orientation="horizontal">
 
             <TextView
@@ -80,7 +80,7 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Floor  "
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/room_floor"
@@ -89,8 +89,8 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Prashant Deshmukh"
-                android:textColor="@color/purple_500"
-                android:textSize="@dimen/_11sdp" />
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
 
         </LinearLayout>
@@ -98,7 +98,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:orientation="horizontal">
 
             <TextView
@@ -107,7 +107,7 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Seats"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/room_seats"
@@ -116,8 +116,8 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Android Developer"
-                android:textColor="@color/purple_500"
-                android:textSize="@dimen/_11sdp" />
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
 
         </LinearLayout>
@@ -125,7 +125,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:orientation="horizontal">
 
             <TextView
@@ -134,7 +134,7 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Facilities"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/room_facilities"
@@ -144,8 +144,8 @@
                 android:fontFamily="@font/montserrat_semibold"
                 android:singleLine="true"
                 android:text="Android Developer"
-                android:textColor="@color/purple_500"
-                android:textSize="@dimen/_11sdp" />
+                android:textColor="@color/fontBlack"
+                android:textSize="@dimen/_10sdp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -218,14 +218,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/schedule_meeting_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:backgroundTint="#1F9324"
                 android:text="Schedule Meeting"
+                android:backgroundTint="@color/fadeGreen"
                 android:textSize="@dimen/_7sdp"
+                android:textColor="@color/green"
                 app:cornerRadius="@dimen/_14sdp" />
 
 
@@ -234,8 +235,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:backgroundTint="#F44336"
+                android:backgroundTint="#FAE1E1"
                 android:text="Remove Room"
+                android:textColor="@color/red"
                 android:textSize="@dimen/_7sdp"
                 app:cornerRadius="@dimen/_14sdp" />
 

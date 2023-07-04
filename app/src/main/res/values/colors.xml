@@ -9,7 +9,11 @@
     <color name="teal_700">#BF3D33</color>
     <color name="red">#E80000</color>
     <color name="green">#419E45</color>
+    <color name="fadeGreen">#E5FAE1</color>
+    <color name="fadeRed">#FAE1E1</color>
+    <color name="fadeBlue">#DCE8FF</color>
     <color name="black">#FF000000</color>
+    <color name="fontBlack">#B9000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orderedColor">#EEFAFF</color>
     <color name="background_page">#FFFFFF</color>

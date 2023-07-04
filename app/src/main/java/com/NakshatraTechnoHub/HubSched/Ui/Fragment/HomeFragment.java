@@ -1,28 +1,39 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ImageSliderAdapter;
 import com.NakshatraTechnoHub.HubSched.Adapters.UpComingAdapter;
+import com.NakshatraTechnoHub.HubSched.Models.ContactModel;
 import com.NakshatraTechnoHub.HubSched.Models.FilteredMeetingModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
 import com.android.volley.VolleyError;
@@ -41,6 +52,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeFragment extends Fragment {
     ArrayList<FilteredMeetingModel> filteredMeetings = new ArrayList<>();
 
@@ -53,6 +66,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Bitmap> bitmapList = new ArrayList<>();
     private ImageSliderAdapter adapter;
     UpComingAdapter UpAdapter;
+    String type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +75,7 @@ public class HomeFragment extends Fragment {
 
         toolbar = getActivity().findViewById(R.id.topAppBar);
         navigationView = getActivity().findViewById(R.id.navigation_view);
-        String type = LocalPreference.getType(getContext());
+        type = LocalPreference.getType(getContext());
 
         UpAdapter = new UpComingAdapter(filteredMeetings);
 
@@ -73,21 +87,19 @@ public class HomeFragment extends Fragment {
                 bind.showMore.setText("Hide");
 
                 UpAdapter.showAllItems();
-                // Scroll to the last item in the NestedScrollView
                 new Handler().postDelayed(() -> {
-                    bind.srollView.fullScroll(View.FOCUS_DOWN);
+                    bind.scrollView.fullScroll(View.FOCUS_DOWN);
                 }, 200);
             }
         });
 
 
-
-
         bind.upcomingMeetingRecyclerview.setNestedScrollingEnabled(false);
-        bind.refresh.setDistanceToTriggerSync(700);
+        bind.refresh.setDistanceToTriggerSync(300);
         getBanners();
         autoScrollViewPager();
         upComingMeetings();
+        readContacts();
 
         if (type.equals("admin")) {
             adminFunction();
@@ -113,12 +125,66 @@ public class HomeFragment extends Fragment {
         });
 
 
-
-
-
         return rootView;
     }
 
+    private void readContacts() {
+        List<ContactModel> contactList = new ArrayList<>();
+
+        ContentResolver contentResolver =requireContext().getContentResolver();
+        Cursor cursor = contentResolver.query(
+                ContactsContract.Contacts.CONTENT_URI,
+                null,
+                null,
+                null,
+                ContactsContract.Contacts.DISPLAY_NAME + " ASC"
+        );
+
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                @SuppressLint("Range")  String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                @SuppressLint("Range")  String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI));
+
+                contactList.add(new ContactModel(id, name, photoUri));
+            }
+            cursor.close();
+        }
+
+        MyAdapter contactAdapter = new MyAdapter<ContactModel>(contactList, new MyAdapter.OnBindInterface() {
+            @Override
+            public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+
+                ContactModel contact = contactList.get(position);
+
+                TextView name = holder.itemView.findViewById(R.id.contact_name);
+                ImageView image = holder.itemView.findViewById(R.id.contact_img);
+
+                name.setText(contact.getName());
+
+                if (!TextUtils.isEmpty(contact.getPhotoUri())) {
+                    Drawable photo = Drawable.createFromPath(contact.getPhotoUri());
+                    image.setImageDrawable(photo);
+                } else {
+                    // Set the first letter of the contact name as a placeholder image
+                    char firstLetter = contact.getName().charAt(0);
+                    image.setImageResource(getDrawableId(firstLetter));
+                }
+            }
+
+            private int getDrawableId(char letter) {
+                return requireContext().getResources().getIdentifier("ic_" + Character.toLowerCase(letter), "drawable", requireContext().getPackageName());
+            }
+
+
+        },R.layout.cl_contact);
+
+        bind.inviteMemberRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        bind.inviteMemberRecyclerview.setAdapter(contactAdapter);
+
+
+
+    }
     private void upComingMeetings() {
         if (isAdded()) {
             Context context = requireContext();
@@ -177,15 +243,13 @@ public class HomeFragment extends Fragment {
                         bind.upcomingMeetingRecyclerview.setAdapter(UpAdapter);
 
 
-
                     } else {
 
                         bind.upcomingMeetingRecyclerview.setVisibility(View.GONE);
                         bind.textUp.setVisibility(View.GONE);
+                        bind.showMore.setVisibility(View.GONE);
 
                     }
-
-
 
 
                 }
@@ -210,10 +274,14 @@ public class HomeFragment extends Fragment {
         handler.postDelayed(() -> {
             // Check if the imageSlider is null or the adapter is not set
             if (bind.imageSlider != null && bind.imageSlider.getAdapter() != null) {
-                bind.imageSlider.setCurrentItem((bind.imageSlider.getCurrentItem() + 1) % adapter.getCount());
+                int adapterCount = adapter.getCount();
+                if (adapterCount != 0) {
+                    bind.imageSlider.setCurrentItem((bind.imageSlider.getCurrentItem() + 1) % adapterCount);
+                }
             }
             autoScrollViewPager();
         }, 2500); // Auto-scroll interval in milliseconds
+
     }
 
 
@@ -223,37 +291,46 @@ public class HomeFragment extends Fragment {
             new Receiver(context, new Receiver.ApiListener() {
                 @Override
                 public void onResponse(JSONObject object) {
-                    try {
-                        List<String> containList = new ArrayList<>();
+                    List<String> containList = new ArrayList<>();
 
-                        JSONArray banners = object.getJSONArray("banners");
-                        for (int i = 0; i < banners.length(); i++) {
-                            JSONObject banner = banners.getJSONObject(i);
+                    int totalMeeting = object.optInt("meetingSize");
+                    int totalEmployee = object.optInt("members");
+                    int totalRoom = object.optInt("roomSize");
+                    int totalTicket = object.optInt("ticketSize");
 
-                            String contain = banner.getString("contain");
-                            containList.add(contain);
+                    // Set total integers in the text view
+                    bind.totalRooms.setText(String.valueOf(totalRoom));
+                    bind.totalEmployees.setText(String.valueOf(totalEmployee));
+                    bind.totalMeetings.setText(String.valueOf(totalMeeting));
+                    bind.totalBugs.setText(String.valueOf(totalTicket));
 
+                    JSONObject bannerList = object.optJSONObject("bannerList");
+                    if (bannerList != null) {
+                        JSONArray banners = bannerList.optJSONArray("banners");
+                        if (banners != null) {
+                            for (int i = 0; i < banners.length(); i++) {
+                                JSONObject banner = banners.optJSONObject(i);
+                                if (banner != null) {
+                                    String contain = banner.optString("contain");
+                                    containList.add(contain);
+                                }
+                            }
                         }
-
-
-                        bitmapList.clear();
-                        bitmapList = decodeBase64ToBitmapList(containList);
-
-                        adapter = new ImageSliderAdapter(bitmapList, context);
-                        bind.imageSlider.setAdapter(adapter);
-
-
-                        adapter.notifyDataSetChanged();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
 
+
+
+                    bitmapList.clear();
+                    bitmapList = decodeBase64ToBitmapList(containList);
+
+                    adapter = new ImageSliderAdapter(bitmapList, context);
+                    bind.imageSlider.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onError(VolleyError error) {
-                    // Handle error here
+                    ErrorHandler.handleVolleyError(context, error);
                 }
             }).banner_list(new JSONObject());
         }
@@ -278,10 +355,6 @@ public class HomeFragment extends Fragment {
 
     public void adminFunction() {
         toolbar.setTitle("Admin Dashboard");
-
-        bind.totalEmployees.setText(LocalPreference.get_total_employees(requireContext()));
-        bind.totalMeetings.setText(LocalPreference.get_total_meetings(requireContext()));
-        bind.totalRooms.setText(LocalPreference.get_total_rooms(requireContext()));
 
         if (bind.refresh.isRefreshing()) {
             bind.refresh.setRefreshing(false);

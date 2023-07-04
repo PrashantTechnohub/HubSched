@@ -69,30 +69,36 @@ public class SupportFragment extends Fragment {
 
                         String getQuery = query.getText().toString();
 
-                        JSONObject object = new JSONObject();
-                        try {
-                            object.put("description", getQuery);
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-                        new Receiver(context, new Receiver.ApiListener() {
-                            @Override
-                            public void onResponse(JSONObject object) {
-                                try {
-                                    String msg = object.getString("message");
-                                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
+                        if (getQuery.isEmpty()){
+                            Toast.makeText(context, "Please write issue !", Toast.LENGTH_SHORT).show();
+                        }else{
 
-                                } catch (JSONException e) {
-                                    ErrorHandler.handleException(context, e);
+                            JSONObject object = new JSONObject();
+                            try {
+                                object.put("description", getQuery);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                            new Receiver(context, new Receiver.ApiListener() {
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        String msg = object.getString("message");
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+
+                                    } catch (JSONException e) {
+                                        ErrorHandler.handleException(context, e);
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onError(VolleyError error) {
-                                ErrorHandler.handleVolleyError(context, error);
-                            }
-                        }).post_ticket(object);
+                                @Override
+                                public void onError(VolleyError error) {
+                                    ErrorHandler.handleVolleyError(context, error);
+                                }
+                            }).post_ticket(object);
+
+                        }
 
                     }
 

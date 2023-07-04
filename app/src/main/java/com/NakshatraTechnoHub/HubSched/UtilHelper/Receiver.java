@@ -263,6 +263,10 @@ public class Receiver {
         getdata(Request.Method.PUT, Constant.withToken(UPDATE_PROFILE_URL, context), params);
     }
 
+    public void update_employee(JSONObject params ) {
+        getdata(Request.Method.PUT, Constant.withToken(UPDATE_PROFILE_URL, context), params);
+    }
+
     public void add_emp(JSONObject params ) {
         getdata(Request.Method.POST, Constant.withToken(CREATE_EMP_URL, context), params);
     }

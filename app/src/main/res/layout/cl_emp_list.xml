@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_7sdp"
-    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_4sdp"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    app:cardElevation="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_14sdp">
 
     <RelativeLayout
@@ -36,8 +36,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Emp ID  "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/fontBlack"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/emp_id"
@@ -45,15 +45,15 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="MAK889845"
-                        android:textColor="@color/purple_500"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/fontBlack"
+                        android:textSize="@dimen/_10sdp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -61,8 +61,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Name  "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/fontBlack"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/emp_name"
@@ -70,8 +70,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="Prashant Deshmukh"
-                        android:textColor="@color/purple_500"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/fontBlack"
+                        android:textSize="@dimen/_10sdp" />
 
 
                 </LinearLayout>
@@ -79,7 +79,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -87,8 +87,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Post  "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/fontBlack"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/emp_post"
@@ -96,8 +96,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="Android Developer"
-                        android:textColor="@color/purple_500"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/fontBlack"
+                        android:textSize="@dimen/_10sdp" />
 
 
                 </LinearLayout>
@@ -106,10 +106,9 @@
 
                 <View
                     android:layout_width="@dimen/_270sdp"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="#DFDFDF" />
+                    android:layout_height="1dp"
+                   android:layout_marginVertical="@dimen/_5sdp"
+                    android:background="@color/grey" />
 
 
                 <LinearLayout
@@ -125,6 +124,7 @@
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:text="BLOCK"
+                        android:theme="@style/SwitchCompatThemeOverlay"
                         android:textSize="@dimen/_10sdp"
                         />
 
@@ -133,6 +133,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_25sdp"
                         android:text="Edit Profile"
+                        android:textColor="@color/purple_700"
+                        android:backgroundTint="@color/fadeBlue"
                         android:textSize="@dimen/_7sdp"
                         app:cornerRadius="@dimen/_14sdp" />
 
@@ -140,8 +142,10 @@
                         android:id="@+id/remove_emp_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_25sdp"
+                        android:textColor="@color/red"
+
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:backgroundTint="#F44336"
+                        android:backgroundTint="@color/fadeRed"
                         android:text="Remove"
                         android:textSize="@dimen/_7sdp"
                         app:cornerRadius="@dimen/_14sdp" />

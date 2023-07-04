@@ -38,14 +38,15 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
+
                 android:text="Employee List"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <ImageView
                 android:id="@+id/search_emp"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_toStartOf="@id/add_emp"
@@ -53,8 +54,8 @@
 
             <ImageView
                 android:id="@+id/add_emp"
-                android:layout_width="@dimen/_23sdp"
-                android:layout_height="@dimen/_23sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/_8sdp"

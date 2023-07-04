@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -122,12 +123,18 @@ public class QueriesActivity extends AppCompatActivity {
                                 description.setText(model.getDescription());
                                 status.setText(model.getStatus());
 
+
                                 if (model.getStatus().toUpperCase().equals("OPENED")) {
                                     action.setChecked(true);
-                                } else {
+                                    status.setText("OPENED");
+                                    status.setTextColor(ContextCompat.getColor(QueriesActivity.this, R.color.red));
+                                    status.setBackgroundResource(R.drawable.red_declined_bg);
+                                }else{
+                                    status.setText("ClOSED");
                                     action.setChecked(false);
+                                    status.setTextColor(ContextCompat.getColor(QueriesActivity.this, R.color.green));
+                                    status.setBackgroundResource(R.drawable.green_accpeted_bg);
                                 }
-
                                 registerListener(action, model);
 
 

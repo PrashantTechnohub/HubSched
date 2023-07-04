@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -172,14 +173,18 @@ public class MeetingFragment extends Fragment{
                                     llp.setVisibility(View.GONE);
                                     llp2.setVisibility(View.VISIBLE);
                                     statusView.setVisibility(View.VISIBLE);
-                                    statusView.setText("Accepted");
+                                    statusView.setText("ACCEPTED");
+                                    statusView.setTextColor(ContextCompat.getColor(context, R.color.green));
+                                    statusView.setBackgroundResource(R.drawable.green_accpeted_bg);
                                     fetchMeetingTimeStatus(list.get(position).getDate() + "", list.get(position).getStartTime() + "", list.get(position).getEndTime() + "", countdownTimerView, joinBtn, context);
 
                                 }
                                 if (list.get(position).getAcceptance_status().equals("declined")) {
                                     llp.setVisibility(View.GONE);
                                     statusView.setVisibility(View.VISIBLE);
-                                    statusView.setText("Declined");
+                                    statusView.setText("DECLINED");
+                                    statusView.setTextColor(ContextCompat.getColor(context, R.color.red));
+                                    statusView.setBackgroundResource(R.drawable.red_declined_bg);
 
                                 }
                                 if (list.get(position).getAcceptance_status().equals("pending")) {
