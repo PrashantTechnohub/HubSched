@@ -162,15 +162,16 @@ public class EmployeeListActivity extends BaseActivity {
 
                                 adapter = new EmpListAdapter(getApplicationContext(), list);
                                 bind.empListRecyclerView.setAdapter(adapter);
-                                bind.empListRecyclerView.invalidate();
-                                bind.empListRecyclerView.removeAllViews();
+
 
 
                             } else {
+                                bind.empListRecyclerView.setVisibility(View.GONE);
                                 bind.pd.setVisibility(View.GONE);
                                 bind.noResult.setVisibility(View.VISIBLE);
                             }
                         } else {
+                            bind.empListRecyclerView.setVisibility(View.GONE);
                             bind.pd.setVisibility(View.GONE);
                             bind.noResult.setVisibility(View.VISIBLE);
                         }
@@ -179,6 +180,7 @@ public class EmployeeListActivity extends BaseActivity {
                         ErrorHandler.handleException(getApplicationContext(), e);
                     }
                 } else {
+                    bind.empListRecyclerView.setVisibility(View.GONE);
                     bind.pd.setVisibility(View.GONE);
                     bind.noResult.setVisibility(View.VISIBLE);
                 }

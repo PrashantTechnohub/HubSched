@@ -1,44 +1,47 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.ImageSliderAdapter;
 import com.NakshatraTechnoHub.HubSched.Adapters.UpComingAdapter;
-import com.NakshatraTechnoHub.HubSched.Models.ContactModel;
+import com.NakshatraTechnoHub.HubSched.Api.Constant;
+import com.NakshatraTechnoHub.HubSched.Api.VolleySingleton;
 import com.NakshatraTechnoHub.HubSched.Models.FilteredMeetingModel;
 import com.NakshatraTechnoHub.HubSched.Models.RoomListModel;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.InMeetingActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.NakshatraTechnoHub.HubSched.databinding.FragmentHomeBinding;
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,14 +54,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
     ArrayList<FilteredMeetingModel> filteredMeetings = new ArrayList<>();
 
 
-    private ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
+    ScheduleMeetingModel ongoingMeeting = null;
+    ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
     private ArrayList<RoomListModel> roomList = new ArrayList<>();
     private FragmentHomeBinding bind;
     private NavigationView navigationView;
@@ -77,8 +80,21 @@ public class HomeFragment extends Fragment {
         navigationView = getActivity().findViewById(R.id.navigation_view);
         type = LocalPreference.getType(getContext());
 
+
+        bind.rrl1.setVisibility(View.VISIBLE);
+        bind.invitationLayout.setVisibility(View.VISIBLE);
+
         UpAdapter = new UpComingAdapter(filteredMeetings);
 
+        bind.announceText.setSelected(true);
+
+        boolean is7 = UpAdapter.showAllItems();
+
+        if (is7) {
+            bind.showMore.setVisibility(View.VISIBLE);
+        } else {
+            bind.showMore.setVisibility(View.GONE);
+        }
         bind.showMore.setOnClickListener(v -> {
             if (UpAdapter.areAllItemsVisible()) {
                 bind.showMore.setText("Show More");
@@ -95,8 +111,8 @@ public class HomeFragment extends Fragment {
 
 
         bind.upcomingMeetingRecyclerview.setNestedScrollingEnabled(false);
-        bind.refresh.setDistanceToTriggerSync(300);
         getBanners();
+        getInvitationList();
         autoScrollViewPager();
         upComingMeetings();
 
@@ -108,24 +124,241 @@ public class HomeFragment extends Fragment {
             organizerFunction();
         }
 
-        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getBanners();
-                autoScrollViewPager();
-                upComingMeetings();
 
-                if (type.equals("admin")) {
-                    adminFunction();
-                } else if (type.equals("employee")) {
-                    employeeFunction();
+        return rootView;
+    }
+
+
+    private void getInvitationList() {
+        if (isAdded()) {
+            // Fragment is added to the activity
+            // Access the context or perform other operations that require the fragment to be attached
+            Context context = requireContext();
+            // Rest of your code here
+
+            new Receiver(context, new Receiver.ListListener() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    ongoingMeeting = null;
+                    list.clear();
+                    if (response != null && response.length() > 0) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject object = response.getJSONObject(i);
+                                ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
+
+                                if (!model.getAccepted().contains(Integer.parseInt(LocalPreference.get_Id(context))) && !model.getDeclined().contains(Integer.parseInt(LocalPreference.get_Id(context)))) {
+                                    list.add(model);
+                                }
+                                Date now = new Date();
+                                Date meetDate = getDateFromString(model.getDate() + " " + model.getStartTime());
+                                Date endDate = getDateFromString(model.getDate() + " " + model.getEndTime());
+                                if (meetDate != null && model.getAccepted().contains(Integer.parseInt(LocalPreference.get_Id(context))) && now.after(meetDate) && !now.after(endDate)) {
+                                    ongoingMeeting = model;
+                                }
+
+
+                            } catch (JSONException e) {
+                                ErrorHandler.handleException(requireContext(), e);
+
+                            }
+                        }
+
+                        if (list.size() == 0)
+                            bind.invitationLayout.setVisibility(View.GONE);
+
+                    } else {
+                        bind.invitationLayout.setVisibility(View.GONE);
+                    }
+
+                    if (ongoingMeeting != null) {
+                        bind.ongoingLayout.setVisibility(View.VISIBLE);
+                        bind.upSubject.setText(ongoingMeeting.getSubject());
+                        bind.gotoOngoingMeeting.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                generateQrCode(ongoingMeeting.get_id() + "", ongoingMeeting.getCompany_id() + "", ongoingMeeting.getSubject(), ongoingMeeting.getStartTime(), ongoingMeeting.getEndTime(), ongoingMeeting.getDate());
+                            }
+                        });
+                    } else {
+                        bind.ongoingLayout.setVisibility(View.GONE);
+                        bind.gotoOngoingMeeting.setOnClickListener(null);
+                    }
+                    bind.invitationMeetingRecyclerview.setAdapter(new MyAdapter<ScheduleMeetingModel>(list, new MyAdapter.OnBindInterface() {
+                        @Override
+                        public void onBindHolder(MyAdapter.MyHolder holder, int position) {
+
+                            TextView orgName = holder.itemView.findViewById(R.id.meet_orgName);
+                            TextView meetSubject = holder.itemView.findViewById(R.id.meet_subject);
+                            TextView meetTime = holder.itemView.findViewById(R.id.meet_time);
+                            MaterialButton denyBtn = holder.itemView.findViewById(R.id.meet_deny_btn);
+                            MaterialButton acptBtn = holder.itemView.findViewById(R.id.meet_accept_btn);
+
+
+                            String inputDate = list.get(position).getDate();
+                            SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+                            SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+
+                            try {
+                                Date date = inputFormat.parse(inputDate);
+                                String formattedDate = outputFormat.format(date);
+                                orgName.setText(list.get(position).getOrganiser_id() + "");
+                                meetSubject.setText(list.get(position).getSubject());
+                                meetTime.setText(list.get(position).getStartTime() + " - " + list.get(position).getEndTime() + " " + list.get(position).getDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            acptBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    acceptDenied(list.get(position).get_id(), true, position);
+
+                                }
+                            });
+                            denyBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    acceptDenied(list.get(position).get_id(), false, position);
+
+                                }
+                            });
+
+
+                        }
+                    }, R.layout.cl_meeting_invitation));
+
+
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+
+
+                    ErrorHandler.handleVolleyError(getActivity(), error);
+                }
+            }).getMeetingList();
+
+        }
+
+
+    }
+
+
+    Date getDateFromString(String dateString) {
+        SimpleDateFormat format = new SimpleDateFormat("M/d/yyyy hh:mm a", Locale.getDefault());
+        format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata")); // Set the time zone to Kolkata
+        try {
+            Date endDate = format.parse(dateString);
+            return endDate;
+        } catch (ParseException e) {
+            ErrorHandler.handleException(requireContext(), e);
+            return null;
+        }
+
+    }
+
+    private void acceptDenied(int meetId, Boolean ready, int pos) {
+        JSONObject params = new JSONObject();
+
+        try {
+            params.put("meetId", meetId);
+            params.put("ready", ready);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        new Receiver(requireContext(), new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String msg = response.getString("message");
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    list.remove(pos);
+                    bind.invitationMeetingRecyclerview.getAdapter().notifyItemRemoved(pos);
+
+                    if (pd.isDialogShown()) {
+                        pd.mDismiss();
+                    }
+                } catch (JSONException e) {
+                    ErrorHandler.handleException(getContext(), e);
+                    pd.mDismiss();
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                pd.mDismiss();
+                ErrorHandler.handleVolleyError(requireActivity(), error);
+
+            }
+        }).accept_denied_meeting(params);
+
+    }
+
+
+    private void generateQrCode(String getMeetId, String companyId, String subject, String startTime, String endTime, String date) {
+
+        JSONObject params = new JSONObject();
+
+        try {
+            params.put("meetId", Integer.parseInt(getMeetId));
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
+        Context context = requireContext();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.GENERATE_QR_CODE_URL, context), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Intent intent = new Intent(context, InMeetingActivity.class);
+                intent.putExtra("response", response.toString());
+                intent.putExtra("meetId", getMeetId);
+                intent.putExtra("companyId", companyId);
+                intent.putExtra("subject", subject);
+                intent.putExtra("startTime", startTime);
+                intent.putExtra("endTime", date + " " + endTime);
+                LocalPreference.store_meetId(context, getMeetId);
+                context.startActivity(intent);
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+                try {
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 500) {
+
+                            String errorString = new String(error.networkResponse.data);
+                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+
+                        Toast.makeText(context, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+
+                    Log.e("CreateEMP", "onErrorResponse: ", e);
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
 
-        return rootView;
+        VolleySingleton.getInstance(context).addToRequestQueue(request);
+
+
     }
+
 
     private void upComingMeetings() {
         if (isAdded()) {
@@ -153,8 +386,8 @@ public class HomeFragment extends Fragment {
                             }
 
                             // Check if "date" is greater than or equal to the current date
-                            String dateString = meeting.getString("date");
-                            SimpleDateFormat format = new SimpleDateFormat("M/dd/yyyy", Locale.US);
+                            String dateString = meeting.getString("date") + " " + meeting.getString("startTime");
+                            SimpleDateFormat format = new SimpleDateFormat("M/d/yyyy hh:mm a", Locale.US);
                             Date meetingDate = format.parse(dateString);
 
                             if (containsId && meetingDate != null && meetingDate.compareTo(currentDate.getTime()) >= 0) {
@@ -178,18 +411,14 @@ public class HomeFragment extends Fragment {
                     // Use the filteredMeetings list as needed
                     if (filteredMeetings != null && !filteredMeetings.isEmpty()) {
 
-                        // Set the number of spans (2 in your case)
-
                         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
                         bind.upcomingMeetingRecyclerview.setLayoutManager(layoutManager);
                         bind.upcomingMeetingRecyclerview.setAdapter(UpAdapter);
 
 
                     } else {
-
-                        bind.upcomingMeetingRecyclerview.setVisibility(View.GONE);
-                        bind.textUp.setVisibility(View.GONE);
-                        bind.showMore.setVisibility(View.GONE);
+                        filteredMeetings.clear();
+                        bind.rrl1.setVisibility(View.GONE);
 
                     }
 
@@ -261,7 +490,6 @@ public class HomeFragment extends Fragment {
                     }
 
 
-
                     bitmapList.clear();
                     bitmapList = decodeBase64ToBitmapList(containList);
 
@@ -297,30 +525,41 @@ public class HomeFragment extends Fragment {
 
     public void adminFunction() {
         toolbar.setTitle("Admin Dashboard");
+        bind.adminViewLayout.setVisibility(View.VISIBLE);
 
-        if (bind.refresh.isRefreshing()) {
-            bind.refresh.setRefreshing(false);
-            Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void organizerFunction() {
         bind.adminViewLayout.setVisibility(View.GONE);
+
+        Menu menu = navigationView.getMenu();
+        MenuItem empListMenu = menu.findItem(R.id.employeeList);
+        MenuItem content = menu.findItem(R.id.editContent);
+        empListMenu.setVisible(false);
+        content.setVisible(false);
+
         toolbar.setTitle("Organizer Dashboard");
-        toolbar.setNavigationIcon(null);
+
     }
 
     public void employeeFunction() {
         toolbar.setTitle("Employee Dashboard");
-        toolbar.setNavigationIcon(null);
-        navigationView.setVisibility(View.GONE);
-        bind.adminViewLayout.setVisibility(View.GONE);
+        Menu menu = navigationView.getMenu();
+        MenuItem empListMenu = menu.findItem(R.id.employeeList);
+        MenuItem meetingListMenu = menu.findItem(R.id.meetingList);
+        MenuItem roomListMenu = menu.findItem(R.id.hallManagement);
+        MenuItem content = menu.findItem(R.id.editContent);
+        meetingListMenu.setVisible(false);
+        roomListMenu.setVisible(false);
+        empListMenu.setVisible(false);
+        content.setVisible(false);
 
-        bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Do something for employee refresh
-            }
-        });
+        bind.adminViewLayout.setVisibility(View.GONE);
+        navigationView.setVisibility(View.GONE);
+        bind.rrl1.setVisibility(View.VISIBLE);
+        bind.invitationLayout.setVisibility(View.VISIBLE);
+        getInvitationList();
+        upComingMeetings();
+
     }
 }

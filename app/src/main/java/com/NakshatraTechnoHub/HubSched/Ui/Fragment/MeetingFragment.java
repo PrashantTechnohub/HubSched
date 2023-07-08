@@ -109,24 +109,21 @@ public class MeetingFragment extends Fragment{
                                 JSONObject object = response.getJSONObject(i);
                                 ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
 
-
-                                list.add(model);
-                                bind.noResult.setVisibility(View.GONE);
-                                bind.pd.setVisibility(View.GONE);
-                                if (bind.refresh.isRefreshing()) {
-                                    bind.refresh.setRefreshing(false);
-                                    Toast.makeText(getContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                                // Check if the meeting time has expired
+                                if (hasMeetingExpired(model.getDate(), model.getEndTime())) {
+                                    list.add(model);
                                 }
 
+                                // Rest of your code
                             } catch (JSONException e) {
                                 bind.pd.setVisibility(View.GONE);
                                 ErrorHandler.handleException(requireContext(), e);
-
                             }
                         }
 
 
                     }else {
+                        list.clear();
                         bind.pd.setVisibility(View.GONE);
                         bind.noResult.setVisibility(View.VISIBLE);
                     }
@@ -216,8 +213,9 @@ public class MeetingFragment extends Fragment{
                                     String companyId =String.valueOf(list.get(position).getCompany_id());
                                     String subject =String.valueOf(list.get(position).getSubject());
                                     String startTime =String.valueOf(list.get(position).getStartTime());
-                                    String endTime =String.valueOf(list.get(position).getEndTime());
-                                    generateQrCode(meetId, companyId, subject, startTime, endTime);
+                                    String endTime =String.valueOf( list.get(position).getEndTime());
+                                    String date =String.valueOf( list.get(position).getDate());
+                                    generateQrCode(meetId, companyId, subject, startTime, endTime, date);
                                 }
                             });
 
@@ -246,6 +244,37 @@ public class MeetingFragment extends Fragment{
 
 
 
+    }
+    private boolean hasMeetingExpired(String date, String endTime) {
+        String DATE_FORMAT = "M/d/yyyy";
+        String TIME_FORMAT = "hh:mm a";
+
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+        DateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT, Locale.getDefault());
+
+        try {
+            // Parse the meeting date
+            Date meetingDate = dateFormat.parse(date);
+
+            // Get the current date and time
+            Calendar currentDateTime = Calendar.getInstance();
+
+            // Get the meeting end time
+            Date endDateTime = timeFormat.parse(endTime);
+
+            // Set the meeting end time with the meeting date
+            Calendar meetingEndTime = Calendar.getInstance();
+            meetingEndTime.setTime(meetingDate);
+            meetingEndTime.set(Calendar.HOUR_OF_DAY, endDateTime.getHours());
+            meetingEndTime.set(Calendar.MINUTE, endDateTime.getMinutes());
+
+            // Check if the current date and time is after the meeting end time
+            return currentDateTime.after(meetingEndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     private void acceptDenied(int meetId, Boolean ready, int pos) {
@@ -286,7 +315,7 @@ public class MeetingFragment extends Fragment{
 
     }
 
-    private Bitmap generateQrCode(String getMeetId, String companyId, String subject, String startTime, String endTime) {
+    private Bitmap generateQrCode(String getMeetId, String companyId, String subject, String startTime, String endTime, String date) {
 
         JSONObject params = new JSONObject();
 
@@ -307,10 +336,9 @@ public class MeetingFragment extends Fragment{
                 intent.putExtra("companyId", companyId);
                 intent.putExtra("subject", subject);
                 intent.putExtra("startTime", startTime);
-                intent.putExtra("endTime", endTime);
+                intent.putExtra("endTime", date +" "+endTime);
                 LocalPreference.store_meetId(context, getMeetId);
                 context.startActivity(intent);
-
             }
 
 
@@ -411,7 +439,7 @@ public class MeetingFragment extends Fragment{
                 countdownTimerView.setText(remainingTimeText);
             }
             countdownTimerView.setTextColor(Color.BLUE); // Set text color to blue for upcoming meetings
-            if (minutes >= 0 && minutes <= 15) {
+            if (minutes == 0) {
                 joinBtn.setVisibility(View.VISIBLE); // Set join button visibility to VISIBLE
             }
         } else if (currentDateTime.after(meetingEndTime)) {

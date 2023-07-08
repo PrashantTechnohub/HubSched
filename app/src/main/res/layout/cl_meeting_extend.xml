@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/background_page">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+        <SeekBar
+            android:id="@+id/seek_bar_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/extended_meet_time"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:max="5"
+            android:thumb="@drawable/seek_bar_thumb"
+            android:progress="0"
+            android:progressTint="@color/purple_700"
+            android:thumbOffset="8dp" />
+
+
+        <TextView
+            android:id="@+id/extended_meet_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center"
+            android:text="Extended MEETING TIME" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seek_bar_time"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_extend_meeting"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/fadeRed"
+                android:text="Cancel"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_8sdp"
+                app:cornerRadius="@dimen/_14sdp" />
+
+
+            <View
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:id="@+id/check_extend"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/fadeBlue"
+                android:text="check"
+                android:textColor="@color/purple_700"
+                android:textSize="@dimen/_8sdp"
+                app:cornerRadius="@dimen/_14sdp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

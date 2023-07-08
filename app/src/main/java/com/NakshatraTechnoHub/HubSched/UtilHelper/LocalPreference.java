@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.NakshatraTechnoHub.HubSched.Api.Constant;
@@ -16,6 +17,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class LocalPreference {
 
@@ -32,6 +38,36 @@ public class LocalPreference {
         editor.putString("_id", id);
         editor.commit();
 
+    }
+
+
+    public static void storeNotification(Context context, String title, String detail) {
+        sharedPref = context.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        Set<String> notificationSet = sharedPref.getStringSet("notifications", new HashSet<>());
+        String notification = title + "|" + detail;
+        notificationSet.add(notification);
+        editor = sharedPref.edit();
+        editor.putStringSet("notifications", notificationSet);
+        editor.apply();
+    }
+
+
+    public static List<Pair<String, String>> getNotifications(Context context) {
+        sharedPref = context.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        Set<String> notificationSet = sharedPref.getStringSet("notifications", new HashSet<>());
+
+        List<Pair<String, String>> notificationList = new ArrayList<>();
+        for (String notification : notificationSet) {
+            String[] parts = notification.split("\\|");
+            if (parts.length == 2) {
+                String title = parts[0];
+                String detail = parts[1];
+                Pair<String, String> pair = new Pair<>(title, detail);
+                notificationList.add(pair);
+            }
+        }
+
+        return notificationList;
     }
 
 

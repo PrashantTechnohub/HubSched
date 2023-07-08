@@ -1,51 +1,51 @@
-package com.NakshatraTechnoHub.HubSched.Ui.Fragment;
+package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import static android.app.Activity.RESULT_OK;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.NakshatraTechnoHub.HubSched.R;
-import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.CreateEmployeeActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
-import com.NakshatraTechnoHub.HubSched.databinding.FragmentProfileBinding;
+;
+import com.NakshatraTechnoHub.HubSched.databinding.ActivityProfileBinding;
 import com.android.volley.VolleyError;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ProfileFragment extends Fragment {
-
-    FragmentProfileBinding bind;
-
+public class ProfileActivity extends AppCompatActivity {
+    
+    ActivityProfileBinding bind;
     String _id, name, empId, position, gender, email, mobile, password, userType;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bind = ActivityProfileBinding.inflate(getLayoutInflater());
+        View view = bind.getRoot();
+        setContentView(view);
+        
 
-        bind = FragmentProfileBinding.inflate(inflater);
-        MaterialToolbar toolbar = getActivity().findViewById(R.id.topAppBar);
-        toolbar.setTitle("Account");
-
-
+        bind.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         bind.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -54,8 +54,8 @@ public class ProfileFragment extends Fragment {
         });
         bind.logOutBtn.setOnClickListener(v -> {
 
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialog_Rounded);
-            LayoutInflater inflater1 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ProfileActivity.this, R.style.MaterialAlertDialog_Rounded);
+            LayoutInflater inflater1 = (LayoutInflater) ProfileActivity.this.getSystemService(ProfileActivity.this.LAYOUT_INFLATER_SERVICE);
             View team = inflater1.inflate(R.layout.cl_alert, null);
             builder.setView(team);
             builder.setCancelable(false);
@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
             AlertDialog dialog = builder.create();
             dialog.show();
 
-            logout.setOnClickListener(v1 -> LocalPreference.LogOutUser(getActivity(), "out", dialog));
+            logout.setOnClickListener(v1 -> LocalPreference.LogOutUser(ProfileActivity.this, "out", dialog));
 
             no.setOnClickListener(v12 -> dialog.cancel());
 
@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
                 } else {
                     action = "selfEmployeeUpdate";
                 }
-                Intent intent = new Intent(requireContext(), CreateEmployeeActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, CreateEmployeeActivity.class);
                 intent.putExtra("actionType", action);
                 intent.putExtra("id", _id);
                 intent.putExtra("empId", empId);
@@ -132,53 +132,49 @@ public class ProfileFragment extends Fragment {
 
         fetchProfile();
 
-        return bind.getRoot();
+        
     }
 
     public String[] fetchProfile() {
 
-        if (isAdded()) {
-            Context context = getContext();
-            new Receiver(context, new Receiver.ApiListener() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        _id = response.getString("_id");
-                        name = response.getString("name");
-                        empId = response.getString("empId");
-                        position = response.getString("position");
-                        gender = response.getString("gender");
-                        email = response.getString("email");
-                        mobile = response.getString("mobile");
-                        password = response.getString("password");
-                        userType = response.getString("userType");
+        new Receiver(ProfileActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    _id = response.getString("_id");
+                    name = response.getString("name");
+                    empId = response.getString("empId");
+                    position = response.getString("position");
+                    gender = response.getString("gender");
+                    email = response.getString("email");
+                    mobile = response.getString("mobile");
+                    password = response.getString("password");
+                    userType = response.getString("userType");
 
-                        bind.empName.setText(name);
-                        bind.empId.setText(empId);
-                        bind.empPost.setText(position);
-                        bind.empGender.setText(gender);
-                        bind.empMail.setText(email);
-                        bind.empMobile.setText(mobile);
+                    bind.empName.setText(name);
+                    bind.empId.setText(empId);
+                    bind.empPost.setText(position);
+                    bind.empGender.setText(gender);
+                    bind.empMail.setText(email);
+                    bind.empMobile.setText(mobile);
 
-                        if (bind.refresh.isRefreshing()) {
-                            bind.refresh.setRefreshing(false);
-                        }
-
-                        pd.mDismiss();
-                    } catch (JSONException e) {
-                        ErrorHandler.handleException(context, e);
+                    if (bind.refresh.isRefreshing()) {
+                        bind.refresh.setRefreshing(false);
                     }
-                }
 
-                @Override
-                public void onError(VolleyError error) {
-                    ErrorHandler.handleVolleyError(context, error);
                     pd.mDismiss();
+                } catch (JSONException e) {
+                    ErrorHandler.handleException(ProfileActivity.this, e);
                 }
-            }).getProfileDetail();
+            }
 
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(ProfileActivity.this, error);
+                pd.mDismiss();
+            }
+        }).getProfileDetail();
 
-        }
         String[] profileDetail = new String[9];
         profileDetail[0] = _id;
         profileDetail[1] = empId;
@@ -206,8 +202,8 @@ public class ProfileFragment extends Fragment {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
 
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_Rounded);
-                    LayoutInflater inflater1 = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ProfileActivity.this, R.style.MaterialAlertDialog_Rounded);
+                    LayoutInflater inflater1 = (LayoutInflater) ProfileActivity.this.getSystemService(ProfileActivity.this.LAYOUT_INFLATER_SERVICE);
                     View view = inflater1.inflate(R.layout.cl_profile_image, null);
                     builder.setView(view);
                     builder.setCancelable(false);
@@ -233,6 +229,5 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-
 
 }

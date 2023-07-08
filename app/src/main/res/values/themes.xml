@@ -30,6 +30,9 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+
+
+
     <style name="CustomMaterialAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <!-- Customize the dialog appearance as needed -->
         <!-- For example, you can change the background color -->

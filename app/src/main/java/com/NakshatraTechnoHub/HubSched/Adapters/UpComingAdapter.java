@@ -94,9 +94,15 @@ public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.ViewHo
         }
     }
 
-    public void showAllItems() {
+    public boolean showAllItems() {
         showAllItems = true;
-        notifyDataSetChanged();
+        if (filteredMeetings.size()<6){
+            notifyDataSetChanged();
+            return false;
+        }else{
+            notifyDataSetChanged();
+            return true;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

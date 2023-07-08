@@ -17,20 +17,6 @@
     </item>
 
 
-    <item
-        android:id="@+id/account"
-        app:cnb_iconColor="@color/purple_700"
 
-        android:icon="@drawable/baseline_account_circle_24"
-        android:title="Account">
-    </item>
-
-    <item
-        android:id="@+id/support"
-        app:cnb_iconColor="@color/purple_700"
-
-        android:icon="@drawable/baseline_help_24"
-        android:title="Help ">
-    </item>
 
 </menu>

@@ -121,6 +121,11 @@ public class RoomListActivity extends BaseActivity {
                             roomSeats.setText(roomList.get(position).getSeat_cap()+"");
                             roomFloor.setText(roomList.get(position).getFloor_no());
 
+                            String a= LocalPreference.getType(RoomListActivity.this);
+                            if (LocalPreference.getType(RoomListActivity.this).equals("organiser")){
+                                removeRoom.setVisibility(View.GONE);
+                            }
+
                             view.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -228,6 +233,7 @@ public class RoomListActivity extends BaseActivity {
                     bind.pd.setVisibility(View.GONE);
 
                 }else{
+                    bind.roomListRecyclerView.setVisibility(View.GONE);
                     bind.pd.setVisibility(View.GONE);
                     bind.noResult.setVisibility(View.VISIBLE);
                 }

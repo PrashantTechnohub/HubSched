@@ -96,8 +96,6 @@ public class CreateEmployeeActivity extends BaseActivity {
             bind.addEmpCPassword.setText(password);
             dropDownAdapter();
             if (action.equals("selfEmployeeUpdate")) {
-
-
                 bind.addEmpId.setEnabled(false);
                 bind.addEmpName.setEnabled(false);
                 bind.addEmpEmail.setEnabled(false);
@@ -134,8 +132,6 @@ public class CreateEmployeeActivity extends BaseActivity {
 
 
                 boolean isValid = validateInput(empId_x, name_x, email_x, mobile_x, gender_x, position_x, user_type_x, password_x, confirmPassword_x);
-
-
                 if (isValid) {
 
                     if (user_type_x.equals("Employee")) {
@@ -151,8 +147,8 @@ public class CreateEmployeeActivity extends BaseActivity {
                     }
 
 
-                    if (action != null && action.equals("update")) {
-                        updateEmployee(user_type_x, _id, empId_x, name_x, email_x, mobile_x, gender_x, position_x, password_x);
+                    if (action != null && action.equals("EmpUpdateByAdmin")) {
+                        updateEmployeeByAdmin(user_type_x, _id, empId_x, name_x, email_x, mobile_x, gender_x, position_x, password_x);
                     } else if (action != null && action.equals("SelfAdmin") || action.equals("selfEmployeeUpdate")) {
                         updateAdmin(user_type_x, _id, empId_x, name_x, email_x, mobile_x, gender_x, position_x, password_x);
                     } else {
@@ -202,11 +198,12 @@ public class CreateEmployeeActivity extends BaseActivity {
     }
 
 
-    private void updateEmployee(String user_type_x, String _id, String empId_x, String name_x, String email_x, String mobile_x, String gender_x, String position_x, String password_x) {
+    private void updateEmployeeByAdmin(String user_type_x, String _id, String empId_x, String name_x, String email_x, String mobile_x, String gender_x, String position_x, String password_x) {
         JSONObject updateObject = new JSONObject();
         try {
             updateObject.put("userType", user_type_x);
             updateObject.put("_id", _id);
+            updateObject.put("profile", "");
             updateObject.put("empId", empId_x);
             updateObject.put("name", name_x);
             updateObject.put("gender", gender_x);
@@ -218,8 +215,30 @@ public class CreateEmployeeActivity extends BaseActivity {
         } catch (JSONException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
         }
-        finalUpdate(updateObject);
+        new Receiver(CreateEmployeeActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String msg = response.getString("message");
+                    Toast.makeText(CreateEmployeeActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    finish();
+                } catch (JSONException e) {
+
+                    ErrorHandler.handleException(getApplicationContext(), e);
+
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
+            }
+        }).update_employee_by_admin(updateObject);
+
     }
+
+
 
 
     private void addEmployee(String user_type_x, String empId_x, String name_x, String email_x, String mobile_x, String gender_x, String position_x, String password_x) {

@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <uses-feature
@@ -23,6 +22,12 @@
         android:theme="@style/Theme.MeetHall"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Ui.Dashboard.SupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Ui.Dashboard.ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".Ui.Dashboard.QueriesActivity"
             android:exported="false" />

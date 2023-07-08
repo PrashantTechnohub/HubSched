@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_6sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    app:cardElevation="@dimen/_4sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_14sdp">
+
+   <LinearLayout
+       android:layout_margin="@dimen/_10sdp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+
+       <TextView
+           android:id="@+id/meet_orgName"
+           android:fontFamily="@font/montserrat_semibold"
+           android:layout_width="wrap_content"
+           android:textColor="@color/fontBlack"
+           android:layout_height="wrap_content"
+           android:textSize="@dimen/_12sdp"
+           android:text="Amole Tate"/>
+
+       <TextView
+           android:layout_marginTop="@dimen/_4sdp"
+           android:id="@+id/meet_subject"
+           android:layout_width="wrap_content"
+           android:textColor="@color/fontBlack"
+           android:layout_height="wrap_content"
+           android:textSize="@dimen/_10sdp"
+           android:text="Discusse New Project "/>
+       <TextView
+           android:layout_marginTop="@dimen/_4sdp"
+           android:id="@+id/meet_time"
+           android:layout_width="wrap_content"
+           android:textColor="@color/fontBlack"
+           android:layout_height="wrap_content"
+           android:textSize="@dimen/_10sdp"
+           android:text="03:40 PM - 4:50 PM"/>
+
+       <LinearLayout
+           android:id="@+id/actionLlp"
+           android:layout_marginTop="@dimen/_4sdp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:visibility="visible">
+
+           <com.google.android.material.button.MaterialButton
+               android:id="@+id/meet_accept_btn"
+               android:layout_width="@dimen/_70sdp"
+               android:layout_height="@dimen/_25sdp"
+               android:layout_marginEnd="@dimen/_10sdp"
+               android:backgroundTint="@color/fadeBlue"
+               android:text="Accept"
+               android:textColor="@color/purple_700"
+               android:textSize="@dimen/_7sdp"
+               app:cornerRadius="@dimen/_14sdp" />
+
+           <com.google.android.material.button.MaterialButton
+               android:id="@+id/meet_deny_btn"
+               android:layout_width="@dimen/_70sdp"
+
+               android:layout_height="@dimen/_25sdp"
+               android:backgroundTint="@color/fadeRed"
+               android:text="Deny"
+               android:textColor="@color/red"
+               android:textSize="@dimen/_7sdp"
+               app:cornerRadius="@dimen/_14sdp" />
+       </LinearLayout>
+
+
+
+   </LinearLayout>
+
+
+
+</com.google.android.material.card.MaterialCardView>

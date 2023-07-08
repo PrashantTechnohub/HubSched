@@ -21,6 +21,9 @@ public class Constant {
     public static final String LOGOUT_PANTRY_URL = BASE_URL + "/pantry_logout";
     public static final String MEET_REQUEST_URL = BASE_URL + "/meet_request";
     public static final String DELETE_MEETING_URL = BASE_URL + "/deleteMeeting";
+
+    public static final String CANCEL_MEETING_URL = BASE_URL + "/cancelMeeting";
+    public static final String EXTEND_MEETING_URL = BASE_URL + "/extend_meeting";
     public static final String SUPPORT_URL = BASE_URL + "/support";
     public static final String SUPPORT_LIST_URL = BASE_URL + "/support_list";
     public static final String SUPPORT_STATUS_URL = BASE_URL + "/support_status";
@@ -31,6 +34,8 @@ public class Constant {
     public static final String EMP_PROFILE_URL = BASE_URL + "/profile";
     public static final String CREATE_ROOM_URL = BASE_URL + "/create_room";
     public static final String CREATE_EMP_URL = BASE_URL + "/create_employee";
+    public static final String SET_PANTRY_ITEM_URL = BASE_URL + "/setPantryList";
+    public static final String GET_PANTRY_ITEM_URL = BASE_URL + "/getPantryList";
     public static final String CREATE_MEETING_URL = BASE_URL + "/schedule_meet";
     public static final String MEETS_FOR_DATE_URL = BASE_URL + "/meets_for_date";
     public static final String EMPLOYEE_LIST_FOR_MEET_URL = BASE_URL + "/employee_list_for_meet";

@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:text="Add Employee"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16sdp" />
+                android:textSize="@dimen/_14sdp" />
 
         </RelativeLayout>
 

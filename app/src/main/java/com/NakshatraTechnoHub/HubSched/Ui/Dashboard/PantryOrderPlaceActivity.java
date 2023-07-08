@@ -1,16 +1,14 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.Adapters.PantryItemListAdapter;
 import com.NakshatraTechnoHub.HubSched.Models.OrderPlaceModel;
@@ -27,57 +25,41 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class PantryOrderPlaceActivity extends BaseActivity implements PantryItemListAdapter.OrderListener  {
+public class PantryOrderPlaceActivity extends BaseActivity implements PantryItemListAdapter.OrderListener {
 
     private List<PantryItemModel> itemList;
     private RecyclerView recyclerView;
     private PantryItemListAdapter adapter;
     private SwipeRefreshLayout refresh;
 
-
     List<OrderPlaceModel> selectedItems = new ArrayList<>();
     MaterialButton placeOrder;
     String meetId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantry_order_place);
-
 
         placeOrder = findViewById(R.id.place_order_button);
         recyclerView = findViewById(R.id.pantry_list_recyclerview);
         refresh = findViewById(R.id.refresh);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         meetId = LocalPreference.get_meetId(this);
 
         findViewById(R.id.back).setOnClickListener(view -> finish());
 
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getItemList();
-            }
-        });
+        refresh.setOnRefreshListener(() -> getItemList());
         getItemList();
 
-        selectedItems = adapter.getSelectedItems();
-
-        placeOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<OrderPlaceModel> selectedItems = adapter.getSelectedItems();
-                showSelectedItemsDialog(selectedItems);
-            }
+        placeOrder.setOnClickListener(view -> {
+            List<OrderPlaceModel> selectedItems = adapter.getSelectedItems();
+            showSelectedItemsDialog(selectedItems);
         });
-
-
     }
-
 
     private void showSelectedItemsDialog(List<OrderPlaceModel> selectedItems) {
         // Create a dialog builder
@@ -105,19 +87,11 @@ public class PantryOrderPlaceActivity extends BaseActivity implements PantryItem
         // Set the content text
         contentTextView.setText(content);
 
-        builder.setPositiveButton("Place Order", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                postSelectedItems(selectedItems);
-            }
-        });
+        builder.setPositiveButton("Place Order", (dialogInterface, i) -> postSelectedItems(selectedItems));
 
         // Show the dialog
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
-
     }
 
     private void postSelectedItems(List<OrderPlaceModel> selectedItems) {
@@ -139,48 +113,63 @@ public class PantryOrderPlaceActivity extends BaseActivity implements PantryItem
             ErrorHandler.handleException(getApplicationContext(), e);
         }
 
-
         new Receiver(PantryOrderPlaceActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
                 finish();
-                Toast.makeText(PantryOrderPlaceActivity.this, "Ordered Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PantryOrderPlaceActivity.this, "Order Successful", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(VolleyError error) {
                 ErrorHandler.handleVolleyError(getApplicationContext(), error);
-                
             }
         }).post_item_to_pantry(requestBody);
-
     }
-
 
     private void getItemList() {
         itemList = new ArrayList<>();
         meetId = LocalPreference.get_meetId(PantryOrderPlaceActivity.this);
 
-        // Add pantry items to the list
-        List<String> itemNames = Arrays.asList("TEA", "WATER", "PEPSI", "SAMOSA", "JUICE");
-        for (String itemName : itemNames) {
-            PantryItemModel itemModel = new PantryItemModel(itemName);
-            itemList.add(itemModel);
-            if (refresh.isRefreshing()){
-                refresh.setRefreshing(false);
-                Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
+        new Receiver(PantryOrderPlaceActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject object) {
+                if (refresh.isRefreshing()) {
+                    refresh.setRefreshing(false);
+                    Toast.makeText(PantryOrderPlaceActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                }
+
+                itemList.clear();
+
+                try {
+                    JSONArray itemArray = object.getJSONArray("result");
+                    for (int i = 0; i < itemArray.length(); i++) {
+                        String itemName = itemArray.getString(i);
+                        PantryItemModel itemModel = new PantryItemModel(itemName);
+                        itemList.add(itemModel);
+                    }
+
+
+
+
+                    // Create and set the adapter
+                    adapter = new PantryItemListAdapter(PantryOrderPlaceActivity.this, meetId, itemList);
+                    adapter.setOrderListener(PantryOrderPlaceActivity.this); // Set the order listener
+                    recyclerView.setAdapter(adapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
-        // Create and set the adapter
-        adapter = new PantryItemListAdapter(PantryOrderPlaceActivity.this,meetId, itemList);
-        recyclerView.setAdapter(adapter);
-        
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+            }
+        }).get_pantry_item(); // Call the correct API method to retrieve the pantry list
     }
-
 
     @Override
     public void onOrderListUpdated(List<OrderPlaceModel> selectedItems) {
-
+        this.selectedItems = selectedItems;
     }
 }

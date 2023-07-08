@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/purple_700" /> <!-- Replace "your_thumb_color" with the desired color -->
+    <size android:width="16dp" android:height="16dp" /> <!-- Adjust the width and height as needed -->
+    <corners android:radius="@dimen/_14sdp" /> <!-- Adjust the radius as needed to achieve the desired shape -->
+</shape>

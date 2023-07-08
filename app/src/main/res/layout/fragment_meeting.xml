@@ -1,24 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.MeetingFragment">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:id="@+id/refresh"
+    <LinearLayout
 
+        android:id="@+id/filterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filter_expired_btn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:backgroundTint="@color/grey_font"
+                android:text="Expired"
+                android:textSize="@dimen/_6sdp"
+                app:cornerRadius="@dimen/_14sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filter_accepted_btn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:backgroundTint="@color/grey_font"
+                android:text="Accepted"
+                android:textSize="@dimen/_6sdp"
+                app:cornerRadius="@dimen/_14sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filter_cancelled_btn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:backgroundTint="@color/grey_font"
+                android:text="Declined"
+                android:textSize="@dimen/_6sdp"
+                app:cornerRadius="@dimen/_14sdp" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_below="@id/filterLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/meeting_recyclerview"
             android:layout_width="match_parent"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_height="match_parent"/>
+            android:orientation="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/no_result"
         android:layout_width="@dimen/_250sdp"
@@ -30,14 +88,15 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/pd"
-        android:visibility="gone"
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_50sdp"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:backgroundTint="#FBFBFB"
+        android:visibility="gone"
         app:cardCornerRadius="@dimen/_14sdp"
-        android:layout_centerInParent="true"
         app:cardElevation="50dp">
+
         <RelativeLayout
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_50sdp">

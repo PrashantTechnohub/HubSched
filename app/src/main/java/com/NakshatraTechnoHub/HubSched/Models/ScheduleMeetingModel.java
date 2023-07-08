@@ -8,6 +8,8 @@ public class ScheduleMeetingModel {
     private int organiser_id;
     private int company_id;
     private List<Integer> employee_ids;
+    private List<Integer> accepted;
+    private List<Integer> declined;
 
     private String acceptance_status;
     private String startTime;
@@ -33,6 +35,22 @@ public class ScheduleMeetingModel {
 //        this.subject = subject;
 //    }
 
+
+    public List<Integer> getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(List<Integer> accepted) {
+        this.accepted = accepted;
+    }
+
+    public List<Integer> getDeclined() {
+        return declined;
+    }
+
+    public void setDeclined(List<Integer> declined) {
+        this.declined = declined;
+    }
 
     public String getAcceptance_status() {
         return acceptance_status;

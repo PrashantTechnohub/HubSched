@@ -122,7 +122,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setMessage("Are you sure to remove " + empList.get(position).getName() + " !!");
 
-                builder.setTitle("Confirm" + empList.get(position).get_id());
+                builder.setTitle("Confirm");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -148,7 +148,7 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
 
                 Intent intent = new Intent(context, CreateEmployeeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("actionType", "update");
+                intent.putExtra("actionType", "EmpUpdateByAdmin");
                 intent.putExtra("userType", model.getUserType()+"");
                 intent.putExtra("id", model.get_id()+"");
                 intent.putExtra("empId", model.getEmpId()+"");
@@ -173,6 +173,9 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
                 try {
                     String status = response.getString("message");
                     Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
+                    // Remove the employee from the list and notify the adapter
+                    empList.remove(getEmployeePosition(id));
+                    notifyDataSetChanged();
 
 
                 } catch (JSONException e) {
@@ -202,6 +205,14 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
         queue.add(objectRequest);
     }
 
+    private int getEmployeePosition(int id) {
+        for (int i = 0; i < empList.size(); i++) {
+            if (empList.get(i).get_id() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private void EmpStatusChanger(String active, Context context, SwitchCompat switchCompat, EmpListModel model) {
         JSONObject params = new JSONObject();

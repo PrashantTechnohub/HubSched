@@ -12,10 +12,15 @@
     <color name="fadeGreen">#E5FAE1</color>
     <color name="fadeRed">#FAE1E1</color>
     <color name="fadeBlue">#DCE8FF</color>
+    <color name="fadeBlack">#F4F4F4</color>
     <color name="black">#FF000000</color>
     <color name="fontBlack">#B9000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orderedColor">#EEFAFF</color>
     <color name="background_page">#FFFFFF</color>
 <!--    <color name="background_page">#F5F7F8</color>-->
+
+
+
+
 </resources>

@@ -6,208 +6,198 @@
     android:layout_height="match_parent"
     tools:context="com.NakshatraTechnoHub.HubSched.Ui.Fragment.HomeFragment">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:id="@+id/refresh"
         android:layout_height="match_parent">
-        <ScrollView
-            android:id="@+id/scrollView"
+
+        <RelativeLayout
+            android:id="@+id/llt2"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:id="@+id/llt2"
-                android:layout_marginTop="@dimen/_5sdp"
+            <LinearLayout
+                android:id="@+id/ll3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_8sdp">
 
-                <LinearLayout
-                    android:id="@+id/ll3"
+                <RelativeLayout
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_8sdp">
+                    android:layout_height="match_parent">
 
-                    <RelativeLayout
-                        android:id="@+id/user_view_layout"
+                    <ImageView
+                        android:id="@+id/camp_ic"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/baseline_campaign_24"/>
+                    <TextView
+                        android:id="@+id/announce_text"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/camp_ic"
+                        android:textColor="@color/purple_700"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textSize="@dimen/_10sdp"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:scrollHorizontally="true"
+                        android:text=" Track meeting metrics and gain valuable insights into your team's productivity. Our app generates reports and analytics that help you identify patterns, track meeting outcomes, and optimize future sessions. Unleash the power of data to enhance efficiency and drive meaningful results."
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/user_view_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="visible">
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:visibility="visible">
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_4sdp"
+                        app:cardElevation="@dimen/_4sdp"
+                        app:cardCornerRadius="@dimen/_11sdp">
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/image_slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_110sdp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/admin_view_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true">
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="Overview"
+                                android:textColor="@color/purple_700"
+                                android:textSize="@dimen/_14sdp" />
+
+
+                        </RelativeLayout>
 
 
                         <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cardView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:layout_marginVertical="@dimen/_4sdp"
-                            app:cardElevation="@dimen/_4sdp"
-                            app:cardCornerRadius="@dimen/_11sdp">
-
-                            <androidx.viewpager.widget.ViewPager
-                                android:id="@+id/image_slider"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_110sdp" />
-                        </com.google.android.material.card.MaterialCardView>
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/admin_view_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true">
-
-                        <LinearLayout
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:orientation="vertical">
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_4sdp"
+                            app:cardElevation="@dimen/_4sdp"
+                            app:cardCornerRadius="@dimen/_14sdp">
 
                             <RelativeLayout
+                                android:layout_margin="@dimen/_10sdp"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/_10sdp">
+                                android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_marginBottom="@dimen/_4sdp"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:text="Overview"
-                                    android:textColor="@color/purple_700"
-                                    android:textSize="@dimen/_14sdp" />
-
-
-                            </RelativeLayout>
-
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_4sdp"
-                                app:cardElevation="@dimen/_4sdp"
-                                app:cardCornerRadius="@dimen/_14sdp">
-
-                                <RelativeLayout
-                                    android:layout_margin="@dimen/_10sdp"
+                                <LinearLayout
+                                    android:id="@+id/ov1"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+
 
                                     <LinearLayout
-                                        android:id="@+id/ov1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-
+                                        android:weightSum="2">
 
                                         <LinearLayout
-                                            android:layout_width="match_parent"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:weightSum="2">
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
 
-                                            <LinearLayout
-                                                android:layout_width="0dp"
+                                            <!-- First LinearLayout content here -->
+
+                                            <TextView
+                                                android:layout_width="@dimen/_70sdp"
                                                 android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:orientation="horizontal">
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Total Members"
+                                                android:textColor="@color/fontBlack"
+                                                android:textSize="@dimen/_10sdp" />
 
-                                                <!-- First LinearLayout content here -->
-
-                                                <TextView
-                                                    android:layout_width="@dimen/_70sdp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginEnd="@dimen/_4sdp"
-                                                    android:text="Total Members"
-                                                    android:textColor="@color/fontBlack"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/total_employees"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginEnd="@dimen/_4sdp"
-                                                    android:textStyle="bold"
-                                                    android:textColor="@color/fontBlack"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                            </LinearLayout>
-
-                                            <LinearLayout
-                                                android:layout_marginStart="@dimen/_5sdp"
-                                                android:layout_width="0dp"
+                                            <TextView
+                                                android:id="@+id/total_employees"
+                                                android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:layout_marginEnd="@dimen/_8sdp"
-                                                android:orientation="horizontal">
-
-                                                <!-- Second LinearLayout content here -->
-
-                                                <LinearLayout
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="horizontal">
-
-                                                    <TextView
-                                                        android:layout_width="@dimen/_70sdp"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_marginEnd="@dimen/_4sdp"
-                                                        android:text="Total Meeting"
-                                                        android:textColor="@color/fontBlack"
-                                                        android:textSize="@dimen/_10sdp" />
-
-                                                    <TextView
-                                                        android:id="@+id/total_meetings"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_marginEnd="@dimen/_4sdp"
-
-                                                        android:textStyle="bold"
-                                                        android:textColor="@color/fontBlack"
-                                                        android:textSize="@dimen/_10sdp" />
-
-                                                </LinearLayout>
-
-                                            </LinearLayout>
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:textStyle="bold"
+                                                android:textColor="@color/fontBlack"
+                                                android:textSize="@dimen/_10sdp" />
 
                                         </LinearLayout>
 
-
                                         <LinearLayout
-                                            android:layout_width="match_parent"
+                                            android:layout_marginStart="@dimen/_5sdp"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="@dimen/_10sdp"
-                                            android:weightSum="2">
+                                            android:layout_weight="1"
+                                            android:layout_marginEnd="@dimen/_8sdp"
+                                            android:orientation="horizontal">
+
+                                            <!-- Second LinearLayout content here -->
 
                                             <LinearLayout
-                                                android:layout_width="0dp"
+                                                android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:layout_weight="1"
                                                 android:orientation="horizontal">
-
-                                                <!-- First LinearLayout content here -->
 
                                                 <TextView
                                                     android:layout_width="@dimen/_70sdp"
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginEnd="@dimen/_4sdp"
-                                                    android:text="Total Rooms"
+                                                    android:text="Total Meeting"
                                                     android:textColor="@color/fontBlack"
                                                     android:textSize="@dimen/_10sdp" />
 
                                                 <TextView
-                                                    android:id="@+id/total_rooms"
+                                                    android:id="@+id/total_meetings"
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginEnd="@dimen/_4sdp"
@@ -218,63 +208,234 @@
 
                                             </LinearLayout>
 
-                                            <LinearLayout
-                                                android:layout_marginStart="@dimen/_5sdp"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:layout_marginEnd="@dimen/_8sdp"
-                                                android:orientation="horizontal">
-
-                                                <!-- Second LinearLayout content here -->
-
-                                                <LinearLayout
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="horizontal">
-
-                                                    <TextView
-
-                                                        android:layout_width="@dimen/_70sdp"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_marginEnd="@dimen/_4sdp"
-                                                        android:text="Total Bug's"
-                                                        android:textColor="@color/fontBlack"
-                                                        android:textSize="@dimen/_10sdp" />
-
-                                                    <TextView
-                                                        android:id="@+id/total_bugs"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_marginEnd="@dimen/_4sdp"
-
-                                                        android:textStyle="bold"
-                                                        android:textColor="@color/fontBlack"
-                                                        android:textSize="@dimen/_10sdp" />
-
-                                                </LinearLayout>
-
-                                            </LinearLayout>
-
                                         </LinearLayout>
-
 
                                     </LinearLayout>
 
 
-                                </RelativeLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:weightSum="2">
 
-                            </com.google.android.material.card.MaterialCardView>
+                                        <LinearLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <!-- First LinearLayout content here -->
+
+                                            <TextView
+                                                android:layout_width="@dimen/_70sdp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+                                                android:text="Total Rooms"
+                                                android:textColor="@color/fontBlack"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/total_rooms"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="@dimen/_4sdp"
+
+                                                android:textStyle="bold"
+                                                android:textColor="@color/fontBlack"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_marginStart="@dimen/_5sdp"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:layout_marginEnd="@dimen/_8sdp"
+                                            android:orientation="horizontal">
+
+                                            <!-- Second LinearLayout content here -->
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+
+                                                    android:layout_width="@dimen/_70sdp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="@dimen/_4sdp"
+                                                    android:text="Total Bug's"
+                                                    android:textColor="@color/fontBlack"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/total_bugs"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="@dimen/_4sdp"
+
+                                                    android:textStyle="bold"
+                                                    android:textColor="@color/fontBlack"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                            </LinearLayout>
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
 
 
-                        </LinearLayout>
+                                </LinearLayout>
 
-                    </RelativeLayout>
 
-                </LinearLayout>
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_below="@id/ll3"
+                    android:id="@+id/ongoing_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true">
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="Ongoing Meeting"
+                                android:textColor="@color/purple_700"
+                                android:textSize="@dimen/_14sdp" />
+
+
+                        </RelativeLayout>
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_4sdp"
+                            app:cardElevation="@dimen/_4sdp"
+                            app:cardCornerRadius="@dimen/_14sdp">
+
+                            <RelativeLayout
+                                android:layout_margin="@dimen/_10sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/up_subject"
+                                    android:singleLine="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:maxWidth="@dimen/_160sdp"
+                                    android:text="Testing meeting"
+                                    android:textColor="@color/fontBlack"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:id="@+id/goto_ongoing_meeting"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    app:cardCornerRadius="@dimen/_14sdp"
+                                    android:backgroundTint="@color/fadeBlue"
+                                    android:layout_centerVertical="true">
+
+                                    <RelativeLayout
+                                        android:layout_marginStart="@dimen/_18sdp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:id="@+id/txt1"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentStart="true"
+                                            android:layout_centerInParent="true"
+                                            android:fontFamily="@font/montserrat_semibold"
+                                            android:text="Goto"
+                                            android:textColor="@color/purple_700" />
+
+                                        <ImageView
+                                            android:layout_centerVertical="true"
+                                            android:layout_toEndOf="@id/txt1"
+                                            android:id="@+id/img1"
+                                            android:layout_marginStart="@dimen/_4sdp"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="@dimen/_20sdp"
+                                            android:src="@drawable/baseline_arrow_right_alt_24"/>
+
+                                    </RelativeLayout>
+
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/invitation_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:id="@+id/yourInvitation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="Your Invitation"
+                        android:textColor="@color/purple_700"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/invitation_meeting_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="horizontal"
+                        android:layout_below="@id/yourInvitation"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:foregroundGravity="center_horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/rrl1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -298,29 +459,29 @@
                         android:layout_marginRight="@dimen/_10sdp"
                         android:foregroundGravity="center_horizontal"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="2"
-                        tools:listitem="@layout/cl_upcoming_meetings" />
+                        app:spanCount="2" />
 
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="@dimen/_90sdp"
                         android:id="@+id/show_more"
+
                         android:layout_height="@dimen/_25sdp"
                         android:text="Show More"
                         android:layout_below="@id/upcoming_meeting_recyclerview"
                         android:textSize="@dimen/_8sdp"
                         app:cornerRadius="@dimen/_14sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_centerHorizontal="true"/>
                 </RelativeLayout>
 
+            </LinearLayout>
 
 
-            </RelativeLayout>
 
-        </ScrollView>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </RelativeLayout>
+
+    </ScrollView>
 
 
 

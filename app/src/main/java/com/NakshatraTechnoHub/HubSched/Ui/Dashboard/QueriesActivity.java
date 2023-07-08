@@ -91,12 +91,24 @@ public class QueriesActivity extends AppCompatActivity {
                     JSONArray array = response.getJSONArray("result");
 
                     if (array != null && array.length() > 0) {
+                        boolean isOpenedAdded = false;
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
                             QueryModel model = new QueryModel(object.getInt("userId"), object.getInt("_id"),
                                     object.getString("description"), object.getString("status").toUpperCase());
-                            list.add(model);
+
+                            if (model.getStatus().equalsIgnoreCase("opened")) {
+                                if (!isOpenedAdded) {
+                                    list.add(model); // Add the first item with "opened" status at the beginning
+                                    isOpenedAdded = true;
+                                } else {
+                                    list.add(1, model); // Add subsequent items with "opened" status below the first item
+                                }
+                            } else {
+                                list.add(model); // Add items with other statuses below the "opened" items
+                            }
                         }
+
 
                         adapter = new MyAdapter<QueryModel>(list, new MyAdapter.OnBindInterface() {
                             @Override
@@ -145,6 +157,7 @@ public class QueriesActivity extends AppCompatActivity {
                         recyclerView.setAdapter(adapter);
 
                     } else {
+                        recyclerView.setVisibility(View.GONE);
                         pd.setVisibility(View.GONE);
                         noResult.setVisibility(View.VISIBLE);
 

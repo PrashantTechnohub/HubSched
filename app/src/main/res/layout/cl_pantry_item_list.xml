@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_2sdp">
+
+    <RelativeLayout
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/item_c"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:maxWidth="@dimen/_180sdp"
+            android:text="122"
+            android:textColor="@color/fontBlack" />
+
+        <TextView
+
+            android:id="@+id/pantry_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_toEndOf="@id/item_c"
+            android:maxWidth="@dimen/_180sdp"
+            android:text="Tea"
+            android:textColor="@color/fontBlack" />
+
+        <ImageView
+            android:id="@+id/delete_item"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/baseline_delete_24" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/item_c"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@color/grey" />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

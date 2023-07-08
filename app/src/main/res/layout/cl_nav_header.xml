@@ -6,6 +6,7 @@
 
    <com.google.android.material.card.MaterialCardView
        android:layout_width="match_parent"
+       android:id="@+id/cc"
        android:layout_marginStart="@dimen/_10sdp"
        android:layout_marginTop="@dimen/_10sdp"
        android:layout_marginEnd="@dimen/_10sdp"
@@ -28,14 +29,14 @@
                android:layout_toEndOf="@id/im1"
                android:src="@drawable/hubsched11" />
 
-           <View
-               android:layout_marginTop="@dimen/_10sdp"
-               android:layout_below="@id/im1"
-               android:layout_width="match_parent"
-               android:layout_height="1dp"
-               android:background="@color/black"/>
 
        </RelativeLayout>
    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/grey"
+        android:layout_below="@id/cc"/>
 
 </RelativeLayout>

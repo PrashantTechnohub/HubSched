@@ -81,7 +81,7 @@ public class PantryOrderedListActivity extends BaseActivity {
 
         pd.setVisibility(View.VISIBLE);
 
-        adapter = new PantryMyOrderListAdapter(PantryOrderedListActivity.this,this, list);
+        adapter = new PantryMyOrderListAdapter(PantryOrderedListActivity.this, this, list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(PantryOrderedListActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -223,11 +223,6 @@ public class PantryOrderedListActivity extends BaseActivity {
         }
     }
 
-    // Clear the filter and display the entire list
-    private void clearFilter() {
-        filteredList.clear();
-        filteredList.addAll(list);
-    }
 
     // Update the RecyclerView with the filtered data
     private void socketConnection() {
@@ -265,6 +260,14 @@ public class PantryOrderedListActivity extends BaseActivity {
 
         if (jsonArray != null && jsonArray.length() != 0) {
             try {
+
+
+                if (refresh.isRefreshing()) {
+                    refresh.setRefreshing(false);
+                    Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
+                }
+
+
                 ArrayList<PantryModel> parsedList = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject dataObject = jsonArray.getJSONObject(i);
@@ -282,21 +285,16 @@ public class PantryOrderedListActivity extends BaseActivity {
                 list = parsedList;
                 adapter.setData(list);
                 pd.setVisibility(View.GONE);
-                if (refresh.isRefreshing()) {
-                    refresh.setRefreshing(false);
-                    Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
-                }
+
 
             } catch (JSONException e) {
                 pd.setVisibility(View.GONE);
                 empty.setVisibility(View.VISIBLE);
-                if (refresh.isRefreshing()) {
-                    refresh.setRefreshing(false);
-                    Toast.makeText(PantryOrderedListActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
-                }
                 ErrorHandler.handleException(getApplicationContext(), e);
             }
         } else {
+
+            recyclerView.setVisibility(View.GONE);
             pd.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
         }
@@ -308,7 +306,9 @@ public class PantryOrderedListActivity extends BaseActivity {
         new Receiver(PantryOrderedListActivity.this, new Receiver.ListListener() {
             @Override
             public void onResponse(JSONArray jsonArray) {
-                if (refresh.isRefreshing()){ refresh.setRefreshing(false);}
+                if (refresh.isRefreshing()) {
+                    refresh.setRefreshing(false);
+                }
 
 
                 if (jsonArray != null && jsonArray.length() != 0) {
@@ -319,6 +319,7 @@ public class PantryOrderedListActivity extends BaseActivity {
                         ErrorHandler.handleException(getApplicationContext(), e);
                     }
                 } else {
+                    recyclerView.setVisibility(View.GONE);
                     pd.setVisibility(View.GONE);
                     empty.setVisibility(View.VISIBLE);
                 }

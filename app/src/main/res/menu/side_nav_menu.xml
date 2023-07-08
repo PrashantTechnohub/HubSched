@@ -1,44 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
 
-
     <item
-        android:id="@+id/employeeList"
-        android:icon="@drawable/baseline_people_alt_24"
-        android:title="Employees">
+        android:title="Manage Stuff">
+        <menu>
+
+
+
+            <item
+                android:id="@+id/hallManagement"
+                android:icon="@drawable/baseline_add_business_24"
+                android:title="Rooms &amp; Meeting Creation" />
+
+            <item
+                android:id="@+id/meetingList"
+                android:icon="@drawable/baseline_meeting_room_24"
+                android:title="Manage Meetings" />
+            <item
+                android:id="@+id/employeeList"
+                android:icon="@drawable/baseline_people_alt_24"
+                android:title="Employees" />
+
+
+            <item
+                android:id="@+id/editContent"
+                android:icon="@drawable/baseline_display_settings_24"
+                android:title="Content" />
+        </menu>
+
     </item>
 
-    <item
-        android:id="@+id/meetingList"
-        android:icon="@drawable/baseline_meeting_room_24"
-        android:title="Meetings">
-    </item>
-    <item
-        android:id="@+id/hallManagement"
-        android:icon="@drawable/baseline_add_business_24"
-        android:title="Rooms">
-    </item>
-    <item
-        android:id="@+id/editContent"
-        android:icon="@drawable/baseline_display_settings_24"
-        android:title="Content">
-    </item>
-
-    <item
-        android:id="@+id/queries"
-        android:icon="@drawable/baseline_chat_24"
-        android:title="Queries">
-    </item>
 
 
 
 
     <item
-        android:id="@+id/support"
-        android:icon="@drawable/baseline_help_24"
-        android:title="Help ">
+        android:title="Profile and Support">
+        <menu>
+            <item
+                android:id="@+id/myAccount"
+                android:icon="@drawable/baseline_display_settings_24"
+                android:title="My Account" />
+
+
+            <item
+                android:id="@+id/queries"
+                android:icon="@drawable/baseline_chat_24"
+                android:title="Tickets" />
+            <item
+                android:id="@+id/support"
+                android:icon="@drawable/baseline_help_24"
+                android:title="Support" />
+
+            <item
+                android:id="@+id/logOutAccount"
+                android:icon="@drawable/baseline_exit_to_app_24"
+                android:title="Log out " />
+        </menu>
     </item>
+
+
 
 </menu>

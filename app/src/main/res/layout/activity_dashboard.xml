@@ -32,6 +32,9 @@
                     android:background="@color/white"
                     app:navigationIcon="@drawable/baseline_menu_24"
                     app:title="Dashboard"
+                    android:paddingStart="@dimen/_4sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    app:menu="@menu/notification_menu"
                     app:titleTextColor="@color/black" />
 
 

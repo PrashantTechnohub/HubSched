@@ -1,19 +1,23 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomErrorDialog;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.QRCodeGeneratorUtil;
@@ -22,6 +26,7 @@ import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,10 +39,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class InMeetingActivity extends BaseActivity {
 
-    MaterialCardView showQrBtn, discussionBtn, memberBtn, pantryBtn;
+    MaterialCardView showQrBtn, discussionBtn, memberBtn, pantryBtn, extendMeeting;
 
     MaterialButton hideQrBtn;
     ArrayList<Integer> list = new ArrayList<Integer>();
@@ -45,20 +51,24 @@ public class InMeetingActivity extends BaseActivity {
     TextView timeLeft, subjectView;
     String meetId, companyId, subject, startTime, endTime, response;
 
+    int selectedMinutes = 0;
+    AlertDialog dialog;
+    CountDownTimer countDownTimer;
+    boolean success;
     //______________________
     ImageView qrCodeView;
-    RelativeLayout inMeetingLayout, qrCodeLayout , actionBar;
+    RelativeLayout inMeetingLayout, qrCodeLayout, actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_meeting);
 
-        
 
         timeLeft = findViewById(R.id.time_left);
         subjectView = findViewById(R.id.subject);
         qrCodeView = findViewById(R.id.qr_code_image);
+        extendMeeting = findViewById(R.id.extend_meeting_time_btn);
 
         showQrBtn = findViewById(R.id.showQrCodeBtn);
         hideQrBtn = findViewById(R.id.hideQr_btn);
@@ -69,9 +79,6 @@ public class InMeetingActivity extends BaseActivity {
         inMeetingLayout = findViewById(R.id.InMeetingRL);
         qrCodeLayout = findViewById(R.id.qrCodeRL);
         actionBar = findViewById(R.id.rl1);
-
-
-
 
 
         Intent intent = getIntent();
@@ -88,7 +95,7 @@ public class InMeetingActivity extends BaseActivity {
 
         generateQrCode();
 
-        startCountdownTimer(endTime, timeLeft);
+        startCountdownTimer();
 
         findViewById(R.id.back).setOnClickListener(view -> finish());
 
@@ -131,6 +138,116 @@ public class InMeetingActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        extendMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(InMeetingActivity.this, R.style.MaterialAlertDialog_Rounded);
+                LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View team = inflater1.inflate(R.layout.cl_meeting_extend, null);
+                builder.setView(team);
+                builder.setCancelable(false);
+
+
+                SeekBar seekBar = team.findViewById(R.id.seek_bar_time);
+                MaterialButton check = team.findViewById(R.id.check_extend);
+                MaterialButton cancel = team.findViewById(R.id.cancel_extend_meeting);
+                TextView extendedTime = team.findViewById(R.id.extended_meet_time);
+                // Initialize selectedMinutes with a default value
+                dialog = builder.create();
+
+                extendedTime.setText("EXTEND MEETING TIME 10 MIN");
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        selectedMinutes = (progress + 1) * 10; // Multiply progress by 10 to get the selected
+                        extendedTime.setText("EXTEND MEETING TIME " + selectedMinutes + " MIN");
+
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        selectedMinutes = 10;
+                        extendedTime.setText("EXTEND MEETING TIME " + 10 + " MIN");
+
+                        // Not needed for this case, but you can implement if required
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // Not needed for this case, but you can implement if required
+                    }
+                });
+
+                check.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        extendMeetingApiCall(selectedMinutes);
+                    }
+                });
+
+
+                dialog.show();
+
+
+            }
+        });
+    }
+
+    private void extendMeetingApiCall(int selectedMinutes) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("meetId", Integer.parseInt(meetId));
+            object.put("extra_minutes", selectedMinutes);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        new Receiver(InMeetingActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+
+                try {
+                    // Parse the JSON response
+
+                    // Retrieve values from the JSON object
+                    success = jsonObject.getBoolean("success");
+
+                    String message = jsonObject.getString("message");
+
+
+                    if (success) {
+
+                        String endTime1 = jsonObject.getString("endTime");
+                        endTime = endTime1;
+                        startCountdownTimer();
+                        CustomErrorDialog.mShow(InMeetingActivity.this, message);
+                        dialog.dismiss();
+
+                    } else {
+                        Toast.makeText(InMeetingActivity.this, endTime, Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+
+            }
+        }).extend_meeting(object);
+
     }
 
     private void getJoinedMember() {
@@ -193,13 +310,11 @@ public class InMeetingActivity extends BaseActivity {
     }
 
 
+    private void startCountdownTimer() {
+        if (countDownTimer != null) countDownTimer.cancel();
 
-
-
-
-
-    private void startCountdownTimer(String endTime, final TextView timeLeftTextView) {
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("M/d/yyyy hh:mm a", Locale.getDefault());
+        format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata")); // Set the time zone to Kolkata
 
         try {
             Date endDate = format.parse(endTime);
@@ -208,15 +323,10 @@ public class InMeetingActivity extends BaseActivity {
             endCalendar.setTime(endDate);
 
             Calendar currentCalendar = Calendar.getInstance();
-            currentCalendar.setTimeInMillis(System.currentTimeMillis());
-
-            // Set the date part of the current time to match the end time
-            currentCalendar.set(Calendar.YEAR, endCalendar.get(Calendar.YEAR));
-            currentCalendar.set(Calendar.MONTH, endCalendar.get(Calendar.MONTH));
-            currentCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.get(Calendar.DAY_OF_MONTH));
+            currentCalendar.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata")); // Set the time zone to Kolkata
 
             if (currentCalendar.after(endCalendar)) {
-                timeLeftTextView.setText("End time has already passed.");
+                timeLeft.setText("End time has already passed.");
                 return;
             }
 
@@ -224,43 +334,36 @@ public class InMeetingActivity extends BaseActivity {
             long currentTimeMillis = currentCalendar.getTimeInMillis();
 
             long remainingTimeMillis = endTimeMillis - currentTimeMillis;
+            final long seconds = remainingTimeMillis / 1000;
+            final long minutes = (seconds / 60) % 60;
+            final long hours = (seconds / 3600) % 24;
 
-            CountDownTimer countDownTimer = new CountDownTimer(remainingTimeMillis, 1000) {
+            String remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d s", hours, minutes, seconds);
+
+            timeLeft.setText(remainingTime);
+
+            countDownTimer = new CountDownTimer(remainingTimeMillis, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    long seconds = millisUntilFinished / 1000;
-                    long minutes = (seconds / 60) % 60;
-                    long hours = (seconds / 3600) % 24;
+                    long updatedSeconds = millisUntilFinished / 1000;
+                    long updatedMinutes = (updatedSeconds / 60) % 60;
+                    long updatedHours = (updatedSeconds / 3600) % 24;
+                    updatedSeconds = updatedSeconds % 60;
 
-                    String remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d sec",
-                            hours, minutes, seconds);
+                    String remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d s", updatedHours, updatedMinutes, updatedSeconds);
 
-                    if (minutes >= 60) {
-                        long totalMinutes = minutes + (hours * 60);
-                        remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d sec",
-                                totalMinutes / 60, totalMinutes % 60, seconds);
-                    }
-
-                    if (seconds >= 60) {
-                        long totalSeconds = seconds + (minutes * 60) + (hours * 3600);
-                        remainingTime = String.format(Locale.getDefault(), "%02d h : %02d m : %02d sec",
-                                totalSeconds / 3600, (totalSeconds / 60) % 60, totalSeconds % 60);
-                    }
-
-                    timeLeftTextView.setText(remainingTime);
+                    timeLeft.setText(remainingTime);
                 }
 
                 @Override
                 public void onFinish() {
-                    // Countdown timer finished, handle any necessary actions
-                    timeLeftTextView.setText("Time's up!");
+                    timeLeft.setText("Time's up!");
                 }
             };
 
             countDownTimer.start();
         } catch (ParseException e) {
             ErrorHandler.handleException(getApplicationContext(), e);
-
             // Handle any parsing errors
         }
     }
@@ -279,7 +382,17 @@ public class InMeetingActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (qrCodeLayout.getVisibility() == View.VISIBLE) {
+            // If layout2 is visible, go back to layout1
+            qrCodeLayout.setVisibility(View.GONE);
+            inMeetingLayout.setVisibility(View.VISIBLE);
+            actionBar.setVisibility(View.VISIBLE);
+        } else {
+            // Otherwise, perform default back button functionality
+            super.onBackPressed();
+        }
 
-
-
+    }
 }

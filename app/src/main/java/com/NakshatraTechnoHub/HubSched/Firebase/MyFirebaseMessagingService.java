@@ -3,7 +3,9 @@ package com.NakshatraTechnoHub.HubSched.Firebase;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.NakshatraTechnoHub.HubSched.R;
+import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -34,6 +37,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData() != null) {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("message");
+
+            LocalPreference.storeNotification(this, title, body);
 
             if (hasRequiredPermissions()) {
                 showNotification(title, body);
@@ -60,11 +65,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotification(String title, String body) {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 12, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
+                .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setSound(defaultSoundUri);
 

@@ -38,7 +38,7 @@ import java.util.Locale;
 public class CreateMeetingActivity extends BaseActivity {
     ActivityCreateMeetingBinding bind;
     Calendar c = Calendar.getInstance();
-    String roomName, roomId, selectedDate, startTime, endTime;
+    String roomName, roomId, selectedDate,selectedTime,oldDate, startTime, endTime, action;
     JSONArray EmpIdList;
 
 
@@ -57,13 +57,32 @@ public class CreateMeetingActivity extends BaseActivity {
 
 
         Intent intent = getIntent();
+        action = intent.getStringExtra("action");
         roomName = intent.getStringExtra("roomName");
         roomId = intent.getStringExtra("roomId");
         selectedDate = intent.getStringExtra("selectedDate");
+        getBookedSlotApiCall();
+
+        if ( action!=null){
+            if (action.equals("updateMeeting") ){
+                oldDate = intent.getStringExtra("oldDate");
+                selectedTime = intent.getStringExtra("selectedTime");
+
+                bind.updateExistingInfoLayout.setVisibility(View.VISIBLE);
+                bind.existingDate.setText("Date : " +oldDate);
+                bind.existingTime.setText("Time : " +selectedTime);
+
+
+            }
+
+
+        }else{
+
+        }
 
 
         bind.actionBar.setText("Booked Slots");
-        getBookedSlotApiCall();
+
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +90,7 @@ public class CreateMeetingActivity extends BaseActivity {
                 finish();
             }
         });
-        bind.selectStartDate.setOnClickListener(new View.OnClickListener() {
+        bind.selectStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -101,7 +120,7 @@ public class CreateMeetingActivity extends BaseActivity {
 
             }
         });
-        bind.selectEndDate.setOnClickListener(new View.OnClickListener() {
+        bind.selectEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -176,9 +195,12 @@ public class CreateMeetingActivity extends BaseActivity {
     }
 
     private void confirmMeeting(JSONArray empList) {
-        bind.createMeetLayout.setVisibility(View.VISIBLE);
+
+        bind.bookedMeetingRecyclerview.setVisibility(View.GONE);
+        bind.noResult.setVisibility(View.GONE);
         bind.ll1.setVisibility(View.GONE);
         bind.roomName.setText(roomName);
+        bind.createMeetLayout.setVisibility(View.VISIBLE);
 
         bind.actionBar.setText("Create Meeting");
         ArrayList<SearchableItem> stringArray = getStringArray(empList);
@@ -234,13 +256,14 @@ public class CreateMeetingActivity extends BaseActivity {
 
     }
 
+
+    //Get available slot by date
     private void getBookedSlotApiCall() {
         JSONObject params = new JSONObject();
         try {
             params.put("date", selectedDate);
-            params.put("startTime", startTime);
             params.put("roomId", roomId);
-            params.put("endTime", endTime);
+
         } catch (JSONException e) {
             ErrorHandler.handleException(CreateMeetingActivity.this, e);
         }
@@ -249,11 +272,17 @@ public class CreateMeetingActivity extends BaseActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray jsonArray = response.getJSONArray("list");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
-                        bookedSlotList.add(model);
+                    if (jsonArray != null && jsonArray.length() > 0) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            BookedSlotModel model = new Gson().fromJson(jsonObject.toString(), BookedSlotModel.class);
+                            bookedSlotList.add(model);
+                        }
+                    } else {
+                        bind.bookedMeetingRecyclerview.setVisibility(View.GONE);
+                        bind.noResult.setVisibility(View.VISIBLE);
                     }
+
 
                     // Create and set the adapter
                     bookedSlotAdapter = new MyAdapter<>(bookedSlotList, new MyAdapter.OnBindInterface() {
@@ -280,6 +309,8 @@ public class CreateMeetingActivity extends BaseActivity {
 
     }
 
+
+    //By Start Time and End Time , then we get all members list that available on that time .
     private void setMeetingTimeApiCall() {
 
 
@@ -321,6 +352,8 @@ public class CreateMeetingActivity extends BaseActivity {
 
     }
 
+
+    //When user click on "Create Meeting" then meeting will be created
     private void scheduleMeetingApiCall(String subject, JSONArray empIdList) {
 
         pd.mShow(CreateMeetingActivity.this);
@@ -344,8 +377,9 @@ public class CreateMeetingActivity extends BaseActivity {
             public void onResponse(JSONObject object) {
 
                 pd.mDismiss();
-                Toast.makeText(CreateMeetingActivity.this, "Meeting Created", Toast.LENGTH_SHORT).show();
                 finish();
+                Toast.makeText(CreateMeetingActivity.this, "Meeting Created", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

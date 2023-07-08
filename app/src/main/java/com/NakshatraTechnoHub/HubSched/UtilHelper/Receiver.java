@@ -2,16 +2,21 @@ package com.NakshatraTechnoHub.HubSched.UtilHelper;
 
 
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.BANNER_LIST;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.CANCEL_MEETING_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CHAT_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.CREATE_ROOM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.DELETE_MEETING_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.EXTEND_MEETING_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.GET_PANTRY_ITEM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.MEET_REQUEST_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_EMP_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.REMOVE_ROOM_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.SET_PANTRY_ITEM_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_LIST_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_STATUS_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.SUPPORT_URL;
+import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_EMP_BY_ADMIN_URL;
 import static com.NakshatraTechnoHub.HubSched.Api.Constant.UPDATE_PROFILE_URL;
 
 import android.content.Context;
@@ -119,7 +124,6 @@ public class Receiver {
                         try {
                             if (!jsonString.equals("")) {
                                 Looper.prepare();
-                                Toast.makeText(context, jsonString, Toast.LENGTH_SHORT).show();
                             }
                             JSONObject result = new JSONObject();
                             result = new JSONObject();
@@ -160,7 +164,6 @@ public class Receiver {
                     String err = new String(error.networkResponse.data);
 
 
-                    Toast.makeText(context, err, Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
                     Log.e(TAG, error.toString());
@@ -201,6 +204,7 @@ public class Receiver {
     public void getMeetingList() {
         getList(Request.Method.GET,  Constant.withToken(Constant.MEETING_LIST_URL, context), new JSONObject());
     }
+
     public void getBookedSlotList(JSONObject param) {
         getdata(Request.Method.POST,  Constant.withToken(Constant.MEETS_FOR_DATE_URL, context), param);
     }
@@ -224,8 +228,16 @@ public class Receiver {
         getdata(Request.Method.POST, Constant.withToken(MEET_REQUEST_URL, context), params);
     }
 
-    public void delete_meeting(JSONObject params ) {
-        getdata(Request.Method.DELETE, Constant.withToken(DELETE_MEETING_URL, context), params);
+    public void delete_meeting(int meetId ) {
+        getdata(Request.Method.DELETE, Constant.withToken(DELETE_MEETING_URL+"/"+meetId, context), new JSONObject());
+    }
+    public void cancel_meeting(int meetId ) {
+        getdata(Request.Method.PUT, Constant.withToken(CANCEL_MEETING_URL+"/"+meetId, context), new JSONObject());
+    }
+
+
+    public void extend_meeting(JSONObject object ) {
+        getdata(Request.Method.POST, Constant.withToken(EXTEND_MEETING_URL, context), object);
     }
 
     public void post_ticket(JSONObject params ) {
@@ -263,12 +275,20 @@ public class Receiver {
         getdata(Request.Method.PUT, Constant.withToken(UPDATE_PROFILE_URL, context), params);
     }
 
-    public void update_employee(JSONObject params ) {
-        getdata(Request.Method.PUT, Constant.withToken(UPDATE_PROFILE_URL, context), params);
+    public void update_employee_by_admin(JSONObject params) {
+        getdata(Request.Method.PUT, Constant.withToken(UPDATE_EMP_BY_ADMIN_URL, context), params);
     }
 
     public void add_emp(JSONObject params ) {
         getdata(Request.Method.POST, Constant.withToken(CREATE_EMP_URL, context), params);
+    }
+
+    public void set_pantry_item(JSONObject params ) {
+        getdata(Request.Method.POST, Constant.withToken(SET_PANTRY_ITEM_URL, context), params);
+    }
+
+    public void get_pantry_item( ) {
+        getdata(Request.Method.GET, Constant.withToken(GET_PANTRY_ITEM_URL, context), new JSONObject());
     }
     public void save_sms_to_server(JSONObject params ) {
         getdata(Request.Method.POST, Constant.withToken(CHAT_URL, context), params);

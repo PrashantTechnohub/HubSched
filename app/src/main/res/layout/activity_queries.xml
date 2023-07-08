@@ -37,19 +37,12 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
-                android:text="Queries"
+                android:text="Tickets"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
 
-            <ImageView
-                android:id="@+id/filter"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/baseline_filter_list_24" />
+
 
 
         </RelativeLayout>

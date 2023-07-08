@@ -1,14 +1,11 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +31,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import pl.droidsonroids.gif.GifImageView;
 
-public class ChatActivity extends  BaseActivity {
+public class ChatActivity extends BaseActivity {
     RecyclerView recyclerViewChat;
     private Socket socket;
     private List<MessageModel> messageList;
@@ -179,7 +176,7 @@ public class ChatActivity extends  BaseActivity {
             });
 
         } catch (URISyntaxException e) {
-            Log.d("ChatError11", "onError: " +e.toString());
+            Log.d("ChatError11", "onError: " + e.toString());
 
             ErrorHandler.handleException(ChatActivity.this, e);
         }
@@ -202,7 +199,7 @@ public class ChatActivity extends  BaseActivity {
             jsonMessage.put("message", message);
         } catch (JSONException e) {
             ErrorHandler.handleException(ChatActivity.this, e);
-            Log.d("ChatError11", "onError: " +e.toString());
+            Log.d("ChatError11", "onError: " + e.toString());
 
         }
 
@@ -211,7 +208,7 @@ public class ChatActivity extends  BaseActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                if (empty.getVisibility() ==View.VISIBLE){
+                if (empty.getVisibility() == View.VISIBLE) {
                     empty.setVisibility(View.GONE);
                 }
 
@@ -220,7 +217,7 @@ public class ChatActivity extends  BaseActivity {
 
             @Override
             public void onError(VolleyError error) {
-                Log.d("ChatError111", "onError: " +error.toString());
+                Log.d("ChatError111", "onError: " + error.toString());
 
             }
         }).save_sms_to_server(jsonMessage);

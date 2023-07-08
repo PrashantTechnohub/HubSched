@@ -1,10 +1,12 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.NakshatraTechnoHub.HubSched.Api.Constant;
 import com.NakshatraTechnoHub.HubSched.Models.ScheduleMeetingModel;
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
@@ -19,9 +22,16 @@ import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.MyAdapter;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityMeetingListBinding;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,15 +40,19 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public class MeetingListActivity extends BaseActivity {
 
     ActivityMeetingListBinding bind;
 
     ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
-
+    String start;
     MyAdapter adapter;
 
     @Override
@@ -88,6 +102,8 @@ public class MeetingListActivity extends BaseActivity {
                         try {
                             JSONObject object = response.getJSONObject(i);
                             ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
+                            if(model.getOrganiser_id() != Integer.parseInt(LocalPreference.get_Id(MeetingListActivity.this)))
+                                continue;
                             list.add(model);
 
                         } catch (JSONException e) {
@@ -121,7 +137,6 @@ public class MeetingListActivity extends BaseActivity {
                             llp3.setVisibility(View.VISIBLE);
 
 
-
                             String inputDate = list.get(position).getDate();
                             SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
                             SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
@@ -153,6 +168,7 @@ public class MeetingListActivity extends BaseActivity {
 
 
 
+
                         }
                     }, R.layout.cl_scheduled_meeting);
 
@@ -161,6 +177,7 @@ public class MeetingListActivity extends BaseActivity {
 
 
                 }else {
+                    bind.meetingListRecyclerview.setVisibility(View.GONE);
                     bind.pd.setVisibility(View.GONE);
                     bind.noResult.setVisibility(View.VISIBLE);
                 }
@@ -180,30 +197,44 @@ public class MeetingListActivity extends BaseActivity {
 
     private void cancelMeeting(int id) {
 
-    }
-
-    private void deleteMeeting(int id) {
-
-        JSONObject object = new JSONObject();
-        try {
-            object.put("meetId", id);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
         new Receiver(MeetingListActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
-                getMeetingList();
-                Toast.makeText(MeetingListActivity.this, "Meeting Deleted", Toast.LENGTH_SHORT).show();
+
+                try {
+                    String message = object.getString("message");
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
             public void onError(VolleyError error) {
 
-                ErrorHandler.handleVolleyError(MeetingListActivity.this, error);
             }
-        }).delete_meeting(object);
+        }).cancel_meeting(id);
+
+
+    }
+
+    private void deleteMeeting(int id) {
+
+
+
+        new Receiver(MeetingListActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject object) {
+
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        }).delete_meeting(id);
+
+
     }
 
 }
