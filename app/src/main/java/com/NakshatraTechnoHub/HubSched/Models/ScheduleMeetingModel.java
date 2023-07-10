@@ -14,6 +14,7 @@ public class ScheduleMeetingModel {
     private String acceptance_status;
     private String startTime;
     private String date;
+    private String organiser_name;
 
     public String getDate() {
         return date;
@@ -24,6 +25,7 @@ public class ScheduleMeetingModel {
     }
 
     private String endTime;
+    private String room_address;
     private String status;
     private String subject;
 
@@ -35,6 +37,22 @@ public class ScheduleMeetingModel {
 //        this.subject = subject;
 //    }
 
+
+    public String getOrganiser_name() {
+        return organiser_name;
+    }
+
+    public String getRoom_address() {
+        return room_address;
+    }
+
+    public void setRoom_address(String room_address) {
+        this.room_address = room_address;
+    }
+
+    public void setOrganiser_name(String organiser_name) {
+        this.organiser_name = organiser_name;
+    }
 
     public List<Integer> getAccepted() {
         return accepted;

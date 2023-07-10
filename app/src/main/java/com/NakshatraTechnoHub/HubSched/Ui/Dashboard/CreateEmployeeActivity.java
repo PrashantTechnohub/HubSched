@@ -1,8 +1,12 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -15,6 +19,8 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class CreateEmployeeActivity extends BaseActivity {
@@ -239,14 +245,13 @@ public class CreateEmployeeActivity extends BaseActivity {
     }
 
 
-
-
     private void addEmployee(String user_type_x, String empId_x, String name_x, String email_x, String mobile_x, String gender_x, String position_x, String password_x) {
 
 
         JSONObject params = new JSONObject();
         try {
             params.put("userType", user_type_x);
+            params.put("profile", "");
             params.put("empId", empId_x);
             params.put("name", name_x);
             params.put("email", email_x);

@@ -71,7 +71,7 @@ public class MeetingFragment extends Fragment{
         context = requireContext();
 
         MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
-        toolbar.setTitle("Meeting");
+        toolbar.setTitle("Meeting History");
 
         bind.refresh.setOnRefreshListener(this::getMeetingList);
 
@@ -112,6 +112,11 @@ public class MeetingFragment extends Fragment{
                                 // Check if the meeting time has expired
                                 if (hasMeetingExpired(model.getDate(), model.getEndTime())) {
                                     list.add(model);
+
+                                }else{
+                                    bind.meetingRecyclerview.setVisibility(View.GONE);
+                                    bind.pd.setVisibility(View.GONE);
+                                    bind.noResult.setVisibility(View.VISIBLE);
                                 }
 
                                 // Rest of your code
@@ -124,6 +129,7 @@ public class MeetingFragment extends Fragment{
 
                     }else {
                         list.clear();
+                        bind.meetingRecyclerview.setVisibility(View.GONE);
                         bind.pd.setVisibility(View.GONE);
                         bind.noResult.setVisibility(View.VISIBLE);
                     }
@@ -139,14 +145,15 @@ public class MeetingFragment extends Fragment{
                             TextView meetTime = holder.itemView.findViewById(R.id.meet_time);
                             TextView meetDate = holder.itemView.findViewById(R.id.meet_date);
                             TextView meetLocation = holder.itemView.findViewById(R.id.meet_location);
-                            MaterialButton denyBtn = holder.itemView.findViewById(R.id.meet_deny_btn);
-                            MaterialButton acptBtn = holder.itemView.findViewById(R.id.meet_accept_btn);
-                            MaterialButton joinBtn = holder.itemView.findViewById(R.id.meet_join_btn);
-                            LinearLayout llp = holder.itemView.findViewById(R.id.actionLlp);
-                            LinearLayout llp2 = holder.itemView.findViewById(R.id.actionLlp2);
-                            TextView statusView = holder.itemView.findViewById(R.id.statusView);
-                            TextView countdownTimerView = holder.itemView.findViewById(R.id.meetingCountView);
+                            TextView meetingCountView = holder.itemView.findViewById(R.id.meetingCountView);
+                            LinearLayout expiredLayout = holder.itemView.findViewById(R.id.actionLlp2);
+                            LinearLayout acptDenied = holder.itemView.findViewById(R.id.actionLlp);
 
+
+                            TextView statusView = holder.itemView.findViewById(R.id.statusView);
+
+                            expiredLayout.setVisibility(View.VISIBLE);
+                            acptDenied.setVisibility(View.GONE);
 
                             String inputDate = list.get(position).getDate();
                             SimpleDateFormat inputFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
@@ -155,69 +162,34 @@ public class MeetingFragment extends Fragment{
                             try {
                                 Date date = inputFormat.parse(inputDate);
                                 String formattedDate = outputFormat.format(date);
-                                orgName.setText(list.get(position).getOrganiser_id() + "");
+                                orgName.setText(list.get(position).getOrganiser_name() );
                                 meetSubject.setText(list.get(position).getSubject());
                                 meetDate.setText(formattedDate);
                                 meetTime.setText(list.get(position).getStartTime() + " - " + list.get(position).getEndTime());
-                                meetLocation.setText(list.get(position).getRoomId() + "");
-                            } catch (ParseException e) {
+                                meetLocation.setText(list.get(position).getRoom_address() );                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-
+                            meetingCountView.setText("Meeting has expired.");
+                            meetingCountView.setTextColor(ContextCompat.getColor(context, R.color.red));
 
                             if (list.get(position).getAcceptance_status() != null) {
                                 if (list.get(position).getAcceptance_status().equals("accepted")) {
-                                    llp.setVisibility(View.GONE);
-                                    llp2.setVisibility(View.VISIBLE);
                                     statusView.setVisibility(View.VISIBLE);
                                     statusView.setText("ACCEPTED");
                                     statusView.setTextColor(ContextCompat.getColor(context, R.color.green));
                                     statusView.setBackgroundResource(R.drawable.green_accpeted_bg);
-                                    fetchMeetingTimeStatus(list.get(position).getDate() + "", list.get(position).getStartTime() + "", list.get(position).getEndTime() + "", countdownTimerView, joinBtn, context);
 
                                 }
                                 if (list.get(position).getAcceptance_status().equals("declined")) {
-                                    llp.setVisibility(View.GONE);
                                     statusView.setVisibility(View.VISIBLE);
                                     statusView.setText("DECLINED");
                                     statusView.setTextColor(ContextCompat.getColor(context, R.color.red));
                                     statusView.setBackgroundResource(R.drawable.red_declined_bg);
 
                                 }
-                                if (list.get(position).getAcceptance_status().equals("pending")) {
-                                    llp.setVisibility(View.VISIBLE);
-                                }
+
                             }
 
-
-                            acptBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    acceptDenied(list.get(position).get_id(),true, position);
-
-                                }
-                            });
-                            denyBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    acceptDenied(list.get(position).get_id(),false, position);
-
-                                }
-                            });
-
-                            joinBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                    String meetId =String.valueOf(list.get(position).get_id());
-                                    String companyId =String.valueOf(list.get(position).getCompany_id());
-                                    String subject =String.valueOf(list.get(position).getSubject());
-                                    String startTime =String.valueOf(list.get(position).getStartTime());
-                                    String endTime =String.valueOf( list.get(position).getEndTime());
-                                    String date =String.valueOf( list.get(position).getDate());
-                                    generateQrCode(meetId, companyId, subject, startTime, endTime, date);
-                                }
-                            });
 
 
 
@@ -277,183 +249,7 @@ public class MeetingFragment extends Fragment{
         return false;
     }
 
-    private void acceptDenied(int meetId, Boolean ready, int pos) {
-        JSONObject params = new JSONObject();
 
-        try {
-            params.put("meetId", meetId);
-            params.put("ready", ready);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        new Receiver(requireContext(), new Receiver.ApiListener() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String msg = response.getString("message");
-                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    getMeetingList();
-                    if (pd.isDialogShown()){
-                        pd.mDismiss();
-                    }
-                } catch (JSONException e) {
-                    ErrorHandler.handleException(getContext(), e);
-                    pd.mDismiss();
-                }
-            }
-
-            @Override
-            public void onError(VolleyError error) {
-                pd.mDismiss();
-                ErrorHandler.handleVolleyError(requireActivity(), error);
-
-            }
-        }).accept_denied_meeting(params);
-
-    }
-
-    private Bitmap generateQrCode(String getMeetId, String companyId, String subject, String startTime, String endTime, String date) {
-
-        JSONObject params = new JSONObject();
-
-        try {
-            params.put("meetId",Integer.parseInt(getMeetId));
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.withToken(Constant.GENERATE_QR_CODE_URL, context), params, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Intent intent = new Intent(context, InMeetingActivity.class);
-                intent.putExtra("response", response.toString());
-                intent.putExtra("meetId", getMeetId);
-                intent.putExtra("companyId", companyId);
-                intent.putExtra("subject", subject);
-                intent.putExtra("startTime", startTime);
-                intent.putExtra("endTime", date +" "+endTime);
-                LocalPreference.store_meetId(context, getMeetId);
-                context.startActivity(intent);
-            }
-
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-
-                try {
-                    if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 500) {
-
-                            String errorString = new String(error.networkResponse.data);
-                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-
-                        Toast.makeText(context, "Something went wrong or have a server issues", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (Exception e) {
-
-                    Log.e("CreateEMP", "onErrorResponse: ", e);
-                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        VolleySingleton.getInstance(context).addToRequestQueue(request);
-
-        return qrCodeBitmap;
-    }
-
-    private static void fetchMeetingTimeStatus(String date, String startTime, String endTime, TextView countdownTimerView, MaterialButton joinBtn, Context context) {
-        String DATE_FORMAT = "M/d/yyyy"; // Updated date format
-        String TIME_FORMAT = "hh:mm a";
-
-        // Get current date and time
-        Calendar currentDateTime = Calendar.getInstance();
-
-        // Parse meeting date
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        Date meetingDate = null;
-        try {
-            meetingDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // Parse start time
-        DateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-        Date startDateTime = null;
-        try {
-            startDateTime = timeFormat.parse(startTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // Parse end time
-        Date endDateTime = null;
-        try {
-            endDateTime = timeFormat.parse(endTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // Combine meeting date with start and end times
-        Calendar meetingStartTime = Calendar.getInstance();
-        meetingStartTime.setTime(meetingDate);
-        meetingStartTime.set(Calendar.HOUR_OF_DAY, startDateTime.getHours());
-        meetingStartTime.set(Calendar.MINUTE, startDateTime.getMinutes());
-
-        Calendar meetingEndTime = Calendar.getInstance();
-        meetingEndTime.setTime(meetingDate);
-        meetingEndTime.set(Calendar.HOUR_OF_DAY, endDateTime.getHours());
-        meetingEndTime.set(Calendar.MINUTE, endDateTime.getMinutes());
-
-        // Check meeting time status
-        if (currentDateTime.before(meetingStartTime)) {
-            // Meeting is upcoming
-            long remainingTimeInMillis = meetingStartTime.getTimeInMillis() - currentDateTime.getTimeInMillis();
-            long minutes = remainingTimeInMillis / (1000 * 60);
-            if (minutes >= 60) {
-                long hours = minutes / 60;
-                long remainingMinutes = minutes % 60;
-                if (hours >= 24) {
-                    long days = hours / 24;
-                    long remainingHours = hours % 24;
-                    String remainingTimeText = String.format("%02d", days) + " days " + String.format("%02d", remainingHours) + " hours " + String.format("%02d", remainingMinutes) + " min left";
-                    countdownTimerView.setText(remainingTimeText);
-                } else {
-                    String remainingTimeText = hours + " hour " + String.format("%02d", remainingMinutes) + " min left";
-                    countdownTimerView.setText(remainingTimeText);
-                }
-            } else {
-                String remainingTimeText = minutes + " min left";
-                countdownTimerView.setText(remainingTimeText);
-            }
-            countdownTimerView.setTextColor(Color.BLUE); // Set text color to blue for upcoming meetings
-            if (minutes == 0) {
-                joinBtn.setVisibility(View.VISIBLE); // Set join button visibility to VISIBLE
-            }
-        } else if (currentDateTime.after(meetingEndTime)) {
-            // Meeting has expired
-            countdownTimerView.setText("Meeting has expired.");
-            countdownTimerView.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (currentDateTime.equals(meetingStartTime) || (currentDateTime.after(meetingStartTime) && currentDateTime.before(meetingEndTime))) {
-            // Meeting is ongoing
-            joinBtn.setVisibility(View.VISIBLE); // Set join button visibility to VISIBLE
-
-            countdownTimerView.setText("Meeting is ongoing.");
-            countdownTimerView.setTextColor(context.getResources().getColor(R.color.green));
-        }
-    }
 
 
 }

@@ -47,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,7 +128,23 @@ public class HomeFragment extends Fragment {
 
         return rootView;
     }
+    private String convertBitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+    private Bitmap decodeBase64ToBitmapList( String base64String) {
+        try {
+            byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            return bitmap;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        }
 
+    }
 
     private void getInvitationList() {
         if (isAdded()) {
@@ -202,7 +219,7 @@ public class HomeFragment extends Fragment {
                             try {
                                 Date date = inputFormat.parse(inputDate);
                                 String formattedDate = outputFormat.format(date);
-                                orgName.setText(list.get(position).getOrganiser_id() + "");
+                                orgName.setText(list.get(position).getOrganiser_name() + "");
                                 meetSubject.setText(list.get(position).getSubject());
                                 meetTime.setText(list.get(position).getStartTime() + " - " + list.get(position).getEndTime() + " " + list.get(position).getDate());
                             } catch (ParseException e) {
@@ -547,15 +564,16 @@ public class HomeFragment extends Fragment {
         Menu menu = navigationView.getMenu();
         MenuItem empListMenu = menu.findItem(R.id.employeeList);
         MenuItem meetingListMenu = menu.findItem(R.id.meetingList);
+        MenuItem queriesMenu = menu.findItem(R.id.queries);
         MenuItem roomListMenu = menu.findItem(R.id.hallManagement);
         MenuItem content = menu.findItem(R.id.editContent);
+        queriesMenu.setVisible(false);
         meetingListMenu.setVisible(false);
         roomListMenu.setVisible(false);
         empListMenu.setVisible(false);
         content.setVisible(false);
 
         bind.adminViewLayout.setVisibility(View.GONE);
-        navigationView.setVisibility(View.GONE);
         bind.rrl1.setVisibility(View.VISIBLE);
         bind.invitationLayout.setVisibility(View.VISIBLE);
         getInvitationList();

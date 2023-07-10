@@ -143,70 +143,31 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <com.google.android.material.card.MaterialCardView
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="@dimen/_270sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_23sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_23sdp"
-                android:id="@+id/create_room_facilities"
+                android:hint="Room Facilities"
+                app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusTopEnd="@dimen/_11sdp"
-                app:boxCornerRadiusTopStart="@dimen/_11sdp">
+                app:boxCornerRadiusTopStart="@dimen/_11sdp"
+                app:hintTextColor="@color/black">
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_room_facilities"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_42sdp">
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:inputType="none"
+                    android:textAppearance="@style/TextStyle"
+                    tools:ignore="TextSizeCheck" />
 
-                        <TextView
-                            android:id="@+id/text"
-                            android:layout_marginTop="@dimen/_12sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:text="Facilities"
-                            android:textSize="@dimen/_13sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
-                    </RelativeLayout>
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/selectedFacilitiesView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:visibility="gone"
-                                android:maxLines="12"
-                                android:layout_marginBottom="@dimen/_12sdp"
-                                android:layout_marginHorizontal="@dimen/_12sdp"
-                                android:text="Select Employee"
-                                android:textSize="@dimen/_13sdp" />
-
-                        </LinearLayout>
-
-                    </ScrollView>
-
-                </LinearLayout>
-
-
-
-
-            </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"

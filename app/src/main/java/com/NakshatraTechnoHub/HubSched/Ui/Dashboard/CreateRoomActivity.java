@@ -123,7 +123,7 @@ public class CreateRoomActivity extends BaseActivity {
                             }
                         }
                         // set text on textView
-                       bind.selectedFacilitiesView.setText(result);
+                       bind.createRoomFacilities.setText(result);
                     }
                 });
 
@@ -141,7 +141,7 @@ public class CreateRoomActivity extends BaseActivity {
                         for (int j = 0; j < selectedFacilities.length; j++) {
                             selectedFacilities[j] = false;
                             facilitiesList.clear();
-                            bind.selectedFacilitiesView.setText("");
+                            bind.createRoomFacilities.setText("");
                         }
                     }
                 });

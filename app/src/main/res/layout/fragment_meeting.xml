@@ -18,6 +18,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -64,6 +65,8 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
+        android:layout_marginTop="@dimen/_5sdp"
+
         android:layout_below="@id/filterLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

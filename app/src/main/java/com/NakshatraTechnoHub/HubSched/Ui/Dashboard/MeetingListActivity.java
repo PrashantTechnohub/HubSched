@@ -101,6 +101,7 @@ public class MeetingListActivity extends BaseActivity {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject object = response.getJSONObject(i);
+
                             ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
                             if(model.getOrganiser_id() != Integer.parseInt(LocalPreference.get_Id(MeetingListActivity.this)))
                                 continue;
@@ -144,11 +145,11 @@ public class MeetingListActivity extends BaseActivity {
                             try {
                                 Date date = inputFormat.parse(inputDate);
                                 String formattedDate = outputFormat.format(date);
-                                orgName.setText(list.get(position).getOrganiser_id() + "");
+                                orgName.setText(list.get(position).getOrganiser_name());
                                 meetSubject.setText(list.get(position).getSubject());
                                 meetDate.setText(formattedDate);
                                 meetTime.setText(list.get(position).getStartTime() + " - " + list.get(position).getEndTime());
-                                meetLocation.setText(list.get(position).getRoomId() + "");
+                                meetLocation.setText(list.get(position).getRoom_address() );
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

@@ -108,6 +108,7 @@
 
                                 <TextView
                                     android:id="@+id/emp_name"
+                                    android:singleLine="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_10sdp"
@@ -137,6 +138,8 @@
 
                                 <TextView
                                     android:id="@+id/emp_id"
+                                    android:singleLine="true"
+
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_10sdp"
@@ -166,6 +169,8 @@
 
 
                                 <TextView
+                                    android:singleLine="true"
+
                                     android:id="@+id/emp_post"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

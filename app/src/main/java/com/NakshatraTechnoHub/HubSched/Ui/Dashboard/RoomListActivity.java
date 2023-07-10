@@ -121,7 +121,6 @@ public class RoomListActivity extends BaseActivity {
                             roomSeats.setText(roomList.get(position).getSeat_cap()+"");
                             roomFloor.setText(roomList.get(position).getFloor_no());
 
-                            String a= LocalPreference.getType(RoomListActivity.this);
                             if (LocalPreference.getType(RoomListActivity.this).equals("organiser")){
                                 removeRoom.setVisibility(View.GONE);
                             }
