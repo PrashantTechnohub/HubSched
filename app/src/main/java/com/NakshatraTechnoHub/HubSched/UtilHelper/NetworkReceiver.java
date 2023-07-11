@@ -18,7 +18,7 @@ public class NetworkReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             if (isOnline(context)) {
-                Log.e("net", "Online Connect Intenet ");
+                Log.e("net", "Online Connect Internet ");
                 if (alertDialog != null && alertDialog.isShowing())
                     alertDialog.dismiss();
             } else {

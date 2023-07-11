@@ -20,6 +20,7 @@ import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.BaseActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.Dashboard.DashboardActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.PantryDashboard.PantryActivity;
 import com.NakshatraTechnoHub.HubSched.Ui.ScannerDeviceDashboard.ScannerDeviceActivity;
+import com.NakshatraTechnoHub.HubSched.UtilHelper.CustomErrorDialog;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
@@ -144,44 +145,51 @@ public class LoginActivity extends BaseActivity {
                     String token = response.getString("token");
                     String type = response.getString("type");
                     String userId = response.getString("_id");
+                    String status = response.optString("status");
                     String company_id = response.getString("company_id");
 
-                    LocalPreference.storeUserDetail(LoginActivity.this, type, token, userId, company_id);
+                    if(status.equals("blocked")){
+                        CustomErrorDialog.mShow(LoginActivity.this, "You are blocked. Please contact Admin");
+                    }else {
+                        LocalPreference.storeUserDetail(LoginActivity.this, type, token, userId, company_id);
 
-                    if (type.equals("admin")) {
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        pd.mDismiss();
-                        finish();
-                    } else if (type.equals("employee")) {
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        pd.mDismiss();
-                        finish();
-                    } else if (type.equals("organiser")) {
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        pd.mDismiss();
-                        finish();
-                    } else if (type.equals("pantry")) {
-                        Intent intent = new Intent(LoginActivity.this, PantryActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        pd.mDismiss();
-                        finish();
-                    } else if (type.equals("scanner")) {
-                        Intent intent = new Intent(LoginActivity.this, ScannerDeviceActivity.class);
-                        intent.putExtra("type", type);
-                        startActivity(intent);
-                        pd.mDismiss();
-                        finish();
-                    } else {
+                        if (type.equals("admin")) {
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            pd.mDismiss();
+                            finish();
+                        } else if (type.equals("employee")) {
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            pd.mDismiss();
+                            finish();
+                        } else if (type.equals("organiser")) {
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            pd.mDismiss();
+                            finish();
+                        } else if (type.equals("pantry")) {
+                            Intent intent = new Intent(LoginActivity.this, PantryActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            pd.mDismiss();
+                            finish();
+                        } else if (type.equals("scanner")) {
+                            Intent intent = new Intent(LoginActivity.this, ScannerDeviceActivity.class);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            pd.mDismiss();
+                            finish();
+                        } else {
+                            pd.mDismiss();
+                        }
                         pd.mDismiss();
                     }
-                    pd.mDismiss();
+
+
 
                 } catch (JSONException e) {
                     pd.mDismiss();

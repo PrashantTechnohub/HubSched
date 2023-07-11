@@ -90,9 +90,6 @@
             android:exported="false"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name=".Ui.Dashboard.OrganizerListActivity"
-            android:exported="false" />
-        <activity
             android:name=".Ui.Dashboard.DashboardActivity"
             android:exported="false" />
         <activity

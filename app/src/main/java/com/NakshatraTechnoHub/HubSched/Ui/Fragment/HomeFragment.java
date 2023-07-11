@@ -10,12 +10,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -71,6 +73,9 @@ public class HomeFragment extends Fragment {
     private ImageSliderAdapter adapter;
     UpComingAdapter UpAdapter;
     String type;
+    MenuItem roomMeetingCreationMenu, manageMeetingMenu, employeeMenu, contentMenu, ticketMenu;
+
+    Menu menu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +83,19 @@ public class HomeFragment extends Fragment {
         View rootView = bind.getRoot();
 
         toolbar = getActivity().findViewById(R.id.topAppBar);
+
+
         navigationView = getActivity().findViewById(R.id.navigation_view);
+        menu = navigationView.getMenu();
+        employeeMenu = menu.findItem(R.id.employeeList);
+        manageMeetingMenu = menu.findItem(R.id.meetingList);
+        ticketMenu = menu.findItem(R.id.queries);
+        roomMeetingCreationMenu = menu.findItem(R.id.hallManagement);
+        contentMenu = menu.findItem(R.id.editContent);
+
+
+
+
         type = LocalPreference.getType(getContext());
 
 
@@ -128,13 +145,15 @@ public class HomeFragment extends Fragment {
 
         return rootView;
     }
+
     private String convertBitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
-    private Bitmap decodeBase64ToBitmapList( String base64String) {
+
+    private Bitmap decodeBase64ToBitmapList(String base64String) {
         try {
             byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
@@ -144,6 +163,30 @@ public class HomeFragment extends Fragment {
             return null;
         }
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.notification_menu, menu);
+        MenuItem refresh = menu.findItem(R.id.refresh);
+
+        refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                getInvitationList();
+                getBanners();
+                upComingMeetings();
+                Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 
     private void getInvitationList() {
@@ -549,11 +592,9 @@ public class HomeFragment extends Fragment {
     public void organizerFunction() {
         bind.adminViewLayout.setVisibility(View.GONE);
 
-        Menu menu = navigationView.getMenu();
-        MenuItem empListMenu = menu.findItem(R.id.employeeList);
-        MenuItem content = menu.findItem(R.id.editContent);
-        empListMenu.setVisible(false);
-        content.setVisible(false);
+        ticketMenu.setVisible(false);
+        employeeMenu.setVisible(false);
+        contentMenu.setVisible(false);
 
         toolbar.setTitle("Organizer Dashboard");
 
@@ -561,17 +602,11 @@ public class HomeFragment extends Fragment {
 
     public void employeeFunction() {
         toolbar.setTitle("Employee Dashboard");
-        Menu menu = navigationView.getMenu();
-        MenuItem empListMenu = menu.findItem(R.id.employeeList);
-        MenuItem meetingListMenu = menu.findItem(R.id.meetingList);
-        MenuItem queriesMenu = menu.findItem(R.id.queries);
-        MenuItem roomListMenu = menu.findItem(R.id.hallManagement);
-        MenuItem content = menu.findItem(R.id.editContent);
-        queriesMenu.setVisible(false);
-        meetingListMenu.setVisible(false);
-        roomListMenu.setVisible(false);
-        empListMenu.setVisible(false);
-        content.setVisible(false);
+        ticketMenu.setVisible(false);
+        manageMeetingMenu.setVisible(false);
+        roomMeetingCreationMenu.setVisible(false);
+        employeeMenu.setVisible(false);
+        contentMenu.setVisible(false);
 
         bind.adminViewLayout.setVisibility(View.GONE);
         bind.rrl1.setVisibility(View.VISIBLE);

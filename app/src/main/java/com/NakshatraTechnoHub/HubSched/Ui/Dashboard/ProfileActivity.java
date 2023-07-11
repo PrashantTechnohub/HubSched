@@ -1,36 +1,47 @@
 package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NakshatraTechnoHub.HubSched.R;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.ErrorHandler;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.LocalPreference;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.Receiver;
 import com.NakshatraTechnoHub.HubSched.UtilHelper.pd;
-;
 import com.NakshatraTechnoHub.HubSched.databinding.ActivityProfileBinding;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+
+;
+
 public class ProfileActivity extends AppCompatActivity {
-    
+
     ActivityProfileBinding bind;
-    String _id, name, empId, position, gender, email, mobile, password, userType;
+
+    String base64Image;
+    String _id, name, empId, position, gender, email, mobile, password, userType, profileDp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         bind = ActivityProfileBinding.inflate(getLayoutInflater());
         View view = bind.getRoot();
         setContentView(view);
-        
+
 
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         fetchProfile();
 
-        
+
     }
 
     public String[] fetchProfile() {
@@ -142,6 +153,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     _id = response.getString("_id");
+                    profileDp = response.getString("profile");
+                    name = response.getString("name");
                     name = response.getString("name");
                     empId = response.getString("empId");
                     position = response.getString("position");
@@ -150,6 +163,19 @@ public class ProfileActivity extends AppCompatActivity {
                     mobile = response.getString("mobile");
                     password = response.getString("password");
                     userType = response.getString("userType");
+
+
+                    try {
+                        byte[] decodedBytes = Base64.decode(profileDp, Base64.DEFAULT);
+                        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                        if (decodedBitmap != null) {
+                            bind.userImg.setImageBitmap(decodedBitmap);
+                        }
+                    } catch (Exception e) {
+                        Log.d("TAG", "onResponse: " + e.toString());
+                    }
+
 
                     bind.empName.setText(name);
                     bind.empId.setText(empId);
@@ -202,6 +228,21 @@ public class ProfileActivity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
 
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
+
+                        // Convert Bitmap to Base64 string
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                        // Use the base64Image string as needed
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ProfileActivity.this, R.style.MaterialAlertDialog_Rounded);
                     LayoutInflater inflater1 = (LayoutInflater) ProfileActivity.this.getSystemService(ProfileActivity.this.LAYOUT_INFLATER_SERVICE);
                     View view = inflater1.inflate(R.layout.cl_profile_image, null);
@@ -211,11 +252,21 @@ public class ProfileActivity extends AppCompatActivity {
 
                     ImageView imageView = view.findViewById(R.id.pre_img);
                     MaterialButton cancel = view.findViewById(R.id.pre_image_cancel_btn);
+                    MaterialButton confirm = view.findViewById(R.id.pre_image_confirm_btn);
 
 
                     final AlertDialog dialog = builder.create();
                     dialog.show();
                     imageView.setImageURI(selectedImageUri);
+
+                    confirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            updateEmployeeByAdmin(base64Image);
+
+                        }
+                    });
+
 
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -229,5 +280,45 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void updateEmployeeByAdmin(String base64Image) {
+        JSONObject updateObject = new JSONObject();
+        try {
+            updateObject.put("userType", userType);
+            updateObject.put("_id", _id);
+            updateObject.put("profile", base64Image);
+            updateObject.put("empId", empId);
+            updateObject.put("name", name);
+            updateObject.put("gender", gender);
+            updateObject.put("mobile", mobile);
+            updateObject.put("email", email);
+            updateObject.put("position", position);
+            updateObject.put("password", password);
+
+        } catch (JSONException e) {
+            ErrorHandler.handleException(getApplicationContext(), e);
+        }
+        new Receiver(ProfileActivity.this, new Receiver.ApiListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String msg = response.getString("message");
+                    Toast.makeText(ProfileActivity.this, msg, Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+
+                    ErrorHandler.handleException(getApplicationContext(), e);
+
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                ErrorHandler.handleVolleyError(getApplicationContext(), error);
+
+            }
+        }).update_employee_by_admin(updateObject);
+
+    }
+
 
 }

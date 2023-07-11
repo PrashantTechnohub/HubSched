@@ -3,14 +3,17 @@ package com.NakshatraTechnoHub.HubSched.Ui.Dashboard;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -30,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -54,6 +58,9 @@ public class MeetingListActivity extends BaseActivity {
     ArrayList<ScheduleMeetingModel> list = new ArrayList<>();
     String start;
     MyAdapter adapter;
+
+    AlertDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +110,16 @@ public class MeetingListActivity extends BaseActivity {
                             JSONObject object = response.getJSONObject(i);
 
                             ScheduleMeetingModel model = new Gson().fromJson(object.toString(), ScheduleMeetingModel.class);
-                            if(model.getOrganiser_id() != Integer.parseInt(LocalPreference.get_Id(MeetingListActivity.this)))
-                                continue;
-                            list.add(model);
+                            if (LocalPreference.getType(MeetingListActivity.this).equals("admin")){
+                                list.add(model);
+
+                            }else{
+
+                                if(model.getOrganiser_id() != Integer.parseInt(LocalPreference.get_Id(MeetingListActivity.this))){
+                                    list.add(model);
+                                }
+                            }
+
 
                         } catch (JSONException e) {
                             bind.pd.setVisibility(View.GONE);
@@ -157,13 +171,55 @@ public class MeetingListActivity extends BaseActivity {
                             delete.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    deleteMeeting(list.get(position).get_id());
+
+                                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MeetingListActivity.this, R.style.MaterialAlertDialog_Rounded);
+                                    LayoutInflater inflater1 = (LayoutInflater) MeetingListActivity.this.getSystemService(MeetingListActivity.this.LAYOUT_INFLATER_SERVICE);
+                                    View team = inflater1.inflate(R.layout.cl_alert, null);
+                                    builder.setView(team);
+                                    builder.setCancelable(false);
+
+                                    Button yes = team.findViewById(R.id.yes_btn);
+                                    Button no = team.findViewById(R.id.no_btn);
+                                    TextView text = team.findViewById(R.id.alert_text);
+
+                                    text.setText("Are you sure want to Delete !!");
+                                    dialog = builder.create();
+                                    dialog.show();
+
+                                    yes.setOnClickListener(v1 -> {
+                                        deleteMeeting(list.get(position).get_id());
+
+                                    });
+
+                                    no.setOnClickListener(v12 -> dialog.cancel());
+
                                 }
                             });
                             cancel.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    cancelMeeting(list.get(position).get_id());
+
+                                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MeetingListActivity.this, R.style.MaterialAlertDialog_Rounded);
+                                    LayoutInflater inflater1 = (LayoutInflater) MeetingListActivity.this.getSystemService(MeetingListActivity.this.LAYOUT_INFLATER_SERVICE);
+                                    View team = inflater1.inflate(R.layout.cl_alert, null);
+                                    builder.setView(team);
+                                    builder.setCancelable(false);
+
+                                    Button yes = team.findViewById(R.id.yes_btn);
+                                    Button no = team.findViewById(R.id.no_btn);
+                                    TextView text = team.findViewById(R.id.alert_text);
+
+                                    text.setText("Are you sure want to Cancel !!");
+                                    dialog = builder.create();
+                                    dialog.show();
+
+                                    yes.setOnClickListener(v1 -> {
+                                        cancelMeeting(list.get(position).get_id());
+
+                                    });
+
+                                    no.setOnClickListener(v12 -> dialog.cancel());
+
                                 }
                             });
 
@@ -204,9 +260,12 @@ public class MeetingListActivity extends BaseActivity {
 
                 try {
                     String message = object.getString("message");
+                    Toast.makeText(MeetingListActivity.this, message, Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    getMeetingList();
 
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    ErrorHandler.handleException(MeetingListActivity.this, e);
                 }
             }
 
@@ -226,6 +285,17 @@ public class MeetingListActivity extends BaseActivity {
         new Receiver(MeetingListActivity.this, new Receiver.ApiListener() {
             @Override
             public void onResponse(JSONObject object) {
+                String message = null;
+                try {
+                    message = object.getString("message");
+                    Toast.makeText(MeetingListActivity.this, message, Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                   getMeetingList();
+
+                } catch (JSONException e) {
+                    ErrorHandler.handleException(MeetingListActivity.this, e);
+                }
+
 
             }
 

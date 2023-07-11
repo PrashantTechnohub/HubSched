@@ -149,6 +149,14 @@ public class ScannerDeviceActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        mCodeScanner.releaseResources();
+        scannerView.setVisibility(View.GONE);
+        dialog.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -45,16 +45,17 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
     ArrayList<EmpListModel> data = null;
     ArrayList<EmpListModel> empList;
 
+    boolean isSyncNecessary = true;
+
+
 
     public void registerListner(SwitchCompat switchCompat, EmpListModel model) {
         CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-
                     EmpStatusChanger("active", compoundButton.getContext(), (SwitchCompat) compoundButton, model);
                 } else {
-
                     EmpStatusChanger("blocked", compoundButton.getContext(), (SwitchCompat) compoundButton, model);
                 }
             }
@@ -247,20 +248,17 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
                     Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
                     Log.d("aa", "onResponse: " + status);
 
-                    EmpListAdapter adapter = new EmpListAdapter(context, empList);
 
-                    model.setStatus(status);
-                    notifyDataSetChanged();
-//                    if (status.equals("active")){
-//                       switchCompat.setText("Active");
-//                        switchCompat.setChecked(true);
-//                        switchCompat.setTextColor(Color.parseColor("#149519"));
-//                    }else{
-//
-//                        switchCompat.setText("Blocked");
-//                        switchCompat.setChecked(false);
-//                        switchCompat.setTextColor(Color.parseColor("#BF3D33"));
-//                    }
+                    if (status.equals("active")){
+                       switchCompat.setText("Active");
+                        switchCompat.setChecked(true);
+                        switchCompat.setTextColor(Color.parseColor("#149519"));
+                    }else{
+
+                        switchCompat.setText("Blocked");
+                        switchCompat.setChecked(false);
+                        switchCompat.setTextColor(Color.parseColor("#BF3D33"));
+                    }
 
 
                 } catch (JSONException e) {
@@ -272,7 +270,9 @@ public class EmpListAdapter extends RecyclerView.Adapter<EmpListAdapter.EmpHolde
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                isSyncNecessary = false;
                 notifyDataSetChanged();
+                isSyncNecessary = true;
                 try {
                     if (error.networkResponse.statusCode == 500) {
                         String errorString = new String(error.networkResponse.data);
